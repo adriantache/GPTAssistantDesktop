@@ -16,7 +16,7 @@ fun CardColumn(
 ) {
     Surface(
         modifier = modifier.padding(16.dp),
-        color = MaterialTheme.colors.primary,
+        color = MaterialTheme.colors.background,
         shape = RoundedCornerShape(8.dp),
     ) {
         Column(
