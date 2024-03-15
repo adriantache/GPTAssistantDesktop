@@ -6,6 +6,7 @@ import api.model.OpenAiRequest
 import api.model.OpenAiResponse
 import io.ktor.client.*
 import io.ktor.client.call.*
+import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -51,6 +52,10 @@ private class ApiConfig {
                 contentType = ContentType.Any
             )
         }
+
+        install(HttpTimeout) {
+            requestTimeoutMillis = 2 * 60 * 1000 // ChatGPT can be very slow to reply...
+        }
     }
 
     suspend fun getReply(conversation: List<ChatMessage>): String {
@@ -58,21 +63,30 @@ private class ApiConfig {
 
         val request = OpenAiRequest(messages = conversation)
 
-        val response = client.post(url) {
-            headers {
-                append(HttpHeaders.Accept, "content/json")
-                append(HttpHeaders.Authorization, "Bearer $API_KEY")
+        val call = kotlin.runCatching {
+            client.post(url) {
+                headers {
+                    append(HttpHeaders.Accept, "content/json")
+                    append(HttpHeaders.Authorization, "Bearer $API_KEY")
+                }
+                contentType(ContentType.Application.Json)
+                setBody(request)
             }
-            contentType(ContentType.Application.Json)
-            setBody(request)
         }
 
-        val promptResponse: OpenAiResponse? = if (response.status == HttpStatusCode.OK) {
-            response.body()
-        } else {
-            null
-        }
+        return call.fold(
+            onSuccess = { response ->
+                val promptResponse: OpenAiResponse? = if (response.status == HttpStatusCode.OK) {
+                    response.body()
+                } else {
+                    null
+                }
 
-        return promptResponse?.choices?.firstOrNull()?.message?.content ?: response.bodyAsText()
+                promptResponse?.choices?.firstOrNull()?.message?.content ?: response.bodyAsText()
+            },
+            onFailure = {
+                it.message.toString()
+            }
+        )
     }
 }
