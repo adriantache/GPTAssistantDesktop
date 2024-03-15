@@ -18,6 +18,7 @@ kamel = "0.9.4"
 kotlin = "1.9.22"
 ktor = "2.3.9"
 logback = "1.5.3"
+multiplatformSettings = "1.1.1"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -43,6 +44,7 @@ ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "k
 kotlin-serialization = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 media-kamel = { module = "media.kamel:kamel-image", version.ref = "kamel" }
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+multiplatform-settings = { module = "com.russhwolf:multiplatform-settings-no-arg", version.ref = "multiplatformSettings" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

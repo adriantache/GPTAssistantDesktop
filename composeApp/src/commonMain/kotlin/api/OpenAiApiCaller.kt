@@ -16,10 +16,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
+import settings.AppSettings
 
 private const val BASE_URL = "https://api.openai.com"
 private const val COMPLETIONS_ENDPOINT = "/v1/chat/completions"
-private const val API_KEY = ""
 
 class OpenAiApiCaller {
     private val config = ApiConfig()
@@ -59,6 +59,9 @@ private class ApiConfig {
     }
 
     suspend fun getReply(conversation: List<ChatMessage>): String {
+        val apiKey = AppSettings.getInstance().apiKey
+            ?: return "ERROR: Api key should be present!"
+
         val url = BASE_URL + COMPLETIONS_ENDPOINT
 
         val request = OpenAiRequest(messages = conversation)
@@ -67,7 +70,7 @@ private class ApiConfig {
             client.post(url) {
                 headers {
                     append(HttpHeaders.Accept, "content/json")
-                    append(HttpHeaders.Authorization, "Bearer $API_KEY")
+                    append(HttpHeaders.Authorization, "Bearer $apiKey")
                 }
                 contentType(ContentType.Application.Json)
                 setBody(request)

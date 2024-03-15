@@ -53,22 +53,7 @@ fun MainScreen() {
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        if (false) {
-            CardColumn(color = MaterialTheme.colors.error) {
-                var apiKey by remember { mutableStateOf("") }
-
-                Text("Your OpenAI API key is missing, please enter it below!")
-
-                Spacer(Modifier.height(8.dp))
-
-                TextField(
-                    value = apiKey,
-                    onValueChange = { apiKey = it },
-                )
-            }
-
-            Spacer(Modifier.height(8.dp))
-        }
+        ApiKeyCheck()
 
         CardColumn(
             modifier = Modifier.weight(1f),
