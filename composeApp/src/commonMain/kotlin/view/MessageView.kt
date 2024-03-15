@@ -1,42 +1,45 @@
 package view
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import api.model.ChatMessage
 import api.model.ChatRole
+import theme.AppColor
 
 @Composable
 fun MessageView(
     modifier: Modifier = Modifier,
     message: ChatMessage,
 ) {
-    val bgColor = when (message.role) {
-        ChatRole.user -> MaterialTheme.colors.primary
-        else -> MaterialTheme.colors.secondary
-    }
-    val textColor =
-        if (message.role == ChatRole.user) MaterialTheme.colors.onPrimary else MaterialTheme.colors.onSecondary
-    val contentAlignment = if (message.role == ChatRole.user) Arrangement.End else Arrangement.Start
+    val isUserMessage = message.role == ChatRole.user
+
+    val bgColor = if (isUserMessage) AppColor.UserMessage else Color.White
+    val textColor = if (isUserMessage) Color.White else Color.Black
+    val contentAlignment = if (isUserMessage) Arrangement.End else Arrangement.Start
 
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = contentAlignment,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Box(
-            modifier = modifier.fillMaxWidth(0.8f)
-                .background(bgColor, RoundedCornerShape(8.dp))
-                .padding(12.dp),
+        Surface(
+            modifier = modifier.fillMaxWidth(0.8f),
+            color = bgColor,
+            shape = RoundedCornerShape(8.dp),
+            elevation = 4.dp,
         ) {
             Text(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().padding(16.dp),
                 text = message.content,
                 color = textColor,
             )
