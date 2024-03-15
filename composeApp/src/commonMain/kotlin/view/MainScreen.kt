@@ -82,12 +82,9 @@ fun MainScreen() {
 
         CardColumn {
             TextField(
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 value = prompt,
-                onValueChange = {
-                    prompt = it
-                },
+                onValueChange = { prompt = it },
                 enabled = !isLoading,
                 label = {
                     Text("Ask ChatGPT")
@@ -109,7 +106,7 @@ fun MainScreen() {
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(onDone = { onSubmit() }),
                 singleLine = true,
-                colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent)
+                colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             )
         }
     }
