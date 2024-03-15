@@ -39,7 +39,9 @@ class OpenAiApiCaller {
     }
 }
 
-private class ApiConfig {
+private class ApiConfig(
+    private val settings: AppSettings = AppSettings.getInstance(),
+) {
     @OptIn(ExperimentalSerializationApi::class)
     private val client = HttpClient {
         install(ContentNegotiation) {
@@ -59,7 +61,7 @@ private class ApiConfig {
     }
 
     suspend fun getReply(conversation: List<ChatMessage>): String {
-        val apiKey = AppSettings.getInstance().apiKey
+        val apiKey = settings.apiKey
             ?: return "ERROR: Api key should be present!"
 
         val url = BASE_URL + COMPLETIONS_ENDPOINT

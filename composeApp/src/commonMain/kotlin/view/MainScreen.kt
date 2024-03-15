@@ -55,6 +55,8 @@ fun MainScreen() {
     ) {
         ApiKeyCheck()
 
+        SettingsRow()
+
         CardColumn(
             modifier = Modifier.weight(1f),
             color = Color.Transparent,

@@ -13,9 +13,7 @@ import settings.AppSettings
 fun ApiKeyCheck(
     settings: AppSettings = AppSettings.getInstance(),
 ) {
-    var shouldShowApiKeyInput by remember { mutableStateOf(settings.apiKey.isNullOrBlank()) }
-
-    if (shouldShowApiKeyInput) {
+    if (settings.apiKeyFlow.collectAsState().value.isNullOrBlank()) {
         CardColumn(
             modifier = Modifier.fillMaxSize()
         ) {
@@ -36,7 +34,6 @@ fun ApiKeyCheck(
                             if (apiKey.isBlank()) return@TextButton
 
                             settings.apiKey = apiKey
-                            shouldShowApiKeyInput = false
                         }
                     ) {
                         Text(text = "Save")
