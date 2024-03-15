@@ -19,7 +19,7 @@ import kotlinx.serialization.json.Json
 
 private const val BASE_URL = "https://api.openai.com"
 private const val COMPLETIONS_ENDPOINT = "/v1/chat/completions"
-private const val API_KEY = "***REMOVED***"
+private const val API_KEY = ""
 
 class OpenAiApiCaller {
     private val config = ApiConfig()
