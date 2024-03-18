@@ -48,7 +48,7 @@ fun SettingsRow(
         Image(
             modifier = Modifier.clickable {
                 areSettingsOpen = !areSettingsOpen
-            },
+            }.padding(8.dp),
             painter = painterResource(Res.drawable.settings),
             contentDescription = null,
         )

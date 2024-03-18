@@ -99,7 +99,7 @@ compose.desktop {
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "com.adriantache"
+            packageName = "GPT Assistant"
             packageVersion = "1.0.0"
         }
     }

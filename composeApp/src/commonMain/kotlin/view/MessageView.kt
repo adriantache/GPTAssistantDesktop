@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -38,11 +39,13 @@ fun MessageView(
             shape = RoundedCornerShape(8.dp),
             elevation = 4.dp,
         ) {
-            Text(
-                modifier = Modifier.fillMaxWidth().padding(16.dp),
-                text = message.content,
-                color = textColor,
-            )
+            SelectionContainer {
+                Text(
+                    modifier = Modifier.fillMaxWidth().padding(16.dp),
+                    text = message.content,
+                    color = textColor,
+                )
+            }
         }
     }
 }
