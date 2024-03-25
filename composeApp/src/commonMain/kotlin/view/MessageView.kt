@@ -11,7 +11,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import api.model.ChatMessage
 import api.model.ChatRole
@@ -24,8 +23,8 @@ fun MessageView(
 ) {
     val isUserMessage = message.role == ChatRole.user
 
-    val bgColor = if (isUserMessage) AppColor.UserMessage else Color.White
-    val textColor = if (isUserMessage) Color.White else Color.Black
+    val bgColor = if (isUserMessage) AppColor.userMessage() else AppColor.card()
+    val textColor = if (isUserMessage) AppColor.onUserMessage() else AppColor.onCard()
     val contentAlignment = if (isUserMessage) Arrangement.End else Arrangement.Start
 
     Row(

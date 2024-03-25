@@ -13,7 +13,7 @@ fun App() {
     MaterialTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
-            color = AppColor.Background,
+            color = AppColor.background(),
         ) {
             MainScreen()
         }

@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 private const val API_KEY_KEY = "API_KEY_KEY"
+private const val FORCE_DARK_MODE_KEY = "FORCE_DARK_MODE_KEY"
 
 class AppSettings private constructor() {
     private val settings: Settings = Settings()
@@ -15,6 +16,13 @@ class AppSettings private constructor() {
         set(value) {
             settings[API_KEY_KEY] = value
             _apiKeyFlow.value = value
+            field = value
+        }
+
+    var forceDarkMode: Boolean = false
+        get() = settings.getBoolean(FORCE_DARK_MODE_KEY, false)
+        set(value) {
+            settings[FORCE_DARK_MODE_KEY] = value
             field = value
         }
 

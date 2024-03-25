@@ -8,11 +8,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import theme.AppColor
 
 @Composable
 fun CardColumn(
     modifier: Modifier = Modifier.fillMaxWidth(),
-    color: Color = Color.White,
+    color: Color = AppColor.card(),
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Surface(

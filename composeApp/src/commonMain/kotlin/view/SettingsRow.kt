@@ -5,16 +5,19 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
 import gptassistant.composeapp.generated.resources.Res
 import gptassistant.composeapp.generated.resources.settings
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import settings.AppSettings
+import theme.AppColor
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
@@ -34,9 +37,31 @@ fun SettingsRow(
             Row {
                 Button(
                     onClick = {
+                        settings.forceDarkMode = !settings.forceDarkMode
+                        areSettingsOpen = false
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = AppColor.userMessage(),
+                        contentColor = AppColor.onUserMessage(),
+                    )
+                ) {
+                    val label = if (settings.forceDarkMode) "Clear Dark Mode" else "Force Dark Mode"
+
+                    Text(label)
+                }
+
+                Spacer(Modifier.width(16.dp))
+
+                // TODO: extract this component
+                Button(
+                    onClick = {
                         settings.apiKey = null
                         areSettingsOpen = false
-                    }
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = AppColor.userMessage(),
+                        contentColor = AppColor.onUserMessage(),
+                    )
                 ) {
                     Text("Remove API key")
                 }
@@ -51,6 +76,7 @@ fun SettingsRow(
             }.padding(8.dp),
             painter = painterResource(Res.drawable.settings),
             contentDescription = null,
+            colorFilter = ColorFilter.tint(AppColor.onBackground()),
         )
     }
 }

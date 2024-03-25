@@ -4,10 +4,13 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import settings.AppSettings
+import theme.AppColor
 
 @Composable
 fun ApiKeyCheck(
@@ -15,14 +18,18 @@ fun ApiKeyCheck(
 ) {
     if (settings.apiKeyFlow.collectAsState().value.isNullOrBlank()) {
         CardColumn(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         ) {
             var apiKey by remember { mutableStateOf("") }
 
-            Text("Your OpenAI API key is missing, please enter it below!")
+            Text(
+                text = "Your OpenAI API key is missing, please enter it below!",
+                color = AppColor.onCard(),
+            )
 
             Spacer(Modifier.height(8.dp))
 
+            // TODO: extract this component
             TextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = apiKey,
@@ -34,11 +41,25 @@ fun ApiKeyCheck(
                             if (apiKey.isBlank()) return@TextButton
 
                             settings.apiKey = apiKey
-                        }
+                        },
                     ) {
-                        Text(text = "Save")
+                        Text(
+                            text = "Save",
+                            color = AppColor.onCard(),
+                        )
                     }
-                }
+                },
+                singleLine = true,
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color.Transparent,
+                    textColor = AppColor.onCard(),
+                    placeholderColor = AppColor.onCard(),
+                    focusedLabelColor = AppColor.onCard(),
+                    focusedIndicatorColor = AppColor.onCard(),
+                    unfocusedLabelColor = AppColor.onCard().copy(0.7f),
+                    unfocusedIndicatorColor = AppColor.onCard().copy(0.7f),
+                    cursorColor = AppColor.onCard(),
+                ),
             )
         }
 

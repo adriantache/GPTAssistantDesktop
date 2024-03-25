@@ -89,7 +89,10 @@ fun MainScreen() {
                 onValueChange = { prompt = it },
                 enabled = !isLoading,
                 label = {
-                    Text("Ask ChatGPT")
+                    Text(
+                        text = "Ask ChatGPT",
+                        color = AppColor.onCard(),
+                    )
                 },
                 trailingIcon = {
                     TextButton(
@@ -100,15 +103,23 @@ fun MainScreen() {
                         Text(
                             text = "Send",
                             style = MaterialTheme.typography.subtitle1,
-                            color = AppColor.UserMessage,
-
-                            )
+                            color = AppColor.userMessage(),
+                        )
                     }
                 },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(onDone = { onSubmit() }),
-                singleLine = true,
-                colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
+                singleLine = true, // TODO add toggle for this to enable entering code etc.
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color.Transparent,
+                    textColor = AppColor.onCard(),
+                    placeholderColor = AppColor.onCard(),
+                    focusedLabelColor = AppColor.onCard(),
+                    focusedIndicatorColor = AppColor.onCard(),
+                    unfocusedLabelColor = AppColor.onCard().copy(0.7f),
+                    unfocusedIndicatorColor = AppColor.onCard().copy(0.7f),
+                    cursorColor = AppColor.onCard(),
+                ),
             )
         }
     }
