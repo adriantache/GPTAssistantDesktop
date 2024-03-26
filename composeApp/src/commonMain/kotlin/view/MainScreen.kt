@@ -1,5 +1,6 @@
 package view
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
@@ -83,43 +84,83 @@ fun MainScreen() {
         Spacer(Modifier.height(8.dp))
 
         CardColumn {
-            TextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = prompt,
-                onValueChange = { prompt = it },
-                enabled = !isLoading,
-                label = {
+            PromptInput(
+                prompt = prompt,
+                onPromptChanged = { prompt = it },
+                isLoading = isLoading,
+                onSubmit = ::onSubmit,
+            )
+        }
+    }
+}
+
+@Composable
+fun PromptInput(
+    prompt: String,
+    onPromptChanged: (String) -> Unit,
+    isLoading: Boolean,
+    onSubmit: () -> Unit,
+) {
+    Column(modifier = Modifier.fillMaxWidth()) {
+        var singleLine by remember { mutableStateOf(true) }
+
+        TextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = prompt,
+            onValueChange = onPromptChanged,
+            enabled = !isLoading,
+            label = {
+                Text(
+                    text = "Ask ChatGPT",
+                    color = AppColor.onCard(),
+                )
+            },
+            trailingIcon = {
+                TextButton(
+                    modifier = Modifier.padding(end = 8.dp),
+                    onClick = onSubmit,
+                    enabled = !isLoading && prompt.isNotBlank(),
+                ) {
                     Text(
-                        text = "Ask ChatGPT",
-                        color = AppColor.onCard(),
+                        text = "Send",
+                        style = MaterialTheme.typography.subtitle1,
+                        color = AppColor.userMessage(),
                     )
-                },
-                trailingIcon = {
-                    TextButton(
-                        modifier = Modifier.padding(end = 8.dp),
-                        onClick = ::onSubmit,
-                        enabled = !isLoading && prompt.isNotBlank(),
-                    ) {
-                        Text(
-                            text = "Send",
-                            style = MaterialTheme.typography.subtitle1,
-                            color = AppColor.userMessage(),
-                        )
-                    }
-                },
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                keyboardActions = KeyboardActions(onDone = { onSubmit() }),
-                singleLine = true, // TODO add toggle for this to enable entering code etc.
-                colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = Color.Transparent,
-                    textColor = AppColor.onCard(),
-                    placeholderColor = AppColor.onCard(),
-                    focusedLabelColor = AppColor.onCard(),
-                    focusedIndicatorColor = AppColor.onCard(),
-                    unfocusedLabelColor = AppColor.onCard().copy(0.7f),
-                    unfocusedIndicatorColor = AppColor.onCard().copy(0.7f),
-                    cursorColor = AppColor.onCard(),
-                ),
+                }
+            },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(onDone = { onSubmit() }),
+            singleLine = singleLine,
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = Color.Transparent,
+                textColor = AppColor.onCard(),
+                placeholderColor = AppColor.onCard(),
+                focusedLabelColor = AppColor.onCard(),
+                focusedIndicatorColor = AppColor.onCard(),
+                unfocusedLabelColor = AppColor.onCard().copy(0.7f),
+                unfocusedIndicatorColor = AppColor.onCard().copy(0.7f),
+                cursorColor = AppColor.onCard(),
+            ),
+        )
+
+        Spacer(Modifier.height(4.dp))
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Checkbox(
+                checked = singleLine,
+                onCheckedChange = { singleLine = it },
+                colors = CheckboxDefaults.colors(
+                    uncheckedColor = AppColor.onCard(),
+                    checkedColor = AppColor.userMessage(),
+                )
+            )
+
+            Text(
+                modifier = Modifier.clickable { singleLine = !singleLine },
+                text = "Press enter to send",
+                color = AppColor.onCard()
             )
         }
     }
