@@ -71,9 +71,9 @@ fun SettingsRow(
         }
 
         Image(
-            modifier = Modifier.clickable {
-                areSettingsOpen = !areSettingsOpen
-            }.padding(8.dp),
+            modifier = Modifier.clickable { areSettingsOpen = !areSettingsOpen }
+                .requiredSize(48.dp)
+                .padding(8.dp),
             painter = painterResource(Res.drawable.settings),
             contentDescription = null,
             colorFilter = ColorFilter.tint(AppColor.onBackground()),
