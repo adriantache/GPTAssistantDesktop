@@ -2,54 +2,34 @@ package theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.graphics.Color
 import settings.AppSettings
 
 object AppColor {
     @Composable
-    fun isDarkTheme(
+    private fun isDarkTheme(
         settings: AppSettings = AppSettings.getInstance(),
     ): Boolean {
-        return settings.forceDarkMode || isSystemInDarkTheme()
+        return settings.forceDarkModeFlow.collectAsState().value || isSystemInDarkTheme()
     }
 
     @Composable
-    fun background(): Color = ColorPair(
-        lightColor = Color(0xfff6f7fb),
-        darkColor = Color(0xff090804),
-    ).get(isDarkTheme())
+    fun background(): Color = if (isDarkTheme()) Color(0xff090804) else Color(0xfff6f7fb)
 
     @Composable
-    fun onBackground(): Color = ColorPair(
-        lightColor = Color.Black,
-        darkColor = Color.White,
-    ).get(isDarkTheme())
+    fun onBackground(): Color = if (isDarkTheme()) Color.White else Color.Black
+
 
     @Composable
-    fun userMessage(): Color = ColorPair(
-        lightColor = Color(0xff786def),
-        darkColor = Color(0xff3f36a9),
-    ).get(isDarkTheme())
+    fun userMessage(): Color = if (isDarkTheme()) Color(0xff3f36a9) else Color(0xff786def)
 
     @Composable
-    fun onUserMessage(): Color = ColorPair(
-        lightColor = Color.White,
-        darkColor = Color.White,
-    ).get(isDarkTheme())
+    fun onUserMessage(): Color = Color.White
 
     @Composable
-    fun card(): Color = ColorPair(
-        lightColor = Color.White,
-        darkColor = Color(0xff1b180c),
-    ).get(isDarkTheme())
+    fun card(): Color = if (isDarkTheme()) Color(0xff1b180c) else Color.White
 
     @Composable
     fun onCard(): Color = onBackground()
-}
-
-private data class ColorPair(
-    val lightColor: Color,
-    val darkColor: Color,
-) {
-    fun get(isDarkMode: Boolean) = if (isDarkMode) darkColor else lightColor
 }

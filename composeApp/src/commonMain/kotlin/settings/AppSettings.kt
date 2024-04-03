@@ -23,11 +23,15 @@ class AppSettings private constructor() {
         get() = settings.getBoolean(FORCE_DARK_MODE_KEY, false)
         set(value) {
             settings[FORCE_DARK_MODE_KEY] = value
+            _forceDarkModeFlow.value = value
             field = value
         }
 
     private val _apiKeyFlow = MutableStateFlow(apiKey)
     val apiKeyFlow: StateFlow<String?> = _apiKeyFlow
+
+    private val _forceDarkModeFlow = MutableStateFlow(forceDarkMode)
+    val forceDarkModeFlow: StateFlow<Boolean> = _forceDarkModeFlow
 
     companion object {
         private val INSTANCE = AppSettings()
