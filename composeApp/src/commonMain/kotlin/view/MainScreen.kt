@@ -2,6 +2,7 @@ package view
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import api.OpenAiApiCaller
+import api.OpenAiStreamingApiCaller
 import api.model.ChatMessage
 import kotlinx.coroutines.launch
 import platformSpecific.ScrollbarImpl
@@ -28,7 +29,7 @@ fun MainScreen() {
     val scope = rememberCoroutineScope()
     val listState = rememberLazyListState()
 
-    val client = remember { OpenAiApiCaller() }
+    val apiCaller = remember { OpenAiStreamingApiCaller() }
 
     var prompt by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
@@ -40,11 +41,17 @@ fun MainScreen() {
         scope.launch {
             isLoading = true
 
-            response = client.getReply(prompt)
             isLoading = false
+            val localPrompt = prompt
             prompt = ""
 
-            listState.scrollToItem(response.size - 2)
+            apiCaller.getReply(localPrompt).collect {
+                response = it
+
+                scope.launch {
+                    listState.animateScrollBy(999f) // Scroll to the end of the list to match the streaming.
+                }
+            }
         }
     }
 

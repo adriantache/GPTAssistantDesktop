@@ -21,6 +21,7 @@ import settings.AppSettings
 private const val BASE_URL = "https://api.openai.com"
 private const val COMPLETIONS_ENDPOINT = "/v1/chat/completions"
 
+// Keeping this for legacy.
 class OpenAiApiCaller {
     private val config = ApiConfig()
 

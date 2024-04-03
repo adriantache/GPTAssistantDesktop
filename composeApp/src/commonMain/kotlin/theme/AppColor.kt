@@ -20,7 +20,6 @@ object AppColor {
     @Composable
     fun onBackground(): Color = if (isDarkTheme()) Color.White else Color.Black
 
-
     @Composable
     fun userMessage(): Color = if (isDarkTheme()) Color(0xff3f36a9) else Color(0xff786def)
 

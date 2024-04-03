@@ -12,3 +12,10 @@ data class OpenAiResponse(
     val temperature: Double?,
 )
 
+@Serializable
+data class Choice(
+    val message: ChatMessage,
+    val text: String?,
+    val index: Int?,
+    val logprobs: List<Double>?,
+)
