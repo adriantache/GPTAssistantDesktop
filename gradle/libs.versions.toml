@@ -1,5 +1,5 @@
 [versions]
-agp = "8.2.0"
+agp = "8.2.0" # Currently most recent version compatible with KMP.
 android-compileSdk = "34"
 android-minSdk = "24"
 android-targetSdk = "34"
@@ -10,14 +10,13 @@ androidx-core-ktx = "1.12.0"
 androidx-espresso-core = "3.5.1"
 androidx-material = "1.11.0"
 androidx-test-junit = "1.1.5"
-compose-bom = "2024.02.02"
+compose-bom = "2024.04.00"
 compose-plugin = "1.6.0"
 coroutines = "1.8.0"
 junit = "4.13.2"
 kamel = "0.9.4"
 kotlin = "1.9.22"
 ktor = "2.3.9"
-logback = "1.5.3"
 multiplatformSettings = "1.1.1"
 
 [libraries]
@@ -43,7 +42,6 @@ ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negoti
 ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
 kotlin-serialization = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 media-kamel = { module = "media.kamel:kamel-image", version.ref = "kamel" }
-logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 multiplatform-settings = { module = "com.russhwolf:multiplatform-settings-no-arg", version.ref = "multiplatformSettings" }
 
 [plugins]
