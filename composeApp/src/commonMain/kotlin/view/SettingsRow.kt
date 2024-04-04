@@ -29,7 +29,7 @@ fun SettingsRow(
     Row(
         modifier = Modifier.fillMaxWidth()
             .height(48.dp)
-            .padding(vertical = 8.dp, horizontal = 16.dp),
+            .padding(vertical = 8.dp),
         horizontalArrangement = Arrangement.End,
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -75,7 +75,7 @@ fun SettingsRow(
                 .requiredSize(48.dp)
                 .padding(8.dp),
             painter = painterResource(Res.drawable.settings),
-            contentDescription = null,
+            contentDescription = "Settings",
             colorFilter = ColorFilter.tint(AppColor.onBackground()),
         )
     }
