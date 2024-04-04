@@ -25,6 +25,11 @@ class OpenAiStreamingApiCaller {
 
     private val conversation = mutableListOf<ChatMessage>()
 
+    fun reset(): List<ChatMessage> {
+        conversation.clear()
+        return conversation.toList()
+    }
+
     suspend fun getReply(prompt: String): Flow<List<ChatMessage>> {
         return flow {
             conversation += ChatMessage(prompt)

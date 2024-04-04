@@ -82,6 +82,22 @@ fun MainScreen() {
 
                         Spacer(Modifier.height(12.dp))
                     }
+
+                    if (response.isNotEmpty()) {
+                        item {
+                            Box(
+                                modifier = Modifier
+                                    .clickable { response = apiCaller.reset() }
+                                    .padding(16.dp),
+                            ) {
+                                Text(
+                                    text = "Reset conversation",
+                                    style = MaterialTheme.typography.button,
+                                    color = AppColor.onBackground(),
+                                )
+                            }
+                        }
+                    }
                 }
 
                 ScrollbarImpl(listState)
