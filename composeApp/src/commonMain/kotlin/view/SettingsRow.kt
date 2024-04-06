@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
+import api.OpenAiStreamingApiCaller
 import gptassistant.composeapp.generated.resources.Res
 import gptassistant.composeapp.generated.resources.settings
 import org.jetbrains.compose.resources.ExperimentalResourceApi
@@ -22,9 +23,11 @@ import theme.AppColor
 @OptIn(ExperimentalResourceApi::class)
 @Composable
 fun SettingsRow(
+    apiCaller: OpenAiStreamingApiCaller,
     settings: AppSettings = AppSettings.getInstance(),
 ) {
     var areSettingsOpen by remember { mutableStateOf(false) }
+    var showPersonasDialog by remember { mutableStateOf(false) }
 
     Row(
         modifier = Modifier.fillMaxWidth()
@@ -33,6 +36,22 @@ fun SettingsRow(
         horizontalArrangement = Arrangement.End,
         verticalAlignment = Alignment.CenterVertically,
     ) {
+        Spacer(Modifier.width(8.dp))
+
+        Button(
+            onClick = {
+                showPersonasDialog = true
+            },
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = AppColor.userMessage(),
+                contentColor = AppColor.onUserMessage(),
+            )
+        ) {
+            Text(settings.selectedPersona?.name ?: "No persona")
+        }
+
+        Spacer(Modifier.weight(1f))
+
         AnimatedVisibility(areSettingsOpen) {
             Row {
                 Button(
@@ -77,6 +96,13 @@ fun SettingsRow(
             painter = painterResource(Res.drawable.settings),
             contentDescription = "Settings",
             colorFilter = ColorFilter.tint(AppColor.onBackground()),
+        )
+    }
+
+    if (showPersonasDialog) {
+        PersonaSelectorDialog(
+            onDismiss = { showPersonasDialog = false },
+            apiCaller = apiCaller,
         )
     }
 }

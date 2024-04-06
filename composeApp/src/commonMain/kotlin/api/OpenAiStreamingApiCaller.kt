@@ -20,14 +20,23 @@ private const val BASE_URL = "https://api.openai.com"
 private const val COMPLETIONS_ENDPOINT = "/v1/chat/completions"
 private const val LOADING_MESSAGE = "..."
 
-class OpenAiStreamingApiCaller {
+class OpenAiStreamingApiCaller(
+    private val settings: AppSettings = AppSettings.getInstance(),
+) {
     private val config = StreamingApiConfig()
 
     private val conversation = mutableListOf<ChatMessage>()
 
     fun reset(): List<ChatMessage> {
         conversation.clear()
+        addPersona()
         return conversation.toList()
+    }
+
+    private fun addPersona() {
+        val persona = settings.selectedPersona ?: return
+
+        conversation += ChatMessage(persona.instructions)
     }
 
     suspend fun getReply(prompt: String): Flow<List<ChatMessage>> {
