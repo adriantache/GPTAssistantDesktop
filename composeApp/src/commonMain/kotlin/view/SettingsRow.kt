@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
 import api.OpenAiStreamingApiCaller
 import gptassistant.composeapp.generated.resources.Res
+import gptassistant.composeapp.generated.resources.persona
 import gptassistant.composeapp.generated.resources.settings
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
@@ -47,7 +48,18 @@ fun SettingsRow(
                 contentColor = AppColor.onUserMessage(),
             )
         ) {
-            Text(settings.selectedPersona?.name ?: "No persona")
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Image(
+                    modifier = Modifier.requiredSize(24.dp),
+                    painter = painterResource(Res.drawable.persona),
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(AppColor.onUserMessage()),
+                )
+
+                Spacer(Modifier.width(8.dp))
+
+                Text(settings.selectedPersona?.name ?: "No persona")
+            }
         }
 
         Spacer(Modifier.weight(1f))
