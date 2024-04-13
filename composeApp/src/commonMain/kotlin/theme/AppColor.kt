@@ -1,6 +1,7 @@
 package theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.graphics.Color
@@ -39,4 +40,10 @@ object AppColor {
 
     @Composable
     fun light(): Color = if (isDarkTheme()) Color.Black else Color.White
+
+    @Composable
+    fun buttonColors() = ButtonDefaults.buttonColors(
+        backgroundColor = userMessage(),
+        contentColor = onUserMessage(),
+    )
 }

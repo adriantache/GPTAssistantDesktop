@@ -40,13 +40,8 @@ fun SettingsRow(
         Spacer(Modifier.width(8.dp))
 
         Button(
-            onClick = {
-                showPersonasDialog = true
-            },
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = AppColor.userMessage(),
-                contentColor = AppColor.onUserMessage(),
-            )
+            onClick = { showPersonasDialog = true },
+            colors = AppColor.buttonColors(),
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Image(

@@ -33,10 +33,23 @@ class AppSettings private constructor() {
 
     var selectedPersona: Persona? = null
 
-    var personas: List<Persona> = emptyList()
+    var personas: Map<String, Persona> = emptyMap()
         get() {
-            val personasString = settings.getStringOrNull(PERSONAS_KEY) ?: return emptyList()
-            return Json.decodeFromString<List<Persona>>(personasString)
+            val personasString = settings.getStringOrNull(PERSONAS_KEY) ?: return emptyMap()
+
+            // TODO: remove this legacy behaviour, or create a migration for it instead
+            val legacyList = try {
+                Json.decodeFromString<List<Persona>>(personasString)
+            } catch (e: Exception) {
+                null
+            }
+            if (legacyList != null) {
+                val map = legacyList.associateBy { it.name }
+                personas = map
+                return map
+            }
+
+            return Json.decodeFromString<Map<String, Persona>>(personasString)
         }
         set(value) {
             val json = Json.encodeToString(value)
@@ -52,7 +65,7 @@ class AppSettings private constructor() {
     val forceDarkModeFlow: StateFlow<Boolean> = _forceDarkModeFlow
 
     private val _personasFlow = MutableStateFlow(personas)
-    val personasFlow: StateFlow<List<Persona>> = _personasFlow
+    val personasFlow: StateFlow<Map<String, Persona>> = _personasFlow
 
     companion object {
         private val INSTANCE = AppSettings()

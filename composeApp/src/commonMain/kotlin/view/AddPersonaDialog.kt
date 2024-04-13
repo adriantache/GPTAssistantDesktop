@@ -19,12 +19,13 @@ import theme.AppColor
 
 @Composable
 fun AddPersonaDialog(
+    persona: Persona,
     appSettings: AppSettings,
     onDismiss: () -> Unit,
 ) {
     Dialog(onDismissRequest = onDismiss) {
-        var personaName by remember { mutableStateOf("") }
-        var personaInstructions by remember { mutableStateOf("") }
+        var personaName by remember { mutableStateOf(persona.name) }
+        var personaInstructions by remember { mutableStateOf(persona.instructions) }
 
         Column(
             verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
@@ -77,10 +78,14 @@ fun AddPersonaDialog(
 
             Button(
                 onClick = {
-                    appSettings.personas += Persona(
+                    val personas = appSettings.personas.toMutableMap()
+                    
+                    personas[personaName] = Persona(
                         name = personaName,
                         instructions = personaInstructions,
                     )
+                    appSettings.personas = personas
+
                     onDismiss()
                 },
                 colors = ButtonDefaults.buttonColors(
