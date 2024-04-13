@@ -83,7 +83,7 @@ fun SettingsRow(
 
                 Spacer(Modifier.width(16.dp))
 
-                // TODO: extract this component
+                // TODO: extract this component or its colours and reuse it
                 Button(
                     onClick = {
                         settings.apiKey = null

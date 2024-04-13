@@ -6,6 +6,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.graphics.Color
 import settings.AppSettings
 
+// TODO: extract colors for common components to this class as well. (button, text field, text, etc.)
+
 object AppColor {
     @Composable
     private fun isDarkTheme(
@@ -31,4 +33,10 @@ object AppColor {
 
     @Composable
     fun onCard(): Color = onBackground()
+
+    @Composable
+    fun dark(): Color = if (isDarkTheme()) Color.White else Color.Black
+
+    @Composable
+    fun light(): Color = if (isDarkTheme()) Color.Black else Color.White
 }

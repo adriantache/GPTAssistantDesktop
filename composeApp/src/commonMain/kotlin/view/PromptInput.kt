@@ -9,6 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import theme.AppColor
@@ -20,6 +21,8 @@ fun PromptInput(
     isLoading: Boolean,
     onSubmit: () -> Unit,
 ) {
+    val keyboard = LocalSoftwareKeyboardController.current
+
     Column(modifier = Modifier.fillMaxWidth()) {
         var singleLine by remember { mutableStateOf(true) }
 
@@ -37,7 +40,10 @@ fun PromptInput(
             trailingIcon = {
                 TextButton(
                     modifier = Modifier.padding(end = 8.dp),
-                    onClick = onSubmit,
+                    onClick = {
+                        keyboard?.hide()
+                        onSubmit()
+                    },
                     enabled = !isLoading && prompt.isNotBlank(),
                 ) {
                     Text(
@@ -48,7 +54,10 @@ fun PromptInput(
                 }
             },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(onDone = { onSubmit() }),
+            keyboardActions = KeyboardActions(onDone = {
+                keyboard?.hide()
+                onSubmit()
+            }),
             singleLine = singleLine,
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Color.Transparent,

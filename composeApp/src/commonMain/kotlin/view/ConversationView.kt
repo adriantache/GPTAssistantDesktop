@@ -4,7 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -21,31 +21,37 @@ fun ConversationView(
     conversation: Conversation?,
     onResetConversation: () -> Unit,
 ) {
+    if (conversation == null || conversation.isEmpty) return
+
     Box(contentAlignment = Alignment.TopEnd) {
         LazyColumn(
-            modifier = Modifier.padding(end = 12.dp),
+            modifier = Modifier.padding(end = 12.dp), // Used for the scrollbar.
             verticalArrangement = Arrangement.Bottom,
             state = listState,
         ) {
-            items(conversation?.contents.orEmpty()) {
-                MessageView(message = it)
+            itemsIndexed(conversation.contents) { index, message ->
+                MessageView(message = message)
 
-                Spacer(Modifier.height(12.dp))
+                if (index != conversation.contents.size - 1) {
+                    Spacer(Modifier.height(12.dp))
+                }
             }
 
-            if (conversation?.isEmpty != true) {
-                item {
-                    Box(
-                        modifier = Modifier
-                            .clickable { onResetConversation() }
-                            .padding(16.dp),
-                    ) {
-                        Text(
-                            text = "Reset conversation",
-                            style = MaterialTheme.typography.button,
-                            color = AppColor.onBackground(),
-                        )
-                    }
+            item {
+                Spacer(Modifier.height(8.dp))
+            }
+
+            item {
+                Box(
+                    modifier = Modifier
+                        .clickable { onResetConversation() }
+                        .padding(16.dp),
+                ) {
+                    Text(
+                        text = "Reset conversation",
+                        style = MaterialTheme.typography.button,
+                        color = AppColor.onBackground(),
+                    )
                 }
             }
         }

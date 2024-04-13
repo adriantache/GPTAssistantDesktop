@@ -9,7 +9,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import api.OpenAiStreamingApiCaller
 import api.model.Conversation
@@ -60,9 +59,11 @@ fun MainScreen() {
 
         SettingsRow(apiCaller)
 
-        CardColumn(
-            modifier = Modifier.weight(1f),
-            color = Color.Transparent,
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .padding(16.dp),
         ) {
             if (conversation == null || conversation?.isEmpty == true) {
                 ConversationHistory(

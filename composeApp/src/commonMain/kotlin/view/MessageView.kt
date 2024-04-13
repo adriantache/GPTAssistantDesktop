@@ -1,11 +1,11 @@
 package view
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -34,19 +34,13 @@ fun MessageView(
 
     val bgColor = if (isUserMessage) AppColor.userMessage() else AppColor.card()
     val textColor = if (isUserMessage) AppColor.onUserMessage() else AppColor.onCard()
-    val contentAlignment = if (isUserMessage) Arrangement.End else Arrangement.Start
+    val contentAlignment = if (isUserMessage) Alignment.CenterEnd else Alignment.CenterStart
 
-    Row(
+    Box(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = contentAlignment,
-        verticalAlignment = Alignment.CenterVertically,
+        contentAlignment = contentAlignment,
     ) {
-        Surface(
-            modifier = modifier.fillMaxWidth(0.8f),
-            color = bgColor,
-            shape = RoundedCornerShape(8.dp),
-            elevation = 4.dp,
-        ) {
+        Column(modifier = modifier.fillMaxWidth(0.95f).background(bgColor, RoundedCornerShape(8.dp))) {
             SelectionContainer {
                 Text(
                     modifier = Modifier.fillMaxWidth().padding(16.dp),
@@ -54,18 +48,37 @@ fun MessageView(
                     color = textColor,
                 )
             }
-        }
 
-        if (!isUserMessage) {
-            Spacer(Modifier.width(16.dp))
+            if (!isUserMessage) {
+                Spacer(Modifier.height(4.dp))
 
-            Image(
-                modifier = Modifier.clickable { clipboard.setText(AnnotatedString(message.content)) }
-                    .requiredSize(36.dp).padding(8.dp),
-                painter = painterResource(Res.drawable.copy),
-                contentDescription = "Copy",
-                colorFilter = ColorFilter.tint(AppColor.onBackground()),
-            )
+                Row(
+                    modifier = Modifier
+                        .clickable { clipboard.setText(AnnotatedString(message.content)) }
+                        .background(
+                            AppColor.dark(),
+                            RoundedCornerShape(bottomStart = 8.dp, topEnd = 8.dp)
+                        )
+                        .padding(8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Image(
+                        modifier = Modifier.requiredSize(36.dp).padding(8.dp),
+                        painter = painterResource(Res.drawable.copy),
+                        contentDescription = "Copy",
+                        colorFilter = ColorFilter.tint(AppColor.light()),
+                    )
+
+                    Spacer(Modifier.width(4.dp))
+
+                    Text(
+                        text = "Copy",
+                        color = AppColor.light(),
+                    )
+
+                    Spacer(Modifier.width(8.dp))
+                }
+            }
         }
     }
 }
