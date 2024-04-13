@@ -1,9 +1,6 @@
 package api
 
-import api.model.ChatMessage
-import api.model.ChatRole
-import api.model.OpenAiRequest
-import api.model.OpenAiStreamingResponse
+import api.model.*
 import api.sse.readSse
 import io.ktor.client.*
 import io.ktor.client.plugins.*
@@ -25,45 +22,43 @@ class OpenAiStreamingApiCaller(
 ) {
     private val config = StreamingApiConfig()
 
-    private val conversation = mutableListOf<ChatMessage>()
+    private var conversation = Conversation()
 
-    fun reset(): List<ChatMessage> {
-        conversation.clear()
+    fun reset(): Conversation {
+        conversation = Conversation()
         addPersona()
-        return conversation.toList()
+        return conversation
     }
 
     private fun addPersona() {
         val persona = settings.selectedPersona ?: return
 
-        conversation += ChatMessage(persona.instructions)
+        conversation = conversation.add(ChatMessage(persona.instructions))
     }
 
-    suspend fun getReply(prompt: String): Flow<List<ChatMessage>> {
+    fun setConversation(conversation: Conversation) {
+        this.conversation = conversation
+    }
+
+    suspend fun getReply(prompt: String): Flow<Conversation> {
         return flow {
-            conversation += ChatMessage(prompt)
+            conversation = conversation.add(ChatMessage(prompt))
 
             var chatMessage = ChatMessage(LOADING_MESSAGE, ChatRole.assistant)
 
-            conversation += chatMessage
-            emit(conversation.toList())
+            conversation = conversation.add(chatMessage)
+            emit(conversation)
 
-            config.getReply(conversation)
+            config.getReply(conversation.contents)
                 .flowOn(Dispatchers.IO)
                 .collect {
                     val newContent = if (chatMessage.content == LOADING_MESSAGE) it else chatMessage.content + it
 
                     chatMessage = chatMessage.copy(content = newContent)
 
-                    conversation.replaceAll { message ->
-                        if (message.id == chatMessage.id) {
-                            chatMessage
-                        } else {
-                            message
-                        }
-                    }
+                    conversation = conversation.update(chatMessage)
 
-                    emit(conversation.toList())
+                    emit(conversation)
                 }
         }
     }

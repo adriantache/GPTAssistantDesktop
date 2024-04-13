@@ -1,5 +1,7 @@
 package view
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.animateScrollBy
@@ -15,11 +17,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import api.OpenAiStreamingApiCaller
 import api.model.ChatMessage
 import kotlinx.coroutines.launch
 import platformSpecific.ScrollbarImpl
+import storage.Storage
 import theme.AppColor
 
 @Composable
@@ -28,6 +32,7 @@ fun MainScreen() {
     val listState = rememberLazyListState()
 
     val apiCaller = remember { OpenAiStreamingApiCaller() }
+    val storage = remember { Storage() }
 
     var prompt by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
@@ -44,10 +49,12 @@ fun MainScreen() {
             prompt = ""
 
             apiCaller.getReply(localPrompt).collect {
-                response = it
+                response = it.contents
 
                 scope.launch {
                     listState.animateScrollBy(999f) // Scroll to the end of the list to match the streaming.
+
+                    storage.updateConversation(it)
                 }
             }
         }
@@ -67,38 +74,90 @@ fun MainScreen() {
             modifier = Modifier.weight(1f),
             color = Color.Transparent,
         ) {
-            Box(
-                contentAlignment = Alignment.TopEnd,
-            ) {
-                LazyColumn(
-                    modifier = Modifier.padding(end = 12.dp),
-                    verticalArrangement = Arrangement.Bottom,
-                    state = listState,
+            if (response.isEmpty()) {
+                var isHistoryExpanded by remember { mutableStateOf(false) }
+
+                Box(
+                    modifier = Modifier.fillMaxWidth()
+                        .background(AppColor.card())
+                        .clickable { isHistoryExpanded = !isHistoryExpanded }
+                        .padding(16.dp),
+                    contentAlignment = Alignment.CenterStart,
                 ) {
-                    items(response) {
-                        MessageView(message = it)
+                    Text("Previous conversations")
+                }
 
-                        Spacer(Modifier.height(12.dp))
-                    }
+                Spacer(Modifier.height(16.dp))
 
-                    if (response.isNotEmpty()) {
-                        item {
-                            Box(
-                                modifier = Modifier
-                                    .clickable { response = apiCaller.reset() }
-                                    .padding(16.dp),
+                AnimatedVisibility(isHistoryExpanded) {
+                    val cache by storage.cacheFlow.collectAsState()
+
+                    LazyColumn(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
+                    ) {
+                        items(cache) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
                             ) {
                                 Text(
-                                    text = "Reset conversation",
-                                    style = MaterialTheme.typography.button,
-                                    color = AppColor.onBackground(),
+                                    modifier = Modifier
+                                        .clickable {
+                                            apiCaller.setConversation(it)
+                                            response = it.contents
+                                        }
+                                        .padding(16.dp)
+                                        .weight(1f),
+                                    maxLines = 1,
+                                    text = it.title,
+                                    overflow = TextOverflow.Ellipsis,
+                                )
+
+                                Spacer(Modifier.width(8.dp))
+
+                                Text(
+                                    modifier = Modifier
+                                        .clickable { storage.deleteConversation(it.id) }
+                                        .padding(16.dp),
+                                    text = "Delete",
+                                    color = MaterialTheme.colors.error,
                                 )
                             }
                         }
                     }
                 }
+            } else {
+                Box(contentAlignment = Alignment.TopEnd) {
+                    LazyColumn(
+                        modifier = Modifier.padding(end = 12.dp),
+                        verticalArrangement = Arrangement.Bottom,
+                        state = listState,
+                    ) {
+                        items(response) {
+                            MessageView(message = it)
 
-                ScrollbarImpl(listState)
+                            Spacer(Modifier.height(12.dp))
+                        }
+
+                        if (response.isNotEmpty()) {
+                            item {
+                                Box(
+                                    modifier = Modifier
+                                        .clickable { response = apiCaller.reset().contents }
+                                        .padding(16.dp),
+                                ) {
+                                    Text(
+                                        text = "Reset conversation",
+                                        style = MaterialTheme.typography.button,
+                                        color = AppColor.onBackground(),
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    ScrollbarImpl(listState)
+                }
             }
         }
 
