@@ -20,7 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import api.OpenAiStreamingApiCaller
-import api.model.ChatMessage
+import api.model.Conversation
 import kotlinx.coroutines.launch
 import platformSpecific.ScrollbarImpl
 import storage.Storage
@@ -36,7 +36,7 @@ fun MainScreen() {
 
     var prompt by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
-    var response by remember { mutableStateOf(emptyList<ChatMessage>()) }
+    var response: Conversation? by remember { mutableStateOf(null) }
 
     fun onSubmit() {
         if (prompt.isBlank()) return
@@ -49,7 +49,7 @@ fun MainScreen() {
             prompt = ""
 
             apiCaller.getReply(localPrompt).collect {
-                response = it.contents
+                response = it
 
                 scope.launch {
                     listState.animateScrollBy(999f) // Scroll to the end of the list to match the streaming.
@@ -74,7 +74,7 @@ fun MainScreen() {
             modifier = Modifier.weight(1f),
             color = Color.Transparent,
         ) {
-            if (response.isEmpty()) {
+            if (response == null || response?.isEmpty == true) {
                 var isHistoryExpanded by remember { mutableStateOf(false) }
 
                 Box(
@@ -104,7 +104,7 @@ fun MainScreen() {
                                     modifier = Modifier
                                         .clickable {
                                             apiCaller.setConversation(it)
-                                            response = it.contents
+                                            response = it
                                         }
                                         .padding(16.dp)
                                         .weight(1f),
@@ -133,17 +133,17 @@ fun MainScreen() {
                         verticalArrangement = Arrangement.Bottom,
                         state = listState,
                     ) {
-                        items(response) {
+                        items(response?.contents.orEmpty()) {
                             MessageView(message = it)
 
                             Spacer(Modifier.height(12.dp))
                         }
 
-                        if (response.isNotEmpty()) {
+                        if (response?.isEmpty != true) {
                             item {
                                 Box(
                                     modifier = Modifier
-                                        .clickable { response = apiCaller.reset().contents }
+                                        .clickable { response = apiCaller.reset() }
                                         .padding(16.dp),
                                 ) {
                                     Text(

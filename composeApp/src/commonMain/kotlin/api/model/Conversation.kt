@@ -18,6 +18,9 @@ data class Conversation(
         contents[0].content
     }
 
+    // TODO: improve this after adding the persona chat role
+    val isEmpty = contents.size < 2
+
     fun add(message: ChatMessage): Conversation {
         return this.copy(contents = contents + message)
     }
