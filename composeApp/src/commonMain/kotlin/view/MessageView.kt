@@ -8,6 +8,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -21,6 +24,7 @@ import gptassistant.composeapp.generated.resources.Res
 import gptassistant.composeapp.generated.resources.copy
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
+import processAnnotations
 import theme.AppColor
 
 @OptIn(ExperimentalResourceApi::class)
@@ -42,9 +46,13 @@ fun MessageView(
     ) {
         Column(modifier = modifier.fillMaxWidth(0.95f).background(bgColor, RoundedCornerShape(8.dp))) {
             SelectionContainer {
+                val text by remember(message) {
+                    derivedStateOf { message.content.processAnnotations() }
+                }
+
                 Text(
                     modifier = Modifier.fillMaxWidth().padding(16.dp),
-                    text = message.content,
+                    text = text,
                     color = textColor,
                 )
             }
