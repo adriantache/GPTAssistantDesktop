@@ -12,8 +12,9 @@ private const val API_KEY_KEY = "API_KEY_KEY"
 private const val FORCE_DARK_MODE_KEY = "FORCE_DARK_MODE_KEY"
 private const val PERSONAS_KEY = "PERSONAS_KEY"
 
-class AppSettings private constructor() {
-    private val settings: Settings = Settings()
+class AppSettings private constructor(
+    val settings: Settings = Settings()
+) {
 
     var apiKey: String? = null
         get() = settings.getStringOrNull(API_KEY_KEY)
@@ -36,19 +37,6 @@ class AppSettings private constructor() {
     var personas: Map<String, Persona> = emptyMap()
         get() {
             val personasString = settings.getStringOrNull(PERSONAS_KEY) ?: return emptyMap()
-
-            // TODO: remove this legacy behaviour, or create a migration for it instead
-            val legacyList = try {
-                Json.decodeFromString<List<Persona>>(personasString)
-            } catch (e: Exception) {
-                null
-            }
-            if (legacyList != null) {
-                val map = legacyList.associateBy { it.name }
-                personas = map
-                return map
-            }
-
             return Json.decodeFromString<Map<String, Persona>>(personasString)
         }
         set(value) {

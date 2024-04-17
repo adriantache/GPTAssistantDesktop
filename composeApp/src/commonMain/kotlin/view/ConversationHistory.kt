@@ -15,6 +15,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import api.OpenAiStreamingApiCaller
 import api.model.Conversation
+import kotlinx.coroutines.launch
 import storage.Storage
 import theme.AppColor
 
@@ -24,6 +25,8 @@ fun ColumnScope.ConversationHistory(
     apiCaller: OpenAiStreamingApiCaller,
     onSetConversation: (Conversation) -> Unit,
 ) {
+    val scope = rememberCoroutineScope()
+
     var isHistoryExpanded by remember { mutableStateOf(false) }
 
     Box(
@@ -39,13 +42,13 @@ fun ColumnScope.ConversationHistory(
     Spacer(Modifier.height(16.dp))
 
     AnimatedVisibility(isHistoryExpanded) {
-        val cache by storage.cacheFlow.collectAsState()
+        val cache by storage.cacheFlow.collectAsState(emptyMap())
 
         LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
         ) {
-            items(cache) {
+            items(cache.values.toList()) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         modifier = Modifier
@@ -64,7 +67,7 @@ fun ColumnScope.ConversationHistory(
 
                     Text(
                         modifier = Modifier
-                            .clickable { storage.deleteConversation(it.id) }
+                            .clickable { scope.launch { storage.deleteConversation(it.id) } }
                             .padding(16.dp),
                         text = "Delete",
                         color = MaterialTheme.colors.error,

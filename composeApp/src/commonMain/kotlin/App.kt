@@ -3,6 +3,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import migration.MigrationProcessor
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import theme.AppColor
 import view.MainScreen
@@ -11,11 +12,14 @@ import view.MainScreen
 @Preview
 fun App() {
     MaterialTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = AppColor.background(),
-        ) {
-            MainScreen()
+        MigrationProcessor {
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = AppColor.background(),
+            ) {
+
+                MainScreen()
+            }
         }
     }
 }

@@ -21,7 +21,7 @@ fun MainScreen() {
     val listState = rememberLazyListState()
 
     val apiCaller = remember { OpenAiStreamingApiCaller() }
-    val storage = remember { Storage() }
+    val storage = remember { Storage.getInstance() }
 
     var prompt by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }

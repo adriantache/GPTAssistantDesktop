@@ -1,54 +1,49 @@
 package storage
 
 import api.model.Conversation
-import com.russhwolf.settings.Settings
-import com.russhwolf.settings.set
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.serialization.encodeToString
+import io.github.xxfast.kstore.KStore
+import io.github.xxfast.kstore.file.storeOf
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.serialization.json.Json
+import okio.Path.Companion.toPath
+import kotlin.collections.set
 
-private const val CONVERSATIONS_CACHE_KEY = "CONVERSATIONS_CACHE_KEY"
-
-class Storage(
+class Storage private constructor(
     // TODO: use better storage, maybe files?
-    private val storage: Settings = Settings(),
-    private val json: Json = Json {
-        encodeDefaults = true
-    },
 ) {
-    private var cache = emptyList<Conversation>()
-        get() {
-            val string = storage.getStringOrNull(CONVERSATIONS_CACHE_KEY) ?: return emptyList()
+    private val store: KStore<Map<String, Conversation>> by lazy { initStore() }
 
-            return json.decodeFromString<List<Conversation>>(string)
+    val cacheFlow by lazy { store.updates.filterNotNull() }
+
+    suspend fun updateConversation(conversation: Conversation) {
+        store.update {
+            val newMap = it?.toMutableMap() ?: mutableMapOf()
+
+            newMap.apply {
+                this[conversation.id] = conversation
+            }
         }
-        set(value) {
-            val string = json.encodeToString(value)
-
-            storage[CONVERSATIONS_CACHE_KEY] = string
-            _cacheFlow.value = value
-            field = value
-        }
-
-    private val _cacheFlow = MutableStateFlow(cache)
-    val cacheFlow: StateFlow<List<Conversation>> = _cacheFlow
-
-    fun updateConversation(conversation: Conversation) = runCatching {
-        if (cache.none { it.id == conversation.id }) {
-            cache = cache + conversation
-            return@runCatching
-        }
-
-        val newCache = cache.toMutableList()
-        newCache.replaceAll { if (it.id == conversation.id) conversation else it }
-
-        cache = newCache
     }
 
-    fun deleteConversation(id: String) {
-        val newCache = cache.toMutableList()
-        newCache.removeIf { it.id == id }
-        cache = newCache
+    suspend fun deleteConversation(id: String) {
+        store.update {
+            it?.toMutableMap()?.apply {
+                this.remove(id)
+            }
+        }
+    }
+
+    private fun initStore(): KStore<Map<String, Conversation>> {
+        return storeOf(
+            file = "conversations.json".toPath(),
+            //        file = "${providePath()}/conversations.json".toPath(),
+            json = Json { encodeDefaults = true },
+        )
+    }
+
+    companion object {
+        private val storage = Storage()
+
+        fun getInstance() = storage
     }
 }

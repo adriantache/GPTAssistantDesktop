@@ -11,9 +11,15 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        initContextProvider()
+
         setContent {
             App()
         }
+    }
+
+    private fun initContextProvider() {
+        ContextProvider.init(this)
     }
 }
 
