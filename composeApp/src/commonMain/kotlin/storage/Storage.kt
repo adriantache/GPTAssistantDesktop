@@ -1,44 +1,61 @@
 package storage
 
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.stringPreferencesKey
 import api.model.Conversation
-import io.github.xxfast.kstore.KStore
-import io.github.xxfast.kstore.file.storeOf
-import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.map
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import okio.Path.Companion.toPath
+import platformSpecific.dataStorePreferences
 import kotlin.collections.set
 
-class Storage private constructor(
-    // TODO: use better storage, maybe files?
-) {
-    private val store: KStore<Map<String, Conversation>> by lazy { initStore() }
+private val conversationsKey = stringPreferencesKey("CONVERSATIONS_KEY")
 
-    val cacheFlow by lazy { store.updates.filterNotNull() }
+class Storage private constructor(
+    private val store: DataStore<Preferences> = dataStorePreferences(),
+    private val json: Json = Json { encodeDefaults = true },
+) {
+    val cacheFlow by lazy {
+        store.data.map {
+            it.decodeConversationJson() ?: emptyMap()
+        }
+    }
 
     suspend fun updateConversation(conversation: Conversation) {
-        store.update {
-            val newMap = it?.toMutableMap() ?: mutableMapOf()
+        store.updateData { preferences: Preferences ->
+            val map = preferences.decodeConversationJson()
+            val newMap = map?.toMutableMap() ?: mutableMapOf()
 
-            newMap.apply {
-                this[conversation.id] = conversation
+            newMap[conversation.id] = conversation
+
+            val json = json.encodeToString(newMap)
+
+            preferences.toMutablePreferences().apply {
+                this[conversationsKey] = json
             }
         }
     }
 
     suspend fun deleteConversation(id: String) {
-        store.update {
-            it?.toMutableMap()?.apply {
-                this.remove(id)
+        store.updateData { preferences: Preferences ->
+            val map = preferences.decodeConversationJson()
+            val newMap = map?.toMutableMap() ?: mutableMapOf()
+
+            newMap.remove(id)
+
+            val json = json.encodeToString(newMap)
+
+            preferences.toMutablePreferences().apply {
+                this[conversationsKey] = json
             }
         }
     }
 
-    private fun initStore(): KStore<Map<String, Conversation>> {
-        return storeOf(
-            file = "conversations.json".toPath(),
-            //        file = "${providePath()}/conversations.json".toPath(),
-            json = Json { encodeDefaults = true },
-        )
+    private fun Preferences.decodeConversationJson(): Map<String, Conversation>? {
+        val string = this[conversationsKey] ?: return null
+
+        return json.decodeFromString<Map<String, Conversation>>(string)
     }
 
     companion object {

@@ -51,6 +51,7 @@ private suspend fun runMigration(
     settings: Settings,
     json: Json = Json { encodeDefaults = true },
 ) {
+    // TODO: remove legacy data
     when (migration) {
         1 -> migratePersonas(settings, json)
         2 -> migrateConversationHistory(settings, json)
