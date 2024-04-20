@@ -1,7 +1,7 @@
 package view
 
 import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.animateScrollBy
+import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -12,6 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import api.OpenAiStreamingApiCaller
 import api.model.Conversation
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import storage.Storage
 
@@ -45,7 +47,13 @@ fun MainScreen() {
                 }
             }
 
-            conversation?.let { storage.updateConversation(it) }
+            conversation?.let {
+                // Exiting the conversation too quickly results in the coroutine being canceled,
+                // so the conversation isn't saved properly.
+                CoroutineScope(Dispatchers.Default).launch {
+                    storage.updateConversation(it)
+                }
+            }
         }
     }
 
