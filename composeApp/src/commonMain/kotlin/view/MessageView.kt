@@ -58,7 +58,7 @@ fun MessageView(
             }
 
             if (!isUserMessage) {
-                Spacer(Modifier.height(4.dp))
+                Spacer(Modifier.height(16.dp))
 
                 Row(
                     modifier = Modifier

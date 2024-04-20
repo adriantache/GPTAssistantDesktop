@@ -43,7 +43,7 @@ fun MainScreen() {
                 conversation = it
 
                 scope.launch {
-                    listState.animateScrollBy(999f) // Scroll to the end of the list to match the streaming.
+                    listState.scrollBy(999f) // Scroll to the end of the list to match the streaming.
                 }
             }
 

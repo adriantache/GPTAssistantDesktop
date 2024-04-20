@@ -29,7 +29,10 @@ fun ConversationView(
             verticalArrangement = Arrangement.Bottom,
             state = listState,
         ) {
-            itemsIndexed(conversation.contents) { index, message ->
+            itemsIndexed(
+                items = conversation.contents,
+                key = { _, message -> message.id },
+            ) { index, message ->
                 MessageView(message = message)
 
                 if (index != conversation.contents.size - 1) {
