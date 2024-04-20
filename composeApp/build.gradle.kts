@@ -41,9 +41,7 @@ kotlin {
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlin.serialization)
-            implementation(libs.media.kamel)
             implementation(libs.multiplatform.settings)
-            implementation(libs.bundles.kstore)
             implementation(libs.androidx.datastore.preferences.core)
         }
         desktopMain.dependencies {

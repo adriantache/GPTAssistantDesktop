@@ -12,6 +12,7 @@ private const val API_KEY_KEY = "API_KEY_KEY"
 private const val FORCE_DARK_MODE_KEY = "FORCE_DARK_MODE_KEY"
 private const val PERSONAS_KEY = "PERSONAS_KEY"
 
+// TODO: migrate to DataStore and then eventually remove Settings dependency
 class AppSettings private constructor(
     val settings: Settings = Settings()
 ) {
