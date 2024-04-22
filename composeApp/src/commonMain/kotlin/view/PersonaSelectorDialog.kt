@@ -29,7 +29,7 @@ fun PersonaSelectorDialog(
 ) {
     var showAddPersonaDialog: Persona? by remember { mutableStateOf(null) }
 
-    val personas by appSettings.personasFlow.collectAsState()
+    val personas by appSettings.personasFlow.collectAsState(emptyMap())
 
     Dialog(onDismissRequest = onDismiss) {
         LazyColumn(

@@ -13,6 +13,7 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
@@ -62,7 +63,7 @@ private class ApiConfig(
     }
 
     suspend fun getReply(conversation: List<ChatMessage>): String {
-        val apiKey = settings.apiKey
+        val apiKey = settings.apiKeyFlow.firstOrNull()
             ?: return "ERROR: Api key should be present!"
 
         val url = BASE_URL + COMPLETIONS_ENDPOINT

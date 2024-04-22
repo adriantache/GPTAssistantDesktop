@@ -30,6 +30,8 @@ fun SettingsRow(
     var areSettingsOpen by remember { mutableStateOf(false) }
     var showPersonasDialog by remember { mutableStateOf(false) }
 
+    val forceDarkMode by settings.forceDarkModeFlow.collectAsState(false)
+
     Row(
         modifier = Modifier.fillMaxWidth()
             .height(48.dp)
@@ -63,7 +65,7 @@ fun SettingsRow(
             Row {
                 Button(
                     onClick = {
-                        settings.forceDarkMode = !settings.forceDarkMode
+                        settings.setForceDarkMode(!forceDarkMode)
                         areSettingsOpen = false
                     },
                     colors = ButtonDefaults.buttonColors(
@@ -71,7 +73,7 @@ fun SettingsRow(
                         contentColor = AppColor.onUserMessage(),
                     )
                 ) {
-                    val label = if (settings.forceDarkMode) "Clear Dark Mode" else "Force Dark Mode"
+                    val label = if (forceDarkMode) "Clear Dark Mode" else "Force Dark Mode"
 
                     Text(label)
                 }
@@ -81,7 +83,7 @@ fun SettingsRow(
                 // TODO: extract this component or its colours and reuse it
                 Button(
                     onClick = {
-                        settings.apiKey = null
+                        settings.clearApiKey()
                         areSettingsOpen = false
                     },
                     colors = ButtonDefaults.buttonColors(

@@ -79,8 +79,9 @@ class OpenAiStreamingApiCaller(
             encodeDefaults = true
         }
 
-        fun getReply(conversation: List<ChatMessage>): Flow<String> {
-            val apiKey = settings.apiKey ?: return flowOf("ERROR: Api key should be present!")
+        suspend fun getReply(conversation: List<ChatMessage>): Flow<String> {
+            val apiKey = settings.apiKeyFlow.firstOrNull()
+                ?: return flowOf("ERROR: Api key should be present!")
 
             val url = BASE_URL + COMPLETIONS_ENDPOINT
 

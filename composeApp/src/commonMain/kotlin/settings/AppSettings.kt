@@ -1,60 +1,68 @@
 package settings
 
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
 import api.model.Persona
-import com.russhwolf.settings.Settings
-import com.russhwolf.settings.set
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import dataStore.DataStoreHelper
+import dataStore.decodeJson
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-private const val API_KEY_KEY = "API_KEY_KEY"
-private const val FORCE_DARK_MODE_KEY = "FORCE_DARK_MODE_KEY"
-private const val PERSONAS_KEY = "PERSONAS_KEY"
+private val API_KEY_KEY = stringPreferencesKey("API_KEY_KEY")
+private val FORCE_DARK_MODE_KEY = booleanPreferencesKey("FORCE_DARK_MODE_KEY")
+private val PERSONAS_KEY = stringPreferencesKey("PERSONAS_KEY")
 
-// TODO: migrate to DataStore and then eventually remove Settings dependency
 class AppSettings private constructor(
-    val settings: Settings = Settings()
+    private val store: DataStore<Preferences> = DataStoreHelper.getInstance(),
+    private val json: Json = Json { encodeDefaults = true },
+    private val scope: CoroutineScope = CoroutineScope(Dispatchers.IO), // No need to link this to UI lifecycle.
 ) {
-
-    var apiKey: String? = null
-        get() = settings.getStringOrNull(API_KEY_KEY)
-        set(value) {
-            settings[API_KEY_KEY] = value
-            _apiKeyFlow.value = value
-            field = value
-        }
-
-    var forceDarkMode: Boolean = false
-        get() = settings.getBoolean(FORCE_DARK_MODE_KEY, false)
-        set(value) {
-            settings[FORCE_DARK_MODE_KEY] = value
-            _forceDarkModeFlow.value = value
-            field = value
-        }
-
     var selectedPersona: Persona? = null
 
-    var personas: Map<String, Persona> = emptyMap()
-        get() {
-            val personasString = settings.getStringOrNull(PERSONAS_KEY) ?: return emptyMap()
-            return Json.decodeFromString<Map<String, Persona>>(personasString)
+    val apiKeyFlow = store.data.map { preferences ->
+        preferences[API_KEY_KEY]
+    }
+
+    val forceDarkModeFlow = store.data.map { preferences ->
+        preferences[FORCE_DARK_MODE_KEY] ?: false
+    }
+
+    val personasFlow = store.data.map { preferences ->
+        preferences.decodeJson<Map<String, Persona>>(key = PERSONAS_KEY, json = json) ?: emptyMap()
+    }
+
+    fun setApiKey(apiKey: String) = scope.launch {
+        store.edit {
+            it[API_KEY_KEY] = apiKey
         }
-        set(value) {
-            val json = Json.encodeToString(value)
-            settings[PERSONAS_KEY] = json
-            _personasFlow.value = value
-            field = value
+    }
+
+    fun clearApiKey() = scope.launch {
+        store.edit {
+            it.remove(API_KEY_KEY)
         }
+    }
 
-    private val _apiKeyFlow = MutableStateFlow(apiKey)
-    val apiKeyFlow: StateFlow<String?> = _apiKeyFlow
+    fun setForceDarkMode(forceDarkMode: Boolean) = scope.launch {
+        store.edit {
+            it[FORCE_DARK_MODE_KEY] = forceDarkMode
+        }
+    }
 
-    private val _forceDarkModeFlow = MutableStateFlow(forceDarkMode)
-    val forceDarkModeFlow: StateFlow<Boolean> = _forceDarkModeFlow
+    fun setPersonas(personas: Map<String, Persona>) = scope.launch {
+        val personasJson = json.encodeToString(personas)
 
-    private val _personasFlow = MutableStateFlow(personas)
-    val personasFlow: StateFlow<Map<String, Persona>> = _personasFlow
+        store.edit {
+            it[PERSONAS_KEY] = personasJson
+        }
+    }
 
     companion object {
         private val INSTANCE = AppSettings()

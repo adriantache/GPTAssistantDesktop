@@ -12,11 +12,14 @@ import androidx.compose.ui.unit.dp
 import settings.AppSettings
 import theme.AppColor
 
+// Used because flow collecting requires a non-normal initial value and we can't use null here.
+private const val DUMMY_VALUE = "DUMMY_VALUE"
+
 @Composable
 fun ApiKeyCheck(
     settings: AppSettings = AppSettings.getInstance(),
 ) {
-    if (settings.apiKeyFlow.collectAsState().value.isNullOrBlank()) {
+    if (settings.apiKeyFlow.collectAsState(DUMMY_VALUE).value.isNullOrBlank()) {
         CardColumn(
             modifier = Modifier.fillMaxSize(),
         ) {
@@ -40,7 +43,7 @@ fun ApiKeyCheck(
                         onClick = {
                             if (apiKey.isBlank()) return@TextButton
 
-                            settings.apiKey = apiKey
+                            settings.setApiKey(apiKey)
                         },
                     ) {
                         Text(

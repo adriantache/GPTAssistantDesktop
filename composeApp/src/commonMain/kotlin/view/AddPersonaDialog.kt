@@ -23,6 +23,8 @@ fun AddPersonaDialog(
     appSettings: AppSettings,
     onDismiss: () -> Unit,
 ) {
+    val personasFlow by appSettings.personasFlow.collectAsState(emptyMap())
+
     Dialog(onDismissRequest = onDismiss) {
         var personaName by remember { mutableStateOf(persona.name) }
         var personaInstructions by remember { mutableStateOf(persona.instructions) }
@@ -78,14 +80,14 @@ fun AddPersonaDialog(
 
             Button(
                 onClick = {
-                    val personas = appSettings.personas.toMutableMap()
-                    
+                    val personas = personasFlow.toMutableMap()
+
                     personas[personaName] = Persona(
                         name = personaName,
                         instructions = personaInstructions,
                     )
-                    appSettings.personas = personas
 
+                    appSettings.setPersonas(personas)
                     onDismiss()
                 },
                 colors = ButtonDefaults.buttonColors(

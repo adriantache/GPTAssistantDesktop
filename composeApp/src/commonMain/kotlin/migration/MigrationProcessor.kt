@@ -7,11 +7,13 @@ import com.russhwolf.settings.Settings
 import com.russhwolf.settings.set
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import settings.AppSettings
 import storage.Storage
 
 private const val MIGRATIONS_KEY = "MIGRATIONS_KEY"
-private const val EXPECTED_MIGRATION = 2
+private const val EXPECTED_MIGRATION = 3
 
+// TODO: remove com.russhwolf.settings dependency in version 4 of migrations and remove all existing migration code
 @Composable
 fun MigrationProcessor(content: @Composable () -> Unit) {
     var showContent by remember { mutableStateOf(false) }
@@ -27,7 +29,7 @@ fun MigrationProcessor(content: @Composable () -> Unit) {
     }
 }
 
-private suspend fun runMigrations(
+private fun runMigrations(
     settings: Settings = Settings(),
     onMigrationsDone: () -> Unit,
 ) {
@@ -46,7 +48,7 @@ private suspend fun runMigrations(
     onMigrationsDone()
 }
 
-private suspend fun runMigration(
+private fun runMigration(
     migration: Int,
     settings: Settings,
     json: Json = Json { encodeDefaults = true },
@@ -55,39 +57,70 @@ private suspend fun runMigration(
     when (migration) {
         1 -> migratePersonas(settings, json)
         2 -> migrateConversationHistory(settings, json)
+        3 -> migrateToDataStore(settings, json)
     }
+}
+
+fun migrateToDataStore(
+    settings: Settings,
+    json: Json,
+    appSettings: AppSettings = AppSettings.getInstance(),
+    storage: Storage = Storage.getInstance(),
+) {
+    settings.getStringOrNull("API_KEY_KEY")?.let {
+        appSettings.setApiKey(it)
+    }
+
+    settings.getBooleanOrNull("FORCE_DARK_MODE_KEY")?.let {
+        appSettings.setForceDarkMode(it)
+    }
+
+    settings.getStringOrNull("PERSONAS_KEY")?.let {
+        val personas = try {
+            json.decodeFromString<Map<String, Persona>>(it)
+        } catch (_: IllegalArgumentException) {
+            null
+        } ?: return@let
+        appSettings.setPersonas(personas)
+    }
+
+    settings.getStringOrNull("CONVERSATIONS_CACHE_KEY")?.let {
+        val conversations = try {
+            json.decodeFromString<Map<String, Conversation>>(it)
+        } catch (_: IllegalArgumentException) {
+            null
+        } ?: return@let
+
+        conversations.forEach { entry ->
+            storage.updateConversation(entry.value)
+        }
+    }
+
+    settings.clear()
 }
 
 fun migratePersonas(
     settings: Settings,
     json: Json
-) {
-    @Suppress("LocalVariableName")
-    val PERSONAS_KEY = "PERSONAS_KEY"
-    val personasString = settings.getStringOrNull(PERSONAS_KEY) ?: return
+) = runCatching { // Not critical if this fails.
+    val personasString = settings.getStringOrNull("PERSONAS_KEY") ?: return@runCatching
 
-    try {
-        val personas = json.decodeFromString<List<Persona>>(personasString)
-        val personasMap = personas.associateBy { it.name }
+    val personas = json.decodeFromString<List<Persona>>(personasString)
+    val personasMap = personas.associateBy { it.name }
 
-        settings[PERSONAS_KEY] = json.encodeToString(personasMap)
-    } catch (_: IllegalArgumentException) {
-    }
+    settings["PERSONAS_KEY"] = json.encodeToString(personasMap)
 }
 
-suspend fun migrateConversationHistory(
+fun migrateConversationHistory(
     settings: Settings,
     json: Json,
     storage: Storage = Storage.getInstance(),
-) {
-    val string = settings.getStringOrNull("CONVERSATIONS_CACHE_KEY") ?: return
+) = runCatching { // Not critical if this fails.
+    val string = settings.getStringOrNull("CONVERSATIONS_CACHE_KEY") ?: return@runCatching
 
-    try {
-        val conversations = json.decodeFromString<List<Conversation>>(string)
+    val conversations = json.decodeFromString<List<Conversation>>(string)
 
-        conversations.forEach {
-            storage.updateConversation(it)
-        }
-    } catch (_: IllegalArgumentException) {
+    conversations.forEach {
+        storage.updateConversation(it)
     }
 }

@@ -4,27 +4,30 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import api.model.Conversation
+import dataStore.DataStoreHelper
+import dataStore.decodeJson
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import platformSpecific.dataStorePreferences
 import kotlin.collections.set
 
 private val conversationsKey = stringPreferencesKey("CONVERSATIONS_KEY")
 
 class Storage private constructor(
-    private val store: DataStore<Preferences> = dataStorePreferences(),
+    private val store: DataStore<Preferences> = DataStoreHelper.getInstance(),
     private val json: Json = Json { encodeDefaults = true },
+    private val scope: CoroutineScope = CoroutineScope(Dispatchers.IO), // No need to link this to UI lifecycle.
 ) {
-    val cacheFlow by lazy {
-        store.data.map {
-            it.decodeConversationJson() ?: emptyMap()
-        }
+    val cacheFlow = store.data.map { preferences ->
+        preferences.getConversationCache() ?: emptyMap()
     }
 
-    suspend fun updateConversation(conversation: Conversation) {
+    fun updateConversation(conversation: Conversation) = scope.launch {
         store.updateData { preferences: Preferences ->
-            val map = preferences.decodeConversationJson()
+            val map = preferences.getConversationCache()
             val newMap = map?.toMutableMap() ?: mutableMapOf()
 
             newMap[conversation.id] = conversation
@@ -37,9 +40,9 @@ class Storage private constructor(
         }
     }
 
-    suspend fun deleteConversation(id: String) {
+    fun deleteConversation(id: String) = scope.launch {
         store.updateData { preferences: Preferences ->
-            val map = preferences.decodeConversationJson()
+            val map = preferences.getConversationCache()
             val newMap = map?.toMutableMap() ?: mutableMapOf()
 
             newMap.remove(id)
@@ -52,10 +55,11 @@ class Storage private constructor(
         }
     }
 
-    private fun Preferences.decodeConversationJson(): Map<String, Conversation>? {
-        val string = this[conversationsKey] ?: return null
-
-        return json.decodeFromString<Map<String, Conversation>>(string)
+    private fun Preferences.getConversationCache(): Map<String, Conversation>? {
+        return this.decodeJson<Map<String, Conversation>>(
+            key = conversationsKey,
+            json = json,
+        )
     }
 
     companion object {

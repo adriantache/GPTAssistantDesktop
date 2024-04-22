@@ -14,7 +14,7 @@ object AppColor {
     private fun isDarkTheme(
         settings: AppSettings = AppSettings.getInstance(),
     ): Boolean {
-        return settings.forceDarkModeFlow.collectAsState().value || isSystemInDarkTheme()
+        return settings.forceDarkModeFlow.collectAsState(null).value == true || isSystemInDarkTheme()
     }
 
     @Composable
