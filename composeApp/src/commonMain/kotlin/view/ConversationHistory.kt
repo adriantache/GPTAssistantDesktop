@@ -36,7 +36,10 @@ fun ColumnScope.ConversationHistory(
             .padding(16.dp),
         contentAlignment = Alignment.CenterStart,
     ) {
-        Text("Previous conversations")
+        Text(
+            text = "Previous conversations",
+            color = AppColor.onCard(),
+        )
     }
 
     Spacer(Modifier.height(16.dp))
@@ -45,6 +48,7 @@ fun ColumnScope.ConversationHistory(
         val cache by storage.cacheFlow.collectAsState(emptyMap())
 
         LazyColumn(
+            modifier = Modifier.background(AppColor.card()),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
         ) {
@@ -61,6 +65,7 @@ fun ColumnScope.ConversationHistory(
                         maxLines = 1,
                         text = it.title,
                         overflow = TextOverflow.Ellipsis,
+                        color = AppColor.onCard(),
                     )
 
                     Spacer(Modifier.width(8.dp))
