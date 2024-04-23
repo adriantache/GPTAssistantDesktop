@@ -3,7 +3,9 @@ package view
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
@@ -35,7 +37,8 @@ fun SettingsRow(
     Row(
         modifier = Modifier.fillMaxWidth()
             .height(48.dp)
-            .padding(vertical = 8.dp),
+            .padding(vertical = 8.dp)
+            .horizontalScroll(rememberScrollState()),
         horizontalArrangement = Arrangement.End,
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -63,6 +66,8 @@ fun SettingsRow(
 
         AnimatedVisibility(areSettingsOpen) {
             Row {
+                Spacer(Modifier.width(16.dp))
+
                 Button(
                     onClick = {
                         settings.setForceDarkMode(!forceDarkMode)
