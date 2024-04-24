@@ -1,1 +1,1 @@
-GPT Assistant rewrite to target both Android and Desktop targets using Kotlin Multiplatform with ComposeUi (with Ktor for network access, Kotlin Serialization for JSON manipulation and interop with Ktor, Multiplatform Settings for storing the API key).
+GPT Assistant rewrite to target both Android and Desktop targets using Kotlin Multiplatform with ComposeUi (with Ktor for network access, Kotlin Serialization for JSON manipulation and interop with Ktor, DataStore for storing the API key, settings and local message cache).
