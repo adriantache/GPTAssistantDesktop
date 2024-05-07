@@ -45,6 +45,7 @@ fun SettingsRow(
         Spacer(Modifier.width(8.dp))
 
         Button(
+            modifier = Modifier.requiredHeight(36.dp),
             onClick = { showPersonasDialog = true },
             colors = AppColor.buttonColors(),
         ) {
