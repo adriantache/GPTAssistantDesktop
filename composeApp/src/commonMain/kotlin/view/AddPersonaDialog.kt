@@ -10,7 +10,6 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import api.model.Persona
@@ -47,16 +46,7 @@ fun AddPersonaDialog(
                 placeholder = {
                     Text("Persona name")
                 },
-                colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = Color.Transparent,
-                    textColor = AppColor.onCard(),
-                    placeholderColor = AppColor.onCard(),
-                    focusedLabelColor = AppColor.onCard(),
-                    focusedIndicatorColor = AppColor.onCard(),
-                    unfocusedLabelColor = AppColor.onCard().copy(0.7f),
-                    unfocusedIndicatorColor = AppColor.onCard().copy(0.7f),
-                    cursorColor = AppColor.onCard(),
-                )
+                colors = AppColor.textFieldColors(),
             )
 
             TextField(
@@ -66,16 +56,7 @@ fun AddPersonaDialog(
                 placeholder = {
                     Text("Persona instructions")
                 },
-                colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = Color.Transparent,
-                    textColor = AppColor.onCard(),
-                    placeholderColor = AppColor.onCard(),
-                    focusedLabelColor = AppColor.onCard(),
-                    focusedIndicatorColor = AppColor.onCard(),
-                    unfocusedLabelColor = AppColor.onCard().copy(0.7f),
-                    unfocusedIndicatorColor = AppColor.onCard().copy(0.7f),
-                    cursorColor = AppColor.onCard(),
-                ),
+                colors = AppColor.textFieldColors(),
             )
 
             Button(

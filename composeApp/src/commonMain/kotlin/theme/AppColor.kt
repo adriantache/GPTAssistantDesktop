@@ -2,6 +2,7 @@ package theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.graphics.Color
@@ -45,5 +46,17 @@ object AppColor {
     fun buttonColors() = ButtonDefaults.buttonColors(
         backgroundColor = userMessage(),
         contentColor = onUserMessage(),
+    )
+
+    @Composable
+    fun textFieldColors() = TextFieldDefaults.textFieldColors(
+        backgroundColor = Color.Transparent,
+        textColor = onCard(),
+        placeholderColor = onCard(),
+        focusedLabelColor = onCard(),
+        focusedIndicatorColor = onCard(),
+        unfocusedLabelColor = onCard().copy(0.7f),
+        unfocusedIndicatorColor = onCard().copy(0.7f),
+        cursorColor = onCard(),
     )
 }

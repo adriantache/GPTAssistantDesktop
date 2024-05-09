@@ -1,4 +1,3 @@
-
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
@@ -102,7 +101,11 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "GPT Assistant"
-            packageVersion = "1.0.4"
+            packageVersion = "1.0.22"
+
+            // Required by the file we build with DataStore, or something.
+            // Full explanation here: https://stackoverflow.com/a/61758667/9038481
+            modules("jdk.unsupported")
         }
     }
 }

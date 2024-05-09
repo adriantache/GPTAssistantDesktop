@@ -10,14 +10,7 @@ actual fun dataStorePreferences(): DataStore<Preferences> {
     val appDirs: AppDirs = AppDirsFactory.getInstance()
     val path = appDirs.getUserDataDir("GPTAssistant", null, null)
 
-    return createDataStoreWithDefaults {
-        File(path, "datastore/$it").path
-    }
-
-//    val appDirs: AppDirs = AppDirsFactory.getInstance()
-//    val path = appDirs.getUserDataDir("GPTAssistant", null, null)
-//
-//    return createDataStoreWithDefaults(
-//        path = path + "\\" + SETTINGS_PREFERENCES,
-//    )
+    return createDataStoreWithDefaults(
+        produceFile = { File("$path//$it") },
+    )
 }

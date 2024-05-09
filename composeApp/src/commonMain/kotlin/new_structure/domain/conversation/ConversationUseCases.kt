@@ -11,7 +11,7 @@ import new_structure.domain.conversation.entity.Conversation
 import new_structure.domain.conversation.entity.Message
 import new_structure.domain.conversation.entity.Role
 import new_structure.domain.conversation.event.ConversationEvent
-import new_structure.domain.conversation.event.ConversationEvent.*
+import new_structure.domain.conversation.event.ConversationEvent.CopyToClipboard
 import new_structure.domain.conversation.state.ConversationState
 import new_structure.domain.conversation.state.ConversationState.Init
 import new_structure.domain.conversation.state.ConversationState.OpenConversation

@@ -8,7 +8,7 @@ import androidx.datastore.preferences.core.Preferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import okio.Path.Companion.toPath
+import java.io.File
 
 expect fun dataStorePreferences(): DataStore<Preferences>
 
@@ -18,12 +18,12 @@ internal fun createDataStoreWithDefaults(
     corruptionHandler: ReplaceFileCorruptionHandler<Preferences>? = null,
     coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob()),
     migrations: List<DataMigration<Preferences>> = emptyList(),
-    path: (fileName: String) -> String,
+    produceFile: (fileName: String) -> File,
 ): DataStore<Preferences> {
-    return PreferenceDataStoreFactory.createWithPath(
+    return PreferenceDataStoreFactory.create(
         corruptionHandler = corruptionHandler,
-        scope = coroutineScope,
         migrations = migrations,
-        produceFile = { path(PREFERENCES_FILE).toPath() },
+        scope = coroutineScope,
+        produceFile = { produceFile(PREFERENCES_FILE) }
     )
 }

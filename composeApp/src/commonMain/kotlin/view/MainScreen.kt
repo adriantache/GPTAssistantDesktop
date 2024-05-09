@@ -63,8 +63,6 @@ fun MainScreen() {
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        ApiKeyCheck()
-
         SettingsRow(apiCaller)
 
         Column(
@@ -99,4 +97,6 @@ fun MainScreen() {
             )
         }
     }
+
+    ApiKeyCheck()
 }

@@ -9,8 +9,8 @@ actual fun dataStorePreferences(): DataStore<Preferences> {
     val context = requireNotNull(ContextProvider.context.get())
 
     return createDataStoreWithDefaults(
-        path = { fileName ->
-            File(context.filesDir, "datastore/$fileName").path
+        produceFile = { fileName ->
+            File(context.filesDir, "datastore/$fileName")
         },
     )
 }
