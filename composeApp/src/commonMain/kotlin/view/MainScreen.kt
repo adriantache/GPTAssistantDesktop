@@ -15,6 +15,7 @@ import api.model.Conversation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import platformSpecific.BackHandlerHelper
 import storage.Storage
 
 @Composable
@@ -28,6 +29,26 @@ fun MainScreen() {
     var prompt by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
     var conversation: Conversation? by remember { mutableStateOf(null) }
+
+    fun saveConversation() {
+        conversation?.let {
+            // Exiting the conversation too quickly results in the coroutine being canceled,
+            // so the conversation isn't saved properly.
+            CoroutineScope(Dispatchers.Default).launch {
+                storage.updateConversation(it)
+            }
+        }
+    }
+
+    fun onResetConversation() {
+        saveConversation()
+
+        conversation = apiCaller.reset()
+    }
+
+    BackHandlerHelper {
+        onResetConversation()
+    }
 
     fun onSubmit() {
         if (prompt.isBlank()) return
@@ -47,13 +68,7 @@ fun MainScreen() {
                 }
             }
 
-            conversation?.let {
-                // Exiting the conversation too quickly results in the coroutine being canceled,
-                // so the conversation isn't saved properly.
-                CoroutineScope(Dispatchers.Default).launch {
-                    storage.updateConversation(it)
-                }
-            }
+            saveConversation()
         }
     }
 
@@ -81,7 +96,7 @@ fun MainScreen() {
                 ConversationView(
                     conversation = conversation,
                     listState = listState,
-                    onResetConversation = { conversation = apiCaller.reset() },
+                    onResetConversation = ::onResetConversation,
                 )
             }
         }
