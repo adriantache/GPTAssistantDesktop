@@ -7,6 +7,8 @@ plugins {
     alias(libs.plugins.kotlinxSerialization)
 }
 
+val composeCompilerVersion = "1.5.14"
+
 kotlin {
     androidTarget {
         compilations.all {
@@ -27,6 +29,8 @@ kotlin {
             implementation(libs.ktor.client.okhttp)
             implementation(libs.ktor.client.android)
             implementation(libs.kotlinx.coroutines.android)
+            implementation(libs.kotlin.test.junit)
+
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -86,13 +90,13 @@ android {
         debugImplementation(libs.compose.ui.tooling)
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.12"
+        kotlinCompilerExtensionVersion = composeCompilerVersion
     }
 }
 
 compose.desktop {
     compose {
-        kotlinCompilerPlugin.set("androidx.compose.compiler:compiler:1.5.10")
+        kotlinCompilerPlugin.set("androidx.compose.compiler:compiler:$composeCompilerVersion")
     }
 
     application {
@@ -101,7 +105,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "GPT Assistant"
-            packageVersion = "1.0.22"
+            packageVersion = "1.0.23"
 
             // Required by the file we build with DataStore, or something.
             // Full explanation here: https://stackoverflow.com/a/61758667/9038481
