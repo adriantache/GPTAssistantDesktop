@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import java.util.*
 
+// TODO: modify this to support vision input: https://platform.openai.com/docs/guides/vision
 @Serializable
 data class ChatMessage(
     val content: String,
