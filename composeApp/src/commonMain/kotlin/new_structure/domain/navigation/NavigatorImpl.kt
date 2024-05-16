@@ -6,11 +6,14 @@ import new_structure.domain.navigation.model.Destination
 import new_structure.domain.navigation.model.Destination.Home
 import java.util.*
 
-class NavigatorImpl : Navigator {
+object NavigatorImpl : Navigator {
     private val destinations: LinkedList<Destination> = LinkedList<Destination>().apply { add(Home) }
 
-    private val _currentDestination: MutableStateFlow<Destination> = MutableStateFlow(destinations.first())
-    val currentDestination: StateFlow<Destination> = _currentDestination
+    private val _currentDestination: MutableStateFlow<Destination> = MutableStateFlow(destinations.last())
+    override val currentDestination: StateFlow<Destination> = _currentDestination
+
+    override val canNavigateBack: Boolean
+        get() = destinations.isNotEmpty()
 
     override fun navigateTo(destination: Destination) {
         // Don't allow navigating multiple times to the same destination. Should probably remove entire subgraph
@@ -24,14 +27,14 @@ class NavigatorImpl : Navigator {
         updateCurrentDestination()
     }
 
-    override fun navigateBack(): Boolean {
-        if (destinations.isEmpty()) return false
+    override fun navigateBack() {
+        if (destinations.isEmpty()) return
 
         destinations.removeLast()
-        return true
+        updateCurrentDestination()
     }
 
     private fun updateCurrentDestination() {
-        _currentDestination.value = destinations.first()
+        _currentDestination.value = destinations.last()
     }
 }
