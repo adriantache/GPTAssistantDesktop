@@ -7,6 +7,7 @@ sealed interface ConversationState {
 
     data class OpenConversation(
         val conversation: ConversationUi,
+        val isLoading: Boolean,
         val onMessageInput: (String) -> Unit,
         val onSubmitMessage: () -> Unit,
         val onResetConversation: () -> Unit,

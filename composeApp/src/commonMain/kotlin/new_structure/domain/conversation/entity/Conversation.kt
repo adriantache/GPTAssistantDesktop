@@ -1,12 +1,12 @@
 package new_structure.domain.conversation.entity
 
 import new_structure.domain.conversation.entity.Role.USER
-import java.util.UUID
+import java.util.*
 
 data class Conversation(
     val id: String = UUID.randomUUID().toString(),
     val currentInput: String = "",
-    val messages: List<Message> = emptyList(),
+    val messages: Map<String, Message> = emptyMap(), // Ok to use, as long as messages are added in the correct order.
     val persona: Persona? = null,
 ) {
     val canResetConversation = messages.isNotEmpty()
@@ -19,8 +19,9 @@ data class Conversation(
     fun onSubmit(): Conversation {
         if (!canSubmit) return this
 
-        val newMessages = messages.toMutableList().apply {
-            add(Message(content = currentInput, role = USER))
+        val message = Message(content = currentInput, role = USER)
+        val newMessages = messages.toMutableMap().apply {
+            this[message.id] = message
         }
 
         return this.copy(
@@ -30,10 +31,8 @@ data class Conversation(
     }
 
     fun onUpdateMessage(newMessage: Message): Conversation {
-        val newMessages = messages.toMutableList().apply {
-            replaceAll {
-                if (it.id == newMessage.id) newMessage else it
-            }
+        val newMessages = messages.toMutableMap().apply {
+            this[newMessage.id] = newMessage
         }
 
         return this.copy(messages = newMessages)

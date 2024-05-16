@@ -15,6 +15,7 @@ import api.model.Conversation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import new_structure.presentation.newConversation.view.PromptInput
 import platformSpecific.BackHandlerHelper
 import storage.Storage
 

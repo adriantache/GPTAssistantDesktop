@@ -7,14 +7,14 @@ import new_structure.domain.conversation.entity.Role
 
 fun Conversation.toData(): ConversationData {
     val messages = if (persona == null) {
-        messages
+        messages.values
     } else {
         val personaMessage = Message(
             content = persona.instructions,
             role = Role.USER,
         )
 
-        listOf(personaMessage) + messages
+        listOf(personaMessage) + messages.values
     }
 
     return ConversationData(

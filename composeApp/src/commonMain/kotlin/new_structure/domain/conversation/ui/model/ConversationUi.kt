@@ -6,4 +6,5 @@ data class ConversationUi(
     val persona: PersonaUi?,
     val canResetConversation: Boolean,
     val canSubmit: Boolean,
+    val input: String,
 )

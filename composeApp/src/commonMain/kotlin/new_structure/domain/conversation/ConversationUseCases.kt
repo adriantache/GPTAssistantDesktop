@@ -5,6 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import new_structure.data.ConversationRepositoryImpl
 import new_structure.domain.conversation.data.ConversationRepository
 import new_structure.domain.conversation.data.mapper.toData
 import new_structure.domain.conversation.entity.Conversation
@@ -18,10 +19,10 @@ import new_structure.domain.conversation.state.ConversationState.OpenConversatio
 import new_structure.domain.conversation.ui.mapper.toUi
 import new_structure.domain.util.model.Event
 
-class ConversationUseCases(
-    private val repository: ConversationRepository,
-    private val scope: CoroutineScope = CoroutineScope(Dispatchers.Default),
-) {
+object ConversationUseCases {
+    private val repository: ConversationRepository = ConversationRepositoryImpl()
+    private val scope: CoroutineScope = CoroutineScope(Dispatchers.Default)
+
     private var conversation = Conversation()
 
     private val _state: MutableStateFlow<ConversationState> = MutableStateFlow(Init(::onInit))
@@ -41,14 +42,15 @@ class ConversationUseCases(
 
     private fun onSubmitMessage() {
         conversation = conversation.onSubmit()
-        updateConversation()
 
         scope.launch {
-            val replyMessage = Message(content = "", role = Role.ASSISTANT)
+            var replyMessage = Message(content = "", role = Role.ASSISTANT)
+            conversation = conversation.onUpdateMessage(replyMessage)
+            updateConversation(isLoading = true)
 
             repository.getReplyStream(conversation.toData()).collect {
-                val newMessage = replyMessage.copy(content = replyMessage.content + it)
-                conversation = conversation.onUpdateMessage(newMessage)
+                replyMessage = replyMessage.copy(content = replyMessage.content + it)
+                conversation = conversation.onUpdateMessage(replyMessage)
                 updateConversation()
             }
         }
@@ -61,14 +63,15 @@ class ConversationUseCases(
     }
 
     private fun onCopyMessage(id: String) {
-        val message = conversation.messages.first { it.id == id }
+        val message = conversation.messages[id] ?: return
         _event.value = Event(CopyToClipboard(message.content))
     }
 
-    private fun updateConversation() {
+    private fun updateConversation(isLoading: Boolean = false) {
         updateState(
             OpenConversation(
                 conversation = conversation.toUi(),
+                isLoading = isLoading,
                 onMessageInput = ::onMessageInput,
                 onSubmitMessage = ::onSubmitMessage,
                 onResetConversation = ::onResetConversation,

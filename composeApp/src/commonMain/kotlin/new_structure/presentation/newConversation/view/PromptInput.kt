@@ -1,4 +1,4 @@
-package view
+package new_structure.presentation.newConversation.view
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*

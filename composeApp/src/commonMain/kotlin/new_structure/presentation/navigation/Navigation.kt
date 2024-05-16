@@ -7,6 +7,7 @@ import new_structure.domain.navigation.Navigator
 import new_structure.domain.navigation.NavigatorImpl
 import new_structure.domain.navigation.model.Destination.*
 import new_structure.presentation.home.stateMachine.HomeStateMachine
+import new_structure.presentation.newConversation.stateMachine.NewConversationStateMachine
 import platformSpecific.BackHandlerHelper
 
 @Composable
@@ -22,7 +23,7 @@ fun Navigation(
 
     when (currentDestination) {
         Home -> HomeStateMachine()
-        NewConversation -> TODO()
+        NewConversation -> NewConversationStateMachine()
         NewImageGeneration -> TODO()
         ConversationHistory -> TODO()
         Settings -> TODO()
