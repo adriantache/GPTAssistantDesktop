@@ -1,7 +1,6 @@
 package api
 
 import api.model.*
-import api.sse.readSse
 import io.ktor.client.*
 import io.ktor.client.plugins.*
 import io.ktor.http.*
@@ -11,6 +10,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import new_structure.data.sse.readSse
 import settings.AppSettings
 
 private const val BASE_URL = "https://api.openai.com"
@@ -86,29 +86,26 @@ class OpenAiStreamingApiCaller(
             val url = BASE_URL + COMPLETIONS_ENDPOINT
 
             val request = OpenAiRequest(messages = conversation, stream = true)
-
             val requestString = json.encodeToString(request)
 
             return client.readSse(
                 url = url,
-                headersProvider = {
-                    if (it == null) {
-                        mapOf(
-                            HttpHeaders.Authorization to "Bearer $apiKey",
-                            HttpHeaders.ContentType to "application/json",
-                        )
-                    } else emptyMap()
-                },
                 requestBody = requestString,
-            ).mapNotNull { sseEvent ->
-                val messageData = try {
-                    json.decodeFromString<OpenAiStreamingResponse>(sseEvent.data)
-                } catch (e: SerializationException) {
-                    null
-                }
+                headers = mapOf(
+                    HttpHeaders.Authorization to "Bearer $apiKey",
+                    HttpHeaders.ContentType to "application/json",
+                ),
+            )
+                .flowOn(Dispatchers.IO)
+                .mapNotNull { dataString ->
+                    val messageData = try {
+                        json.decodeFromString<OpenAiStreamingResponse>(dataString)
+                    } catch (e: SerializationException) {
+                        null
+                    }
 
-                messageData?.choices?.firstOrNull()?.delta?.content
-            }
+                    messageData?.choices?.firstOrNull()?.delta?.content
+                }
         }
     }
 }
