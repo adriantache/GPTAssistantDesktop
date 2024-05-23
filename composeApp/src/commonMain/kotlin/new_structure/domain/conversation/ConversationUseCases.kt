@@ -8,8 +8,10 @@ import kotlinx.coroutines.launch
 import new_structure.data.ConversationRepositoryImpl
 import new_structure.domain.conversation.data.ConversationRepository
 import new_structure.domain.conversation.data.mapper.toData
+import new_structure.domain.conversation.data.mapper.toEntity
 import new_structure.domain.conversation.entity.Conversation
 import new_structure.domain.conversation.entity.Message
+import new_structure.domain.conversation.entity.Persona
 import new_structure.domain.conversation.entity.Role
 import new_structure.domain.conversation.event.ConversationEvent
 import new_structure.domain.conversation.event.ConversationEvent.CopyToClipboard
@@ -24,6 +26,8 @@ object ConversationUseCases {
     private val scope: CoroutineScope = CoroutineScope(Dispatchers.Default)
 
     private var conversation = Conversation()
+    private var personas = emptyList<Persona>()
+    private var selectedPersona: Persona? = null
 
     private val _state: MutableStateFlow<ConversationState> = MutableStateFlow(Init(::onInit))
     val state: StateFlow<ConversationState> = _state
@@ -32,7 +36,15 @@ object ConversationUseCases {
     val event: StateFlow<Event<ConversationEvent>?> = _event
 
     private fun onInit() {
-        updateConversation()
+        setupConversation()
+    }
+
+    private fun setupConversation() {
+        scope.launch {
+            personas = repository.getPersonas().map { it.toEntity() }
+
+            updateConversation()
+        }
     }
 
     private fun onMessageInput(input: String) {
@@ -67,6 +79,41 @@ object ConversationUseCases {
         _event.value = Event(CopyToClipboard(message.content))
     }
 
+    private fun onSelectPersona() {
+        _event.value = Event(
+            ConversationEvent.PersonaSelector(
+                personas = personas.map { it.toUi() },
+                onAddPersona = ::onAddPersona,
+                onClearPersona = ::onClearPersona,
+                onSelectPersona = ::onChoosePersona,
+                onDeletePersona = ::onDeletePersona,
+            )
+        )
+    }
+
+    private fun onDeletePersona(id: String) {
+        scope.launch {
+            repository.deletePersona(id)
+            personas = repository.getPersonas().map { it.toEntity() }
+
+            updateConversation()
+        }
+    }
+
+    private fun onChoosePersona(id: String) {
+        selectedPersona = personas.first { it.id == id }
+        updateConversation()
+    }
+
+    private fun onAddPersona() {
+        _event.value = Event(ConversationEvent.AddPersona)
+    }
+
+    private fun onClearPersona() {
+        selectedPersona = null
+        updateConversation()
+    }
+
     private fun updateConversation(isLoading: Boolean = false) {
         updateState(
             OpenConversation(
@@ -76,6 +123,8 @@ object ConversationUseCases {
                 onSubmitMessage = ::onSubmitMessage,
                 onResetConversation = ::onResetConversation,
                 onCopyMessage = ::onCopyMessage,
+                selectedPersona = selectedPersona?.toUi(),
+                onSelectPersona = ::onSelectPersona,
             )
         )
     }

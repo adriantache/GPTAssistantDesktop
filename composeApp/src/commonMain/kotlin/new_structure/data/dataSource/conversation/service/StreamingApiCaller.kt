@@ -1,17 +1,17 @@
-package new_structure.data.dataSource
+package new_structure.data.dataSource.conversation.service
 
+import dataStore.decodeJson
 import io.ktor.client.*
 import io.ktor.client.plugins.*
 import io.ktor.http.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import new_structure.data.dataSource.model.ChatMessageDto
-import new_structure.data.dataSource.model.OpenAiRequestDto
-import new_structure.data.dataSource.model.OpenAiStreamingResponseDto
+import new_structure.data.dataSource.conversation.model.ChatMessageDto
+import new_structure.data.dataSource.conversation.model.OpenAiRequestDto
+import new_structure.data.dataSource.conversation.model.OpenAiStreamingResponseDto
 import new_structure.data.sse.readSse
 import settings.AppSettings
 
@@ -52,11 +52,7 @@ class StreamingApiCaller(
             )
                 .flowOn(Dispatchers.IO)
                 .mapNotNull { dataString ->
-                    val messageData = try {
-                        json.decodeFromString<OpenAiStreamingResponseDto>(dataString)
-                    } catch (e: SerializationException) {
-                        null
-                    }
+                    val messageData = dataString.decodeJson<OpenAiStreamingResponseDto>(json)
 
                     messageData?.choices?.firstOrNull()?.delta?.content
                 }

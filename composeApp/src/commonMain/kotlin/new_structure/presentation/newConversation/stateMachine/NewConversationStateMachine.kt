@@ -1,13 +1,14 @@
 package new_structure.presentation.newConversation.stateMachine
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.text.AnnotatedString
 import new_structure.domain.conversation.ConversationUseCases
+import new_structure.domain.conversation.event.ConversationEvent.*
 import new_structure.domain.conversation.state.ConversationState
 import new_structure.presentation.newConversation.NewConversationScreen
 import new_structure.presentation.newConversation.presenter.NewConversationPresenter
+import new_structure.presentation.newConversation.view.PersonaSelectorDialog
 
 @Composable
 fun NewConversationStateMachine(
@@ -28,5 +29,25 @@ fun NewConversationStateMachine(
     when (val localState = state) {
         is ConversationState.Init -> Unit
         is ConversationState.OpenConversation -> NewConversationScreen(presenter.getNewConversationItem(localState))
+    }
+
+    var showPersonasEvent: PersonaSelector? by remember { mutableStateOf(null) }
+    val clipboardManager = LocalClipboardManager.current
+
+    event?.value?.let {
+        when (it) {
+            is CopyToClipboard -> clipboardManager.setText(AnnotatedString(it.contents))
+            is PersonaSelector -> showPersonasEvent = it
+            AddPersona -> TODO()
+        }
+    }
+
+    showPersonasEvent?.let { localEvent ->
+        PersonaSelectorDialog(
+            personas = localEvent.personas.map { presenter.getPersonaItem(it, localEvent) },
+            onAddPersona = localEvent.onAddPersona,
+            onClearPersona = localEvent.onClearPersona,
+            onDismiss = { showPersonasEvent = null },
+        )
     }
 }

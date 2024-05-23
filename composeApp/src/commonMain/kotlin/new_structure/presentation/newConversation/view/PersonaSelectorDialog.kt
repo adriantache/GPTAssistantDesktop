@@ -1,4 +1,4 @@
-package view
+package new_structure.presentation.newConversation.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -10,28 +10,26 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import api.OpenAiStreamingApiCaller
-import api.model.Persona
-import new_structure.presentation.newConversation.view.AddPersonaDialog
-import settings.AppSettings
+import new_structure.presentation.newConversation.model.PersonaItem
+import new_structure.util.Strings.PERSONA_SELECTOR_ADD_PERSONA
+import new_structure.util.Strings.PERSONA_SELECTOR_EDIT_PERSONA
+import new_structure.util.Strings.PERSONA_SELECTOR_NO_PERSONA
+import new_structure.util.Strings.PERSONA_SELECTOR_TITLE
 import theme.AppColor
 
 @Composable
 fun PersonaSelectorDialog(
+    personas: List<PersonaItem>,
+    onAddPersona: () -> Unit,
+    onClearPersona: () -> Unit,
     onDismiss: () -> Unit,
-    apiCaller: OpenAiStreamingApiCaller,
-    appSettings: AppSettings = AppSettings.getInstance(),
 ) {
-    var showAddPersonaDialog: Persona? by remember { mutableStateOf(null) }
-
-    val personas by appSettings.personasFlow.collectAsState(emptyMap())
-
     Dialog(onDismissRequest = onDismiss) {
         LazyColumn(
             modifier = Modifier
@@ -41,7 +39,7 @@ fun PersonaSelectorDialog(
         ) {
             item {
                 Text(
-                    text = "Select persona:",
+                    text = PERSONA_SELECTOR_TITLE,
                     style = MaterialTheme.typography.subtitle1,
                     color = AppColor.onCard(),
                 )
@@ -51,28 +49,26 @@ fun PersonaSelectorDialog(
                 Box(modifier = Modifier
                     .fillMaxWidth()
                     .clickable {
-                        appSettings.selectedPersona = null
-                        apiCaller.reset()
+                        onClearPersona()
                         onDismiss()
                     }
                     .padding(16.dp)
                 ) {
                     Text(
                         style = MaterialTheme.typography.body1.copy(fontStyle = FontStyle.Italic),
-                        text = "None",
+                        text = PERSONA_SELECTOR_NO_PERSONA,
                         color = AppColor.onCard(),
                     )
                 }
             }
 
-            items(personas.values.toList()) { persona ->
+            items(items = personas, key = { it.id }) { persona ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Box(modifier = Modifier
                         .clickable {
-                            appSettings.selectedPersona = persona
-                            apiCaller.reset()
+                            persona.onSelect()
                             onDismiss()
                         }
                         .weight(1f)
@@ -88,32 +84,25 @@ fun PersonaSelectorDialog(
                     Spacer(Modifier.width(8.dp))
 
                     Button(
-                        onClick = { showAddPersonaDialog = persona },
+                        onClick = onAddPersona,
                         colors = AppColor.buttonColors(),
                     ) {
-                        Text("Edit persona")
+                        Text(PERSONA_SELECTOR_EDIT_PERSONA)
                     }
                 }
             }
 
             item {
                 Button(
-                    onClick = { showAddPersonaDialog = Persona("", "") },
+                    onClick = onAddPersona,
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = AppColor.userMessage(),
                         contentColor = AppColor.onUserMessage(),
                     )
                 ) {
-                    Text(text = "Add persona")
+                    Text(text = PERSONA_SELECTOR_ADD_PERSONA)
                 }
             }
-        }
-
-        showAddPersonaDialog?.let {
-            AddPersonaDialog(
-                persona = it,
-                appSettings = appSettings,
-            ) { showAddPersonaDialog = null }
         }
     }
 }

@@ -1,4 +1,4 @@
-package view
+package new_structure.presentation.newConversation.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
