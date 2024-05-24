@@ -94,7 +94,10 @@ fun PersonaSelectorDialog(
 
             item {
                 Button(
-                    onClick = onAddPersona,
+                    onClick = {
+                        onAddPersona()
+                        onDismiss()
+                    },
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = AppColor.userMessage(),
                         contentColor = AppColor.onUserMessage(),

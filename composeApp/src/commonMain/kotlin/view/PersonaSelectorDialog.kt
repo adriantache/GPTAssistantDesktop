@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import api.OpenAiStreamingApiCaller
 import api.model.Persona
-import new_structure.presentation.newConversation.view.AddPersonaDialog
 import settings.AppSettings
 import theme.AppColor
 

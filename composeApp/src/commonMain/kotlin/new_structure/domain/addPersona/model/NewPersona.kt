@@ -12,8 +12,8 @@ data class NewPersona(
         return this.copy(name = name)
     }
 
-    fun onChangeDescription(name: String): NewPersona {
-        return this.copy(name = name)
+    fun onChangeDescription(description: String): NewPersona {
+        return this.copy(description = description)
     }
 
     fun onSubmit(): Persona? {

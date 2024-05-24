@@ -11,10 +11,10 @@ import new_structure.domain.addPersona.state.AddPersonaState
 import new_structure.domain.conversation.data.ConversationRepository
 import new_structure.domain.conversation.data.mapper.toData
 
-class AddPersonaUseCase(
-    private val repository: ConversationRepository = ConversationRepositoryImpl(),
-    private val scope: CoroutineScope = CoroutineScope(Dispatchers.Default),
-) {
+object AddPersonaUseCase {
+    private val repository: ConversationRepository = ConversationRepositoryImpl()
+    private val scope: CoroutineScope = CoroutineScope(Dispatchers.Default)
+
     private val _state: MutableStateFlow<AddPersonaState> = MutableStateFlow(AddPersonaState.Init(::onInit))
     val state: StateFlow<AddPersonaState> = _state
 
@@ -40,6 +40,7 @@ class AddPersonaUseCase(
             description = newPersona.description,
             onChangeName = ::onChangeName,
             onChangeDescription = ::onChangeDescription,
+            canSubmit = newPersona.isValid,
             onSubmit = ::onSubmit,
         )
     }

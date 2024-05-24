@@ -53,7 +53,7 @@ object ConversationUseCases {
     }
 
     private fun onSubmitMessage() {
-        conversation = conversation.onSubmit()
+        conversation = conversation.onSubmit(selectedPersona)
 
         scope.launch {
             var replyMessage = Message(content = "", role = Role.ASSISTANT)

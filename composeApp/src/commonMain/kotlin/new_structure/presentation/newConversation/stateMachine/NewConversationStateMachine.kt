@@ -8,6 +8,7 @@ import new_structure.domain.conversation.event.ConversationEvent.*
 import new_structure.domain.conversation.state.ConversationState
 import new_structure.presentation.newConversation.NewConversationScreen
 import new_structure.presentation.newConversation.presenter.NewConversationPresenter
+import new_structure.presentation.newConversation.view.AddPersonaDialog
 import new_structure.presentation.newConversation.view.PersonaSelectorDialog
 
 @Composable
@@ -32,13 +33,14 @@ fun NewConversationStateMachine(
     }
 
     var showPersonasEvent: PersonaSelector? by remember { mutableStateOf(null) }
+    var showAddPersonaEvent by remember { mutableStateOf(false) }
     val clipboardManager = LocalClipboardManager.current
 
     event?.value?.let {
         when (it) {
             is CopyToClipboard -> clipboardManager.setText(AnnotatedString(it.contents))
             is PersonaSelector -> showPersonasEvent = it
-            AddPersona -> TODO()
+            AddPersona -> showAddPersonaEvent = true
         }
     }
 
@@ -49,5 +51,9 @@ fun NewConversationStateMachine(
             onClearPersona = localEvent.onClearPersona,
             onDismiss = { showPersonasEvent = null },
         )
+    }
+
+    if (showAddPersonaEvent) {
+        AddPersonaDialog { showAddPersonaEvent = false }
     }
 }

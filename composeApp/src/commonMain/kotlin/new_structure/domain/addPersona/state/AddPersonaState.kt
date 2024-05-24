@@ -8,6 +8,7 @@ sealed interface AddPersonaState {
         val description: String,
         val onChangeName: (String) -> Unit,
         val onChangeDescription: (String) -> Unit,
+        val canSubmit: Boolean,
         val onSubmit: () -> Unit,
     ) : AddPersonaState
 }
