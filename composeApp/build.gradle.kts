@@ -1,20 +1,23 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
+val version = "1.0.25"
+val versionNumber = 1025
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.kotlinxSerialization)
+    alias(libs.plugins.compose.compiler)
 }
-
-val composeCompilerVersion = "1.5.14"
 
 kotlin {
     androidTarget {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "17"
-            }
+        @OptIn(ExperimentalKotlinGradlePluginApi::class)
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
         }
     }
 
@@ -30,8 +33,8 @@ kotlin {
             implementation(libs.ktor.client.android)
             implementation(libs.kotlinx.coroutines.android)
             implementation(libs.kotlin.test.junit)
-
         }
+
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -49,6 +52,7 @@ kotlin {
 
             implementation(libs.kotlin.test)
         }
+
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.ktor.client.cio)
@@ -69,8 +73,8 @@ android {
         applicationId = "com.adriantache"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = versionNumber
+        versionName = version
     }
     packaging {
         resources {
@@ -89,23 +93,16 @@ android {
     dependencies {
         debugImplementation(libs.compose.ui.tooling)
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = composeCompilerVersion
-    }
 }
 
 compose.desktop {
-    compose {
-        kotlinCompilerPlugin.set("androidx.compose.compiler:compiler:$composeCompilerVersion")
-    }
-
     application {
         mainClass = "MainKt"
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "GPT Assistant"
-            packageVersion = "1.0.23"
+            packageVersion = version
 
             // Required by the file we build with DataStore, or something.
             // Full explanation here: https://stackoverflow.com/a/61758667/9038481

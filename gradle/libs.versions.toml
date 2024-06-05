@@ -4,7 +4,7 @@ android-compileSdk = "34"
 android-minSdk = "24"
 android-targetSdk = "34"
 androidx-activityCompose = "1.9.0"
-androidx-appcompat = "1.6.1"
+androidx-appcompat = "1.7.0"
 androidx-constraintlayout = "2.1.4"
 androidx-core-ktx = "1.13.1"
 androidx-espresso-core = "3.5.1"
@@ -12,11 +12,11 @@ androidx-material = "1.12.0"
 androidx-test-junit = "1.1.5"
 appdirs = "1.2.2"
 compose-bom = "2024.05.00"
-compose-plugin = "1.6.2"
+compose-plugin = "1.6.11"
 coroutines = "1.8.0"
 datastorePreferencesCore = "1.1.1"
 junit = "4.13.2"
-kotlin = "1.9.24"
+kotlin = "2.0.0"
 ktor = "2.3.9"
 multiplatformSettings = "1.1.1"
 
@@ -52,3 +52,4 @@ androidLibrary = { id = "com.android.library", version.ref = "agp" }
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinxSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
