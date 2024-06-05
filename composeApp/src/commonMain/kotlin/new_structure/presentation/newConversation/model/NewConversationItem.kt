@@ -7,4 +7,6 @@ data class NewConversationItem(
     val isLoading: Boolean,
     val canSubmit: Boolean,
     val onSubmit: () -> Unit,
+    val selectedPersona: String,
+    val onSelectPersona: () -> Unit,
 )

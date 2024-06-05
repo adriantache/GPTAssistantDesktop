@@ -1,6 +1,18 @@
 package new_structure.domain.conversation.event
 
+import new_structure.domain.conversation.ui.model.PersonaUi
+
 sealed interface ConversationEvent {
     // TODO: find a way to move this to Platform layer instead
-    data class CopyToClipboard(val contents: String): ConversationEvent
+    data class CopyToClipboard(val contents: String) : ConversationEvent
+
+    data class PersonaSelector(
+        val personas: List<PersonaUi>,
+        val onAddPersona: () -> Unit,
+        val onClearPersona: () -> Unit,
+        val onSelectPersona: (id: String) -> Unit,
+        val onDeletePersona: (id: String) -> Unit,
+    ) : ConversationEvent
+
+    data object AddPersona : ConversationEvent
 }

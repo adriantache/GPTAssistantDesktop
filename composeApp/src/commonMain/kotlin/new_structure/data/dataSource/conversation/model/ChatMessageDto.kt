@@ -1,4 +1,4 @@
-package new_structure.data.dataSource.model
+package new_structure.data.dataSource.conversation.model
 
 import kotlinx.serialization.Serializable
 

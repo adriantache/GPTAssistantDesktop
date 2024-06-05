@@ -1,13 +1,13 @@
 package api
 
 import api.model.*
+import dataStore.decodeJson
 import io.ktor.client.*
 import io.ktor.client.plugins.*
 import io.ktor.http.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import new_structure.data.sse.readSse
@@ -98,11 +98,7 @@ class OpenAiStreamingApiCaller(
             )
                 .flowOn(Dispatchers.IO)
                 .mapNotNull { dataString ->
-                    val messageData = try {
-                        json.decodeFromString<OpenAiStreamingResponse>(dataString)
-                    } catch (e: SerializationException) {
-                        null
-                    }
+                    val messageData = dataString.decodeJson<OpenAiStreamingResponse>(json)
 
                     messageData?.choices?.firstOrNull()?.delta?.content
                 }

@@ -1,7 +1,8 @@
-package new_structure.data.dataSource
+package new_structure.data.dataSource.conversation
 
 import kotlinx.coroutines.flow.Flow
-import new_structure.data.dataSource.mapper.toDto
+import new_structure.data.dataSource.conversation.mapper.toDto
+import new_structure.data.dataSource.conversation.service.StreamingApiCaller
 import new_structure.domain.conversation.data.model.ConversationData
 
 class ConversationDataSource(

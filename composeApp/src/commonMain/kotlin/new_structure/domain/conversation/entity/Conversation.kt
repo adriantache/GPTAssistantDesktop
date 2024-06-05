@@ -16,11 +16,14 @@ data class Conversation(
         return this.copy(currentInput = input)
     }
 
-    fun onSubmit(): Conversation {
+    fun onSubmit(persona: Persona?): Conversation {
         if (!canSubmit) return this
+
+        val personaMessage = persona?.let { Message(content = it.instructions, role = USER) }
 
         val message = Message(content = currentInput, role = USER)
         val newMessages = messages.toMutableMap().apply {
+            personaMessage?.let { this[it.id] = it }
             this[message.id] = message
         }
 
