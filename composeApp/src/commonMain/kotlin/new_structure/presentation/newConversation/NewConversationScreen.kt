@@ -16,55 +16,57 @@ import gptassistant.composeapp.generated.resources.persona
 import new_structure.presentation.newConversation.model.NewConversationItem
 import new_structure.presentation.newConversation.view.MessageView
 import new_structure.presentation.newConversation.view.PromptInput
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import theme.AppColor
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun NewConversationScreen(newConversationItem: NewConversationItem) {
-    LazyColumn(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Bottom),
-    ) {
-        item {
-            Button(
-                modifier = Modifier.requiredHeight(36.dp),
-                onClick = newConversationItem.onSelectPersona,
-                colors = AppColor.buttonColors(),
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Image(
-                        modifier = Modifier.requiredSize(24.dp),
-                        painter = painterResource(Res.drawable.persona),
-                        contentDescription = null,
-                        colorFilter = ColorFilter.tint(AppColor.onUserMessage()),
-                    )
+    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+        Button(
+            modifier = Modifier.requiredHeight(36.dp),
+            onClick = newConversationItem.onSelectPersona,
+            colors = AppColor.buttonColors(),
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Image(
+                    modifier = Modifier.requiredSize(24.dp),
+                    painter = painterResource(Res.drawable.persona),
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(AppColor.onUserMessage()),
+                )
 
-                    Spacer(Modifier.width(8.dp))
+                Spacer(Modifier.width(8.dp))
 
-                    Text(newConversationItem.selectedPersona)
-                }
+                Text(newConversationItem.selectedPersona)
             }
         }
 
-        itemsIndexed(
-            items = newConversationItem.messages,
-            key = { _, message -> message.id }
-        ) { index, message ->
-            MessageView(
-                message = message,
-                isLoading = newConversationItem.isLoading && index == newConversationItem.messages.size - 1,
-            )
-        }
+        Spacer(Modifier.height(16.dp))
 
-        item {
-            PromptInput(
-                prompt = newConversationItem.input,
-                onPromptChanged = newConversationItem.onInput,
-                isLoading = newConversationItem.isLoading,
-                onSubmit = newConversationItem.onSubmit,
-            )
+        Spacer(Modifier.weight(1f))
+
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Bottom),
+        ) {
+            itemsIndexed(
+                items = newConversationItem.messages,
+                key = { _, message -> message.id }
+            ) { index, message ->
+                MessageView(
+                    message = message,
+                    isLoading = newConversationItem.isLoading && index == newConversationItem.messages.size - 1,
+                )
+            }
+
+            item {
+                PromptInput(
+                    prompt = newConversationItem.input,
+                    onPromptChanged = newConversationItem.onInput,
+                    isLoading = newConversationItem.isLoading,
+                    onSubmit = newConversationItem.onSubmit,
+                )
+            }
         }
     }
 }
