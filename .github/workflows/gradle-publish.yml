@@ -17,6 +17,16 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-latest, macOS-latest, windows-latest ]
+        include:
+          - os: windows-latest
+            gradlew: 'gradlew.bat'
+            shell: 'pwsh'
+          - os: ubuntu-latest
+            gradlew: './gradlew'
+            shell: 'bash'
+          - os: macos-latest
+            gradlew: './gradlew'
+            shell: 'bash'
     permissions:
       contents: read
       packages: write
@@ -43,8 +53,10 @@ jobs:
 
       - name: Build Binary
         id: buildBinary
+        shell: ${{ matrix.include.shell }}
         run: |
-          OUTPUTPATH=$(./gradlew packageDistributionForCurrentOS)
+          OUTPUTPATH=$(${{ matrix.include.gradlew }} packageDistributionForCurrentOS --console=plain --quiet)
+          echo "path=$OUTPUTPATH" >> $GITHUBENV
           echo "::set-output name=path::$OUTPUTPATH"
 
       - name: Upload
