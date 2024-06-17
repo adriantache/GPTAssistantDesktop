@@ -50,9 +50,7 @@ jobs:
             echo "OUTPUTPATH=$outputPath" >> $GITHUBENV
             echo "::set-output name=path::$outputPath"
           fi
-        env:
-          GHRUNNERENV: ${{ github.workflow }}
-        shell: ${{ runner.os == 'Windows' && 'pwsh' || 'bash' }}
+        shell: ${{ matrix.os == 'windows-latest' && 'pwsh' || 'bash' }}
 
       - name: Upload
         uses: djn24/add-asset-to-release@v1
