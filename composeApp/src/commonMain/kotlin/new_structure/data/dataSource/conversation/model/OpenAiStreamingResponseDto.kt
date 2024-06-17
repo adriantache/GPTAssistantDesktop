@@ -18,5 +18,5 @@ data class StreamingChoiceDto(
 
 @Serializable
 data class StreamingDeltaDto(
-    val content: String,
+    val content: String?,
 )

@@ -54,7 +54,7 @@ class StreamingApiCaller(
                 .mapNotNull { dataString ->
                     val messageData = dataString.decodeJson<OpenAiStreamingResponseDto>(json)
 
-                    messageData?.choices?.firstOrNull()?.delta?.content
+                    messageData?.choices?.firstOrNull()?.delta?.content.orEmpty()
                 }
 
             emitAll(resultFlow)
