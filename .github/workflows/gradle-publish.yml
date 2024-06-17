@@ -41,7 +41,7 @@ jobs:
       - name: Run Gradle task and capture output
         id: buildBinary
         run: |
-          OUTPUTPATH=$(./gradlew packageDistributionForCurrentOS)
+          echo "OUTPUTPATH=$(./gradlew packageDistributionForCurrentOS)"
           echo "path=$OUTPUTPATH" >> $GITHUBENV
           echo "::set-output name=path::$OUTPUTPATH"
           echo ${{OUTPUTPATH}}
