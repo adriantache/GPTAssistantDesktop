@@ -20,8 +20,6 @@ jobs:
     permissions:
       contents: read
       packages: write
-    outputs:
-      generatedpath: ${{ steps.setpath.outputs.path }}
 
     steps:
       - uses: actions/checkout@v4
@@ -44,15 +42,13 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build Binary
+        id: buildBinary
         run: |
           OUTPUTPATH=$(./gradlew packageDistributionForCurrentOS)
-          echo "path=$OUTPUTPATH" >> $GITHUBENV
           echo "::set-output name=path::$OUTPUTPATH"
-          echo ${{OUTPUTPATH}}
-          echo ${{generatedpath}}
 
       - name: Upload
         uses: djn24/add-asset-to-release@v1
         with:
           token: ${{secrets.GITHUB_TOKEN}}
-          path: ${{generatedpath}}
+          path: ${{steps.buildBinary.outputs.path}}
