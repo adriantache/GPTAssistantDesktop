@@ -46,6 +46,7 @@ jobs:
             echo "./gradlew packageDistributionForCurrentOS"
             echo EOF
           } >> "$GITHUB_OUTPUT"
+          echo "Path is $OUTPUT_PATH"
         shell: bash
 
       # todo remove this
