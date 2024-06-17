@@ -43,7 +43,7 @@ jobs:
         run: |
           {
             echo 'OUTPUT_PATH<<EOF'
-            echo $(./gradlew packageDistributionForCurrentOS)
+            echo "./gradlew packageDistributionForCurrentOS"
             echo EOF
           } >> "$GITHUB_OUTPUT"
         shell: bash
