@@ -20,8 +20,6 @@ jobs:
     permissions:
       contents: read
       packages: write
-    outputs:
-      path: ${{ steps.buildBinary.outputs.path }}
 
     steps:
       - uses: actions/checkout@v4
@@ -42,14 +40,15 @@ jobs:
 
       - name: Run Gradle task and capture output
         id: buildBinary
-        run: echo "::set-output name=path::$(./gradlew packageDistributionForCurrentOS)"
+        run: echo "OUTPUT_PATH=$(./gradlew packageDistributionForCurrentOS)" >> $GITHUB_STATE
         shell: bash
 
       - name: Validate path
-        run: echo ${{needs.buildBinary.outputs.path}}
+        run: |
+          echo "Path is $OUTPUT_PATH"
 
       - name: Upload
         uses: djn24/add-asset-to-release@v1
         with:
           token: ${{secrets.GITHUB_TOKEN}}
-          path: ${{needs.buildBinary.outputs.path}}
+          path: $OUTPUT_PATH
