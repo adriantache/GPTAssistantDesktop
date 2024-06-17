@@ -17,16 +17,6 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-latest, macOS-latest, windows-latest ]
-        include:
-          - os: windows-latest
-            gradlew: 'gradlew.bat'
-            shell: 'pwsh'
-          - os: ubuntu-latest
-            gradlew: './gradlew'
-            shell: 'bash'
-          - os: macos-latest
-            gradlew: './gradlew'
-            shell: 'bash'
     permissions:
       contents: read
       packages: write
@@ -48,16 +38,27 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
 
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
-
-      - name: Build Binary
-        id: buildBinary
-        shell: ${{ matrix.include.shell }}
+      - name: Prepare environment
         run: |
-          OUTPUTPATH=$(${{ matrix.include.gradlew }} packageDistributionForCurrentOS --console=plain --quiet)
-          echo "path=$OUTPUTPATH" >> $GITHUBENV
+          if [ "$RUNNEROS" == "Windows" ]; then
+            echo "GRADLEWPATH=gradlew.bat" >> $GITHUBENV
+            echo "SHELLOPTION=pwsh" >> $GITHUBENV
+          else
+            echo "GRADLEWPATH=./gradlew" >> $GITHUBENV
+            echo "SHELLOPTION=bash" >> $GITHUBENV
+            chmod +x ./gradlew
+            fi
+        shell: bash
+
+      - name: Run Gradle task and capture output
+        id: buildBinary
+        run: |
+          OUTPUTPATH=$($GRADLEWPATH packageDistributionForCurrentOS --console=plain --quiet)
+          echo "path=$OUTPUTPATH" >> $GHRUNNERENV
           echo "::set-output name=path::$OUTPUTPATH"
+        env:
+          GHRUNNERENV: ${{ github.workflow }}
+        shell: bash
 
       - name: Upload
         uses: djn24/add-asset-to-release@v1
