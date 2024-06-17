@@ -20,6 +20,8 @@ jobs:
     permissions:
       contents: read
       packages: write
+    outputs:
+      path: ${{ steps.buildBinary.outputs.path }}
 
     steps:
       - uses: actions/checkout@v4
@@ -38,21 +40,13 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
 
-      - name: test variable
-        run: echo "OUTPUTPATH=$(./gradlew packageDistributionForCurrentOS)" >> $GITHUBENV
-
-      #      - name: Run Gradle task and capture output
-      #        id: buildBinary
-      #        run: |
-      #          OUTPUTPATH=$(./gradlew packageDistributionForCurrentOS)
-      #          echo "path=$OUTPUTPATH" >> $GITHUBENV
-      #          echo "::set-output name=path::$OUTPUTPATH"
-      #          echo ${{OUTPUTPATH}}
-      #          echo ${{generatedpath}}
-      #        shell: bash
+      - name: Run Gradle task and capture output
+        id: buildBinary
+        run: echo "::set-output name=path::$(./gradlew packageDistributionForCurrentOS)"
+        shell: bash
 
       - name: Upload
         uses: djn24/add-asset-to-release@v1
         with:
           token: ${{secrets.GITHUB_TOKEN}}
-          path: ${{OUTPUTPATH}}
+          path: ${{needs.buildBinary.outputs.path}}
