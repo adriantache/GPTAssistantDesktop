@@ -45,6 +45,9 @@ jobs:
         run: echo "::set-output name=path::$(./gradlew packageDistributionForCurrentOS)"
         shell: bash
 
+      - name: Validate path
+        run: echo ${{needs.buildBinary.outputs.path}}
+
       - name: Upload
         uses: djn24/add-asset-to-release@v1
         with:
