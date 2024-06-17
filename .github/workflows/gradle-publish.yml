@@ -20,6 +20,8 @@ jobs:
     permissions:
       contents: read
       packages: write
+    outputs:
+      generatedpath: ${{ steps.setpath.outputs.path }}
 
     steps:
       - uses: actions/checkout@v4
@@ -41,11 +43,16 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      - name: Package Binary
-        run: ./gradlew packageDistributionForCurrentOS
+      - name: Build Binary
+        run: |
+          OUTPUTPATH=$(./gradlew packageDistributionForCurrentOS)
+          echo "path=$OUTPUTPATH" >> $GITHUBENV
+          echo "::set-output name=path::$OUTPUTPATH"
+          echo ${{OUTPUTPATH}}
+          echo ${{generatedpath}}
 
       - name: Upload
         uses: djn24/add-asset-to-release@v1
         with:
           token: ${{secrets.GITHUB_TOKEN}}
-          path: '/Users/runner/work/GPTAssistantDesktop/GPTAssistantDesktop/composeApp/build/compose/binaries/main/app/*'
+          path: ${{generatedpath}}
