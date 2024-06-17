@@ -40,10 +40,12 @@ jobs:
 
       - name: Run Gradle task and capture output
         id: buildBinary
-        run: echo "OUTPUT_PATH=$(grep \"The distribution is written to \" $(./gradlew packageDistributionForCurrentOS) | sed 's/.The distribution is written to //')"
-
-        # run: echo "OUTPUT_PATH<<EOF"$'\n'"$(./gradlew packageDistributionForCurrentOS)"$'\n'EOF >> $GITHUB_OUTPUT
-        #        run: echo "OUTPUT_PATH=$(./gradlew packageDistributionForCurrentOS)" >> $GITHUB_STATE
+        run: |
+          {
+            echo 'OUTPUT_PATH<<EOF'
+            ./gradlew packageDistributionForCurrentOS
+            echo EOF
+          } >> "$GITHUB_OUTPUT"
         shell: bash
 
       # todo remove this
