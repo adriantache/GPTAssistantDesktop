@@ -40,23 +40,11 @@ jobs:
 
       - name: Run Gradle task and capture output
         id: buildBinary
-        run: |
-          $XXX={
-            echo 'OUTPUT_PATH<<EOF'
-            ./gradlew packageDistributionForCurrentOS
-            echo EOF
-          }
-          echo "Path is $XXX"
-        #           >> "$GITHUB_OUTPUT"
+        run: ./gradlew packageDistributionForCurrentOS
         shell: bash
-
-      # todo remove this
-      - name: Validate path
-        run: |
-          echo "Path is $OUTPUT_PATH"
 
       - name: Upload
         uses: djn24/add-asset-to-release@v1
         with:
           token: ${{secrets.GITHUB_TOKEN}}
-          path: $OUTPUT_PATH
+          path: ${{env.RELEASE_PATH}}
