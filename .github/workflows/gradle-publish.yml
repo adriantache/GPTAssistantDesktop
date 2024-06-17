@@ -41,15 +41,11 @@ jobs:
       - name: Run Gradle task and capture output
         id: buildBinary
         run: |
-          if [ "${{ runner.os }}" = "Windows" ]; then
-            $outputPath = ./gradlew.bat packageDistributionForCurrentOS --console=plain --quiet
-            echo "OUTPUTPATH=$outputPath" | Out-File -Append -FilePath $env:GITHUBENV
-            echo "::set-output name=path::$outputPath"
-          else
-            outputPath=$(./gradlew packageDistributionForCurrentOS --console=plain --quiet)
-            echo "OUTPUTPATH=$outputPath" >> $GITHUBENV
-            echo "::set-output name=path::$outputPath"
-          fi
+          OUTPUTPATH=$(./gradlew packageDistributionForCurrentOS)
+          echo "path=$OUTPUTPATH" >> $GITHUBENV
+          echo "::set-output name=path::$OUTPUTPATH"
+          echo ${{OUTPUTPATH}}
+          echo ${{generatedpath}}
         shell: bash
 
       - name: Upload
