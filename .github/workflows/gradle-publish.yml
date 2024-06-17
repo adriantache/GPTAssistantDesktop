@@ -41,12 +41,13 @@ jobs:
       - name: Run Gradle task and capture output
         id: buildBinary
         run: |
-          {
+          $XXX={
             echo 'OUTPUT_PATH<<EOF'
             ./gradlew packageDistributionForCurrentOS
             echo EOF
-          } >> "$GITHUB_OUTPUT"
-          echo "Path is $OUTPUT_PATH"
+          }
+          echo "Path is $XXX"
+        #           >> "$GITHUB_OUTPUT"
         shell: bash
 
       # todo remove this
