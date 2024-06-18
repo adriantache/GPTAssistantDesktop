@@ -41,6 +41,31 @@ jobs:
         run: ./gradlew packageDistributionForCurrentOS
         shell: bash
 
+      - name: Test Folder
+        run: |
+          echo "ls" 
+          echo "cd Users"
+          echo "ls"
+          echo "cd runner"
+          echo "ls"
+          echo "cd work"
+          echo "ls"
+          echo "cd GPTAssistantDesktop"
+          echo "ls"
+          echo "cd GPTAssistantDesktop"
+          echo "ls"
+          echo "cd composeApp"
+          echo "ls"
+          echo "cd build"
+          echo "ls"
+          echo "cd compose"
+          echo "ls"
+          echo "cd binaries"
+          echo "ls"
+          echo "cd main"
+          echo "ls"
+
+
       - name: GH Release
         uses: softprops/action-gh-release@v2.0.5
         if: startsWith(github.ref, 'refs/tags/')
