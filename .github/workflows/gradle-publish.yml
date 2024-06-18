@@ -43,27 +43,27 @@ jobs:
 
       - name: Test Folder
         run: |
-          echo "ls" 
-          echo "cd Users"
-          echo "ls"
-          echo "cd runner"
-          echo "ls"
-          echo "cd work"
-          echo "ls"
-          echo "cd GPTAssistantDesktop"
-          echo "ls"
-          echo "cd GPTAssistantDesktop"
-          echo "ls"
-          echo "cd composeApp"
-          echo "ls"
-          echo "cd build"
-          echo "ls"
-          echo "cd compose"
-          echo "ls"
-          echo "cd binaries"
-          echo "ls"
-          echo "cd main"
-          echo "ls"
+          ls 
+          cd Users
+          ls
+          cd runner
+          ls
+          cd work
+          ls
+          cd GPTAssistantDesktop
+          ls
+          cd GPTAssistantDesktop
+          ls
+          cd composeApp
+          ls
+          cd build
+          ls
+          cd compose
+          ls
+          cd binaries
+          ls
+          cd main
+          ls
 
 
       - name: GH Release
