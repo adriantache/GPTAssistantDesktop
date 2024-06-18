@@ -17,9 +17,7 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-latest, macOS-latest, windows-latest ]
-    permissions:
-      contents: read
-      packages: write
+    permissions: write-all
 
     steps:
       - uses: actions/checkout@v4
