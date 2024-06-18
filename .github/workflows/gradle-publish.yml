@@ -43,16 +43,6 @@ jobs:
 
       - name: Test Folder
         run: |
-          ls 
-          cd Users
-          ls
-          cd runner
-          ls
-          cd work
-          ls
-          cd GPTAssistantDesktop
-          ls
-          cd GPTAssistantDesktop
           ls
           cd composeApp
           ls
@@ -70,4 +60,4 @@ jobs:
         uses: softprops/action-gh-release@v2.0.5
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: Users/runner/work/GPTAssistantDesktop/GPTAssistantDesktop/composeApp/build/compose/binaries/main/*
+          files: composeApp/build/compose/binaries/main/*
