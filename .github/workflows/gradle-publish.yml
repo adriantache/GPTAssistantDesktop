@@ -47,4 +47,7 @@ jobs:
         uses: softprops/action-gh-release@v2.0.5
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: composeApp/build/compose/binaries/main/
+          files: |
+            *.dmg
+            *.exe
+            *.deb
