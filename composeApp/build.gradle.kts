@@ -76,6 +76,14 @@ android {
         versionCode = versionNumber
         versionName = version
     }
+    signingConfigs {
+        val release by creating {
+            storeFile = file("../keystore.jks")
+            storePassword = System.getenv("RELEASE_KEYSTORE_PASSWORD")
+            keyAlias = System.getenv("RELEASE_KEYSTORE_ALIAS")
+            keyPassword = System.getenv("RELEASE_KEY_PASSWORD")
+        }
+    }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -84,7 +92,7 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
-            signingConfig
+            signingConfig = signingConfigs["release"]
         }
     }
     compileOptions {
