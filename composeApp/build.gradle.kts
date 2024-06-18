@@ -84,6 +84,7 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
+            signingConfig
         }
     }
     compileOptions {
