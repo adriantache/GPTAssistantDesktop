@@ -1,10 +1,12 @@
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import coil3.ImageLoader
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.setSingletonImageLoaderFactory
@@ -39,7 +41,9 @@ fun App() {
                 if (!useNewApp) {
                     MainScreen()
 
-                    Button(onClick = { useNewApp = true }) {
+                    Button(
+                        modifier = Modifier.requiredSize(100.dp),
+                        onClick = { useNewApp = true }) {
                         Text("Use new app")
                     }
                 } else {
