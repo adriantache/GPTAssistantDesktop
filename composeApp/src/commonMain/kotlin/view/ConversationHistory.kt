@@ -52,7 +52,7 @@ fun ColumnScope.ConversationHistory(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
         ) {
-            items(cache.values.toList()) {
+            items(cache.values.toList().reversed()) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         modifier = Modifier

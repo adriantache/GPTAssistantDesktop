@@ -9,6 +9,8 @@ import migration.MigrationProcessor
 import new_structure.presentation.navigation.Navigation
 import theme.AppColor
 
+// TODO: migrate all data
+
 @Composable
 fun NewApp() {
     MaterialTheme {

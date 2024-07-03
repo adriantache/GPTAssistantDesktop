@@ -22,6 +22,7 @@ import new_structure.domain.conversation.ui.mapper.toUi
 import new_structure.domain.util.model.Event
 
 object ConversationUseCases {
+    // TODO: replace with DI
     private val repository: ConversationRepository = ConversationRepositoryImpl()
     private val scope: CoroutineScope = CoroutineScope(Dispatchers.Default)
 

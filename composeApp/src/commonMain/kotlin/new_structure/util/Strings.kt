@@ -16,4 +16,6 @@ object Strings {
     const val ADD_PERSONA_NAME_LABEL = "Persona name"
     const val ADD_PERSONA_DESCRIPTION_LABEL = "Persona instructions"
     const val ADD_PERSONA_SAVE = "Save"
+
+    const val IMAGE_INPUT_TUTORIAL = "Enter your prompt to generate an image"
 }

@@ -28,7 +28,7 @@ object NavigatorImpl : Navigator {
     }
 
     override fun navigateBack() {
-        if (destinations.isEmpty()) return
+        if (destinations.size < 2) return
 
         destinations.removeLast()
         updateCurrentDestination()

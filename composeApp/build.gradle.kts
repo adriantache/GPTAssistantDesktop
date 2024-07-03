@@ -49,6 +49,10 @@ kotlin {
             implementation(libs.kotlin.serialization)
             implementation(libs.multiplatform.settings)
             implementation(libs.androidx.datastore.preferences.core)
+            implementation(libs.coil.mp)
+            implementation(libs.coil.compose.core)
+            implementation(libs.coil.compose)
+            implementation(libs.coil.network.ktor)
 
             implementation(libs.kotlin.test)
         }
