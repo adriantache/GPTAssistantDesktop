@@ -10,10 +10,17 @@ jobs:
     strategy:
       matrix:
         # Targeting two versions of macOS in order to build binaries for both ARM (M1 etc.) and Intel processors.
-        os: [ macOS-latest, macos-13, windows-latest ]
+        os: [ macOS-latest, macos-13, windows-latest, ubuntu-latest ]
     permissions: write-all
 
     steps:
+      - name: Debug OS
+        env:
+          TARGET_OS: ${{ matrix.target }}
+        run: |
+          echo ${{ matrix.target}}
+          echo $TARGET_OS
+
       - uses: actions/checkout@v4
 
       - name: Setup Gradle
