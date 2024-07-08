@@ -116,7 +116,7 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             // This adds the target OS to the name of binaries, in order to differentiate the two DMG files
             // which are generated on macOS, one for Intel processors and one for ARM.
-            val targetOS = System.getenv("TARGET_OS")
+            val targetOS = System.getenv("TARGET_OS").trim()
             packageName = "GPT Assistant ($targetOS)"
             packageVersion = version
 
