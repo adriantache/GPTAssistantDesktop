@@ -2,8 +2,8 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
-val version = "1.0.28"
-val versionNumber = 1028
+val version = "1.0.29"
+val versionNumber = 1029
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -116,7 +116,7 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             // This adds the target OS to the name of binaries, in order to differentiate the two DMG files
             // which are generated on macOS, one for Intel processors and one for ARM.
-            val targetOS = System.getenv("TARGET_OS").trim()
+            val targetOS = System.getenv()["TARGET_OS"]?.trim() ?: "LOCAL"
             packageName = "GPT Assistant $targetOS"
             packageVersion = version
 
