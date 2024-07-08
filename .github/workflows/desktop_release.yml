@@ -19,7 +19,7 @@ jobs:
           TARGET_OS: ${{ matrix.os }}
         run: |
           echo ${{ matrix.target }}
-          echo ${{ $TARGET_OS }}
+          echo ${{ matrix.os }}
 
       - uses: actions/checkout@v4
 
