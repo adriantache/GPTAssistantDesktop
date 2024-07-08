@@ -31,7 +31,7 @@ jobs:
         id: buildBinary
         env:
           TARGET_OS: ${{ matrix.target }}
-        run: ./gradlew packageDistributionForCurrentOS
+        run: ./gradlew packageDistributionForCurrentOS --stacktrace
         shell: bash
 
       - name: GH Release
