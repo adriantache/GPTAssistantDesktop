@@ -1,5 +1,6 @@
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -13,6 +14,8 @@ import coil3.compose.setSingletonImageLoaderFactory
 import coil3.request.crossfade
 import coil3.util.DebugLogger
 import coil3.util.Logger
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import migration.MigrationProcessor
 import new_structure.presentation.NewApp
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -33,6 +36,15 @@ fun App() {
 
         MigrationProcessor {
             var useNewApp by remember { mutableStateOf(false) }
+            var hideNewApp by remember { mutableStateOf(false) }
+
+            LaunchedEffect(Unit) {
+                launch {
+                    delay(3000)
+
+                    if (!useNewApp) hideNewApp = true
+                }
+            }
 
             Surface(
                 modifier = Modifier.fillMaxSize(),
@@ -41,10 +53,13 @@ fun App() {
                 if (!useNewApp) {
                     MainScreen()
 
-                    Button(
-                        modifier = Modifier.requiredSize(100.dp),
-                        onClick = { useNewApp = true }) {
-                        Text("Use new app")
+                    if (!hideNewApp) {
+                        Button(
+                            modifier = Modifier.requiredHeight(48.dp).requiredWidth(200.dp),
+                            onClick = { useNewApp = true }
+                        ) {
+                            Text("Use new app")
+                        }
                     }
                 } else {
                     NewApp()
