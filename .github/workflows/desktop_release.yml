@@ -16,10 +16,10 @@ jobs:
     steps:
       - name: Debug OS
         env:
-          TARGET_OS: ${{ matrix.target }}
+          TARGET_OS: ${{ matrix.os }}
         run: |
-          echo ${{ matrix.target}}
-          echo $TARGET_OS
+          echo ${{ matrix.target }}
+          echo ${{ $TARGET_OS }}
 
       - uses: actions/checkout@v4
 
