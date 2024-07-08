@@ -9,6 +9,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
+        # Targeting two versions of macOS in order to build binaries for both ARM (M1 etc.) and Intel processors.
         os: [ ubuntu-latest, macOS-latest, macos-13, windows-latest ]
     permissions: write-all
 

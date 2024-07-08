@@ -3,8 +3,8 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import kotlin.random.Random
 
-val version = "1.0.27"
-val versionNumber = 1027
+val version = "1.0.28"
+val versionNumber = 1028
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -115,7 +115,8 @@ compose.desktop {
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            // Used to hopefully allow us to build separate DMGs for Intel and ARM Macs.
+            // This adds a random number to the name of binaries, in order to differentiate the two DMG files
+            // which are generated on macOS, one for Intel processors and one for ARM.
             val randomId = Random.nextInt(100)
             packageName = "GPT Assistant $randomId"
             packageVersion = version
