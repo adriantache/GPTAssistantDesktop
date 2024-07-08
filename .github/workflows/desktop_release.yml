@@ -14,13 +14,6 @@ jobs:
     permissions: write-all
 
     steps:
-      - name: Debug OS
-        env:
-          TARGET_OS: ${{ matrix.os }}
-        run: |
-          echo ${{ matrix.target }}
-          echo ${{ matrix.os }}
-
       - uses: actions/checkout@v4
 
       - name: Setup Gradle
@@ -37,8 +30,8 @@ jobs:
       - name: Build Binary
         id: buildBinary
         env:
-          TARGET_OS: ${{ matrix.target }}
-        run: ./gradlew packageDistributionForCurrentOS --stacktrace
+          TARGET_OS: ${{ matrix.os }}
+        run: ./gradlew packageDistributionForCurrentOS
         shell: bash
 
       - name: GH Release
