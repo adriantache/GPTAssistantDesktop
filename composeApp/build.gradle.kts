@@ -1,7 +1,6 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import kotlin.random.Random
 
 val version = "1.0.28"
 val versionNumber = 1028
@@ -115,10 +114,10 @@ compose.desktop {
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            // This adds a random number to the name of binaries, in order to differentiate the two DMG files
+            // This adds the target OS to the name of binaries, in order to differentiate the two DMG files
             // which are generated on macOS, one for Intel processors and one for ARM.
-            val randomId = Random.nextInt(100)
-            packageName = "GPT Assistant $randomId"
+            val targetOS = System.getenv("TARGET_OS")
+            packageName = "GPT Assistant ($targetOS)"
             packageVersion = version
 
             // Required by the file we build with DataStore, or something.

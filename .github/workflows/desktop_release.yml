@@ -29,6 +29,8 @@ jobs:
 
       - name: Build Binary
         id: buildBinary
+        env:
+          TARGET_OS: ${{ matrix.target }}
         run: ./gradlew packageDistributionForCurrentOS
         shell: bash
 
