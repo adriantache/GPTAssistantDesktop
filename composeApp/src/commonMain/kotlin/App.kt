@@ -8,12 +8,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import coil3.ImageLoader
 import coil3.annotation.ExperimentalCoilApi
-import coil3.compose.setSingletonImageLoaderFactory
-import coil3.request.crossfade
-import coil3.util.DebugLogger
-import coil3.util.Logger
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import migration.MigrationProcessor
@@ -27,13 +22,6 @@ import view.MainScreen
 @Preview
 fun App() {
     MaterialTheme {
-        setSingletonImageLoaderFactory { context ->
-            ImageLoader.Builder(context)
-                .logger(DebugLogger(minLevel = Logger.Level.Info))
-                .crossfade(true)
-                .build()
-        }
-
         MigrationProcessor {
             var useNewApp by remember { mutableStateOf(false) }
             var hideNewApp by remember { mutableStateOf(false) }
