@@ -1,6 +1,7 @@
 package new_structure.presentation.imageGeneration
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
@@ -8,6 +9,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
@@ -18,6 +21,8 @@ import theme.AppColor
 fun ImageGenerationResultScreen(
     imageGenerationItem: ImageGenerationResultItem,
 ) {
+    val clipboard = LocalClipboardManager.current
+
     Column(
         modifier = Modifier.fillMaxSize()
             .padding(16.dp)
@@ -36,7 +41,9 @@ fun ImageGenerationResultScreen(
         Spacer(Modifier.height(16.dp))
 
         AsyncImage(
-            modifier = Modifier.fillMaxWidth().weight(1f),
+            modifier = Modifier.fillMaxWidth()
+                .weight(1f)
+                .clickable { clipboard.setText(AnnotatedString(imageGenerationItem.image)) },
             contentDescription = imageGenerationItem.imageInput,
             model = imageGenerationItem.image,
         )
