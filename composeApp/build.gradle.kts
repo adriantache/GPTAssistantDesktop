@@ -33,6 +33,7 @@ kotlin {
             implementation(libs.ktor.client.android)
             implementation(libs.kotlinx.coroutines.android)
             implementation(libs.kotlin.test.junit)
+            implementation(libs.coil.network.okhttp)
         }
 
         commonMain.dependencies {
@@ -50,7 +51,6 @@ kotlin {
             implementation(libs.multiplatform.settings)
             implementation(libs.androidx.datastore.preferences.core)
             implementation(libs.coil.mp)
-            implementation(libs.coil.compose.core)
             implementation(libs.coil.compose)
             implementation(libs.coil.network.ktor)
 
@@ -61,6 +61,7 @@ kotlin {
             implementation(compose.desktop.currentOs)
             implementation(libs.ktor.client.cio)
             implementation(libs.appdirs)
+            implementation(libs.coil.network.okhttp)
         }
     }
 }
