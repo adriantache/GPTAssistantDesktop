@@ -32,7 +32,9 @@ class ApiCaller(
 
     private val client = HttpClient {
         install(HttpTimeout) {
-            requestTimeoutMillis = 5 * 60 * 1000 // ChatGPT can be very slow to reply, even when streaming...
+            requestTimeoutMillis = 5 * 60 * 1000
+            connectTimeoutMillis = 5 * 60 * 1000
+            socketTimeoutMillis = 5 * 60 * 1000
         }
         install(ContentNegotiation) {
             json(json)
