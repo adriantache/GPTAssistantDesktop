@@ -2,8 +2,8 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
-val version = "1.0.30"
-val versionNumber = 1030
+val version = "1.0.31"
+val versionNumber = 1031
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)

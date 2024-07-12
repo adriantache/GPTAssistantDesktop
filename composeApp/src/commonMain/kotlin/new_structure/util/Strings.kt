@@ -18,4 +18,5 @@ object Strings {
     const val ADD_PERSONA_SAVE = "Save"
 
     const val IMAGE_INPUT_TUTORIAL = "Enter your prompt to generate an image"
+    const val IMAGE_RESET = "Generate a new image"
 }

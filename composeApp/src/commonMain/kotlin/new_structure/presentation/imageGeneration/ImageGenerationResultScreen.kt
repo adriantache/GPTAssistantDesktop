@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -15,6 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import new_structure.presentation.imageGeneration.model.ImageGenerationResultItem
+import new_structure.util.Strings
 import theme.AppColor
 
 @Composable
@@ -47,5 +49,13 @@ fun ImageGenerationResultScreen(
             contentDescription = imageGenerationItem.imageInput,
             model = imageGenerationItem.image,
         )
+
+        Spacer(Modifier.height(16.dp))
+
+        Button(
+            onClick = imageGenerationItem.onReset,
+        ) {
+            Text(Strings.IMAGE_RESET)
+        }
     }
 }
