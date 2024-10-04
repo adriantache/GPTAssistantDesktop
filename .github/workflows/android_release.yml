@@ -22,6 +22,9 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3.2.1
 
+      - name: Run Tests with Gradle
+        run: ./gradlew test
+
       - name: Decode Keystore
         env:
           ENCODED_STRING: ${{ secrets.KEYSTORE_BASE_64 }}
