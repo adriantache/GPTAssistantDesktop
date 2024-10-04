@@ -2,8 +2,8 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
-val version = "1.0.31"
-val versionNumber = 1031
+val version = "1.0.32"
+val versionNumber = getVersionInt()
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -126,4 +126,8 @@ compose.desktop {
             modules("jdk.unsupported")
         }
     }
+}
+
+private fun getVersionInt(): Int {
+    return version.replace(".", "").toInt()
 }

@@ -1,9 +1,9 @@
 [versions]
-agp = "8.2.0" # Currently most recent version compatible with KMP.
+agp = "8.5.0" # Currently most recent version compatible with KMP.
 android-compileSdk = "34"
 android-minSdk = "24"
 android-targetSdk = "34"
-androidx-activityCompose = "1.9.0"
+androidx-activityCompose = "1.9.2"
 androidx-appcompat = "1.7.0"
 androidx-constraintlayout = "2.1.4"
 androidx-core-ktx = "1.13.1"
@@ -11,13 +11,14 @@ androidx-espresso-core = "3.6.1"
 androidx-material = "1.12.0"
 androidx-test-junit = "1.2.1"
 appdirs = "1.2.2"
-coil3 = "3.0.0-alpha07"
-compose-bom = "2024.06.00"
+coil3 = "3.0.0-alpha10"
+coil3-network = "3.0.0-alpha08"
+compose-bom = "2024.09.03"
 compose-plugin = "1.6.11"
 coroutines = "1.8.1"
 datastorePreferencesCore = "1.1.1"
 junit = "4.13.2"
-kotlin = "2.0.0"
+kotlin = "2.0.20"
 ktor = "2.3.12"
 multiplatformSettings = "1.1.1"
 
@@ -26,7 +27,7 @@ androidx-datastore-preferences-core = { module = "androidx.datastore:datastore-p
 appdirs = { module = "net.harawata:appdirs", version.ref = "appdirs" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil3" }
 coil-mp = { module = "io.coil-kt.coil3:coil", version.ref = "coil3" }
-coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coil3" }
+coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coil3-network" }
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil3" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
