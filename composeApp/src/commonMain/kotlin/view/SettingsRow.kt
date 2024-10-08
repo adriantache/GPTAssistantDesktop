@@ -18,16 +18,15 @@ import api.OpenAiStreamingApiCaller
 import gptassistant.composeapp.generated.resources.Res
 import gptassistant.composeapp.generated.resources.persona
 import gptassistant.composeapp.generated.resources.settings
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import settings.AppSettings
+import settings.AppSettingsImpl
 import theme.AppColor
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun SettingsRow(
     apiCaller: OpenAiStreamingApiCaller,
-    settings: AppSettings = AppSettings.getInstance(),
+    settings: AppSettings = AppSettingsImpl,
 ) {
     var areSettingsOpen by remember { mutableStateOf(false) }
     var showPersonasDialog by remember { mutableStateOf(false) }

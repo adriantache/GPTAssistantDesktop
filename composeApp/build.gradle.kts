@@ -46,6 +46,7 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.client.logging)
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlin.serialization)
             implementation(libs.multiplatform.settings)
@@ -54,7 +55,11 @@ kotlin {
             implementation(libs.coil.compose)
             implementation(libs.coil.network.ktor)
 
+            // Test dependencies
             implementation(libs.kotlin.test)
+            implementation(libs.kotlin.coroutines.test)
+            implementation(libs.ktor.server.test.host)
+            implementation(libs.turbine)
         }
 
         desktopMain.dependencies {
@@ -92,6 +97,10 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/licenses/ASM"
+            excludes += "/META-INF/DEPENDENCIES"
+            excludes += "win32-x86-64/attach_hotspot_windows.dll"
+            excludes += "win32-x86/attach_hotspot_windows.dll"
         }
     }
     buildTypes {

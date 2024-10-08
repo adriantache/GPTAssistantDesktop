@@ -15,4 +15,7 @@ sealed interface ConversationEvent {
     ) : ConversationEvent
 
     data object AddPersona : ConversationEvent
+
+    // TODO: reconsider this approach, maybe it makes more sense to create UI errors
+    data class ErrorEvent(val errorMessage: String) : ConversationEvent
 }

@@ -6,12 +6,13 @@ import new_structure.data.dataSource.persona.PersonaDataSource
 import new_structure.domain.conversation.data.ConversationRepository
 import new_structure.domain.conversation.data.model.ConversationData
 import new_structure.domain.conversation.data.model.PersonaData
+import new_structure.domain.util.model.Outcome
 
 class ConversationRepositoryImpl(
     private val conversationDataSource: ConversationDataSource = ConversationDataSource(),
     private val personaDataSource: PersonaDataSource = PersonaDataSource(),
 ) : ConversationRepository {
-    override fun getReplyStream(conversation: ConversationData): Flow<String> {
+    override fun getReplyStream(conversation: ConversationData): Flow<Outcome<String>> {
         return conversationDataSource.getReplyStream(conversation)
     }
 

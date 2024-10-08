@@ -11,16 +11,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import new_structure.data.dataSource.imageGeneration.model.OpenAiImageRequest
 import new_structure.data.dataSource.imageGeneration.model.OpenAiImageResponse
 import settings.AppSettings
+import settings.AppSettingsImpl
 
 private const val OPEN_AI_URL = "https://api.openai.com/v1/images/generations"
 
 class ApiCaller(
-    private val settings: AppSettings = AppSettings.getInstance(),
+    private val settings: AppSettings = AppSettingsImpl,
 ) {
     // TODO: move to DI
     @OptIn(ExperimentalSerializationApi::class)
@@ -44,9 +44,6 @@ class ApiCaller(
     suspend fun getImage(prompt: String): String {
         val apiKey = settings.apiKeyFlow.firstOrNull()
             ?: error("ERROR: Api key should be present!")
-
-        val request = 0
-        val requestString = json.encodeToString(request)
 
         val result = withContext(Dispatchers.IO) {
             client.post(OPEN_AI_URL) {

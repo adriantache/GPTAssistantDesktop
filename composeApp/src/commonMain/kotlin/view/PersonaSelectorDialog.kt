@@ -19,13 +19,14 @@ import androidx.compose.ui.window.Dialog
 import api.OpenAiStreamingApiCaller
 import api.model.Persona
 import settings.AppSettings
+import settings.AppSettingsImpl
 import theme.AppColor
 
 @Composable
 fun PersonaSelectorDialog(
     onDismiss: () -> Unit,
     apiCaller: OpenAiStreamingApiCaller,
-    appSettings: AppSettings = AppSettings.getInstance(),
+    appSettings: AppSettings = AppSettingsImpl,
 ) {
     var showAddPersonaDialog: Persona? by remember { mutableStateOf(null) }
 

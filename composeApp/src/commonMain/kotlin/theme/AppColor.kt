@@ -7,13 +7,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.graphics.Color
 import settings.AppSettings
+import settings.AppSettingsImpl
 
 // TODO: extract colors for common components to this class as well. (button, text field, text, etc.)
 
 object AppColor {
     @Composable
     private fun isDarkTheme(
-        settings: AppSettings = AppSettings.getInstance(),
+        settings: AppSettings = AppSettingsImpl,
     ): Boolean {
         return settings.forceDarkModeFlow.collectAsState(null).value == true || isSystemInDarkTheme()
     }

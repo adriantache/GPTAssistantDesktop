@@ -18,5 +18,5 @@ data class StreamingChoice(
 
 @Serializable
 data class StreamingDelta(
-    val content: String,
+    val content: String?,
 )

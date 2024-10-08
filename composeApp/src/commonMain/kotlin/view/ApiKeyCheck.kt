@@ -9,6 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import settings.AppSettings
+import settings.AppSettingsImpl
 import theme.AppColor
 
 // Used because flow collecting requires a non-normal initial value and we can't use null here.
@@ -16,7 +17,7 @@ private const val DUMMY_VALUE = "DUMMY_VALUE"
 
 @Composable
 fun ApiKeyCheck(
-    settings: AppSettings = AppSettings.getInstance(),
+    settings: AppSettings = AppSettingsImpl,
 ) {
     val apiKey by settings.apiKeyFlow.collectAsState(DUMMY_VALUE)
 

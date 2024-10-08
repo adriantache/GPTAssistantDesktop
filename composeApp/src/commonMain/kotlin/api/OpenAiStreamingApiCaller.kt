@@ -11,14 +11,16 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import new_structure.data.sse.readSse
+import new_structure.domain.util.model.Outcome
 import settings.AppSettings
+import settings.AppSettingsImpl
 
 private const val BASE_URL = "https://api.openai.com"
 private const val COMPLETIONS_ENDPOINT = "/v1/chat/completions"
 private const val LOADING_MESSAGE = "..."
 
 class OpenAiStreamingApiCaller(
-    private val settings: AppSettings = AppSettings.getInstance(),
+    private val settings: AppSettings = AppSettingsImpl,
 ) {
     private val config = StreamingApiConfig()
 
@@ -40,7 +42,7 @@ class OpenAiStreamingApiCaller(
         this.conversation = conversation
     }
 
-    suspend fun getReply(prompt: String): Flow<Conversation> {
+    fun getReply(prompt: String): Flow<Conversation> {
         return flow {
             conversation = conversation.add(ChatMessage(prompt))
 
@@ -64,7 +66,7 @@ class OpenAiStreamingApiCaller(
     }
 
     private class StreamingApiConfig(
-        private val settings: AppSettings = AppSettings.getInstance(),
+        private val settings: AppSettings = AppSettingsImpl,
     ) {
         private val client = HttpClient {
             install(HttpTimeout) {
@@ -97,7 +99,8 @@ class OpenAiStreamingApiCaller(
                 ),
             )
                 .flowOn(Dispatchers.IO)
-                .mapNotNull { dataString ->
+                .mapNotNull { outcome ->
+                    val dataString = (outcome as Outcome.Success).data
                     val messageData = dataString.decodeJson<OpenAiStreamingResponse>(json)
 
                     messageData?.choices?.firstOrNull()?.delta?.content

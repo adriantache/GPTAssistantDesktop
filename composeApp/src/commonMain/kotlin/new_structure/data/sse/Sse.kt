@@ -7,12 +7,14 @@ import io.ktor.http.*
 import io.ktor.utils.io.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import new_structure.data.dataSource.conversation.model.OpenAiError
+import new_structure.domain.util.model.Outcome
 
 fun HttpClient.readSse(
     url: String,
     requestBody: String,
     headers: Map<String, String>,
-): Flow<String> {
+): Flow<Outcome<String>> {
     return flow {
         val request = prepareRequest(
             url = url,
@@ -21,30 +23,32 @@ fun HttpClient.readSse(
         )
 
         request.execute { response ->
-            // TODO: better error handling
             if (!response.status.isSuccess()) {
-                error(response.bodyAsText())
+                emit(Outcome.Failure(OpenAiError.HttpError(code = response.status.value, body = response.bodyAsText())))
+                return@execute
             }
 
             val isEventStream = response.contentType()?.let {
                 it.contentType == "text" && it.contentSubtype == "event-stream"
             }
             if (isEventStream != true) {
-                error("Not an event stream!")
+                emit(Outcome.Failure(OpenAiError.NotAnEventStreamError))
+                return@execute
             }
 
-            response.bodyAsChannel().let { channel ->
-                // For whatever reason, these events need to end with an empty line, otherwise they're all empty.
+            with(response.bodyAsChannel()) {
+                // For whatever reason, these events need to end with an empty line, otherwise they're all empty. The
+                //  empty line gets converted to a null, which flushes the buffer of cached data to an event.
                 var cachedData: String? = null
 
-                while (!channel.isClosedForRead) {
-                    val line = channel.readUTF8Line()
+                while (!this.isClosedForRead) {
+                    val line = this.readUTF8Line()
                     val data = line?.getData()
 
                     when {
                         data == "[DONE]" -> return@execute
                         data != null -> cachedData = data
-                        else -> cachedData?.let { emit(cachedData) }
+                        else -> cachedData?.let { emit(Outcome.Success(it)) }
                     }
                 }
             }

@@ -8,6 +8,7 @@ import com.russhwolf.settings.set
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import settings.AppSettings
+import settings.AppSettingsImpl
 import storage.Storage
 
 private const val MIGRATIONS_KEY = "MIGRATIONS_KEY"
@@ -64,7 +65,7 @@ private fun runMigration(
 fun migrateToDataStore(
     settings: Settings,
     json: Json,
-    appSettings: AppSettings = AppSettings.getInstance(),
+    appSettings: AppSettings = AppSettingsImpl,
     storage: Storage = Storage.getInstance(),
 ) {
     settings.getStringOrNull("API_KEY_KEY")?.let {

@@ -61,10 +61,16 @@ object ConversationUseCases {
             conversation = conversation.onUpdateMessage(replyMessage)
             updateConversation(isLoading = true)
 
-            repository.getReplyStream(conversation.toData()).collect {
-                replyMessage = replyMessage.copy(content = replyMessage.content + it)
-                conversation = conversation.onUpdateMessage(replyMessage)
-                updateConversation()
+            repository.getReplyStream(conversation.toData()).collect { outcome ->
+                outcome
+                    .onFailure {
+                        _event.value = Event(ConversationEvent.ErrorEvent(it.message))
+                    }
+                    .onSuccess {
+                        replyMessage = replyMessage.copy(content = replyMessage.content + it)
+                        conversation = conversation.onUpdateMessage(replyMessage)
+                        updateConversation()
+                    }
             }
         }
     }

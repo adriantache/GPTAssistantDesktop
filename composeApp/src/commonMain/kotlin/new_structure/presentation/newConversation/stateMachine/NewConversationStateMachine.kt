@@ -9,6 +9,7 @@ import new_structure.domain.conversation.state.ConversationState
 import new_structure.presentation.newConversation.NewConversationScreen
 import new_structure.presentation.newConversation.presenter.NewConversationPresenter
 import new_structure.presentation.newConversation.view.AddPersonaDialog
+import new_structure.presentation.newConversation.view.ErrorEventDialog
 import new_structure.presentation.newConversation.view.PersonaSelectorDialog
 
 @Composable
@@ -34,6 +35,7 @@ fun NewConversationStateMachine(
 
     var showPersonasEvent: PersonaSelector? by remember { mutableStateOf(null) }
     var showAddPersonaEvent by remember { mutableStateOf(false) }
+    var showErrorEvent: String? by remember { mutableStateOf(null) }
     val clipboardManager = LocalClipboardManager.current
 
     event?.value?.let {
@@ -41,6 +43,7 @@ fun NewConversationStateMachine(
             is CopyToClipboard -> clipboardManager.setText(AnnotatedString(it.contents))
             is PersonaSelector -> showPersonasEvent = it
             AddPersona -> showAddPersonaEvent = true
+            is ErrorEvent -> showErrorEvent = it.errorMessage
         }
     }
 
@@ -55,5 +58,12 @@ fun NewConversationStateMachine(
 
     if (showAddPersonaEvent) {
         AddPersonaDialog { showAddPersonaEvent = false }
+    }
+
+    showErrorEvent?.let {
+        ErrorEventDialog(
+            errorMessage = it,
+            onDismiss = { showErrorEvent = null },
+        )
     }
 }
