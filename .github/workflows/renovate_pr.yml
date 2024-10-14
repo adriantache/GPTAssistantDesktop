@@ -13,9 +13,12 @@ jobs:
         os: [ ubuntu-latest, android ]
     permissions: write-all
 
-    if: github.event.pullrequest.user.login == 'renovate[bot]'
+    #    if: github.event.pullrequest.user.login == 'renovate[bot]'
 
     steps:
+      - name: Test
+        run: echo github.event.pullrequest.user.login
+
       - uses: actions/checkout@v4
 
       - name: Setup Gradle
