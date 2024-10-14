@@ -14,7 +14,7 @@ datastorePreferencesCore = "1.1.1"
 kotlin = "2.0.20"
 kotlinx-coroutines = "1.9.0"
 kotlinx-io-core = "0.5.4"
-ktor = "3.0.0"
+ktor = "3.2.0"
 multiplatformSettings = "1.1.1"
 turbine = "1.1.0"
 
