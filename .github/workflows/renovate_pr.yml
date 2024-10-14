@@ -16,6 +16,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Check if actor is Renovate bot
+        run: |
+          if [ "${{ github.actor }}" = "renovate[bot]" ]; then
+            echo "Renovate bot triggered this action"
+          else
+            echo "This action was not triggered by Renovate bot"
+          fi
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
