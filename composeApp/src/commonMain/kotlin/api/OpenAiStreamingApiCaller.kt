@@ -1,6 +1,7 @@
 package api
 
 import api.model.*
+import api.sse.readSse
 import dataStore.decodeJson
 import io.ktor.client.*
 import io.ktor.client.plugins.*
@@ -10,7 +11,6 @@ import kotlinx.coroutines.flow.*
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import new_structure.data.sse.readSse
 import new_structure.domain.util.model.Outcome
 import settings.AppSettings
 import settings.AppSettingsImpl

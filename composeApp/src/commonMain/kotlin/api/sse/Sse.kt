@@ -1,4 +1,4 @@
-package new_structure.data.sse
+package api.sse
 
 import io.ktor.client.*
 import io.ktor.client.request.*

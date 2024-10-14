@@ -47,6 +47,7 @@ kotlin {
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.client.logging)
+            implementation(libs.kotlinx.io.core)
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlin.serialization)
             implementation(libs.multiplatform.settings)
@@ -101,6 +102,8 @@ android {
             excludes += "/META-INF/DEPENDENCIES"
             excludes += "win32-x86-64/attach_hotspot_windows.dll"
             excludes += "win32-x86/attach_hotspot_windows.dll"
+            excludes += "/META-INF/LICENSE.md"
+            excludes += "/META-INF/LICENSE-notice.md"
         }
     }
     buildTypes {

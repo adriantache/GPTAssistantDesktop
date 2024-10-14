@@ -19,7 +19,11 @@ fun NewConversationStateMachine(
 ) {
     val state by newConversationUseCases.state.collectAsState()
     val event by newConversationUseCases.event.collectAsState()
-    // TODO: handle events
+
+    var showPersonasEvent: PersonaSelector? by remember { mutableStateOf(null) }
+    var showAddPersonaEvent by remember { mutableStateOf(false) }
+    var showErrorEvent: String? by remember { mutableStateOf(null) }
+    val clipboardManager = LocalClipboardManager.current
 
     LaunchedEffect(state) {
         when (val localState = state) {
@@ -32,11 +36,6 @@ fun NewConversationStateMachine(
         is ConversationState.Init -> Unit
         is ConversationState.OpenConversation -> NewConversationScreen(presenter.getNewConversationItem(localState))
     }
-
-    var showPersonasEvent: PersonaSelector? by remember { mutableStateOf(null) }
-    var showAddPersonaEvent by remember { mutableStateOf(false) }
-    var showErrorEvent: String? by remember { mutableStateOf(null) }
-    val clipboardManager = LocalClipboardManager.current
 
     event?.value?.let {
         when (it) {
