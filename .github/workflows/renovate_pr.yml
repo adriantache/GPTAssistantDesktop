@@ -2,10 +2,8 @@ name: Renovate PR
 
 on:
   pull_request:
-    types:
-      - opened
     branches:
-      - 'renovate/**'
+      - 'master'
 
 jobs:
   build:
@@ -14,6 +12,8 @@ jobs:
       matrix:
         os: [ ubuntu-latest, android ]
     permissions: write-all
+
+    if: github.event.pullrequest.user.login == 'renovate[bot]'
 
     steps:
       - uses: actions/checkout@v4
