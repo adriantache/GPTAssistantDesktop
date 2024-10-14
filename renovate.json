@@ -5,6 +5,7 @@
   ],
   "ignoreDeps": [
     "com.android.application",
-    "com.android.library"
+    "com.android.library",
+    "com.russhwolf:multiplatform-settings-no-arg"
   ]
 }
