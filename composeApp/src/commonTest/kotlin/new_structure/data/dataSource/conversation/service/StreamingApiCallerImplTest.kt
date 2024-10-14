@@ -1,6 +1,9 @@
 package new_structure.data.dataSource.conversation.service
 
 import app.cash.turbine.test
+import io.ktor.client.*
+import io.ktor.client.engine.mock.*
+import io.ktor.client.plugins.sse.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -8,27 +11,32 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.testing.*
+import io.ktor.utils.io.*
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import new_structure.data.dataSource.conversation.model.ChatMessageDto
-import new_structure.data.dataSource.conversation.model.OpenAiError
-import new_structure.domain.util.model.Outcome
+import new_structure.data.dataSource.conversation.model.OpenAiError.ApiKeyError
+import new_structure.data.dataSource.conversation.model.OpenAiError.KtorError
 import new_structure.settings.AppSettingsFake
+import org.assertj.core.api.Assertions.assertThat
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 private const val OPEN_AI_HOST = "https://api.openai.com"
 private const val OPEN_AI_ENDPOINT = "v1/chat/completions"
+private const val OPEN_AI_URL = "https://api.openai.com/v1/chat/completions"
 
 class StreamingApiCallerImplTest {
     @Test
-    fun testRoot() = testApplication {
-        application {
-            module()
-        }
+    fun testRoot() = runTest {
+        val expected = "Hello, world!"
+        val engine = MockEngine { respondOk(expected) }
+        val client = HttpClient(engine)
 
         val response = client.get("/")
-        assertEquals(HttpStatusCode.OK, response.status)
-        assertEquals("Hello, world!", response.bodyAsText())
+        assertThat(response.status).isEqualTo(HttpStatusCode.OK)
+        assertThat(response.bodyAsText()).isEqualTo(expected)
     }
 
     @Test
@@ -37,6 +45,10 @@ class StreamingApiCallerImplTest {
             hosts(OPEN_AI_HOST) {
                 openAiSseModule()
             }
+        }
+
+        val client = createClient {
+            install(SSE)
         }
 
         val settings = AppSettingsFake().apply { setApiKey("testKey") }
@@ -48,7 +60,7 @@ class StreamingApiCallerImplTest {
         streamingApiCaller.getReply(listOf(ChatMessageDto("test"))).test {
             repeat((expectedOpenAiResponse.size - 1) / 2) { index ->
                 val item = awaitItem()
-                assertTrue(item.isSuccess)
+                assertThat(item.isSuccess).isTrue()
 
                 val expected = expectedOpenAiResponse[index * 2]
                     .split("content\":\"")
@@ -56,7 +68,7 @@ class StreamingApiCallerImplTest {
                     ?.split("\"")
                     ?.getOrNull(0)
                     .orEmpty()
-                assertEquals(item.dataOrThrow(), expected)
+                assertThat(item.dataOrThrow()).isEqualTo(expected)
             }
 
             awaitComplete()
@@ -65,6 +77,10 @@ class StreamingApiCallerImplTest {
 
     @Test
     fun `testOpenApiResponse, no API key`() = testApplication {
+        val client = createClient {
+            install(SSE)
+        }
+
         val settings = AppSettingsFake()
         val streamingApiCaller = StreamingApiCallerImpl(
             settings = settings,
@@ -74,8 +90,8 @@ class StreamingApiCallerImplTest {
         streamingApiCaller.getReply(listOf(ChatMessageDto("test"))).test {
             val result = awaitItem()
 
-            assertTrue(result.isFailure)
-            assertEquals(result, Outcome.Failure(OpenAiError.ApiKeyError))
+            assertThat(result.isFailure).isTrue()
+            assertThat(result.errorOrThrow()).isEqualTo(ApiKeyError)
 
             awaitComplete()
         }
@@ -83,6 +99,10 @@ class StreamingApiCallerImplTest {
 
     @Test
     fun `testOpenApiResponse, not an event stream`() = testApplication {
+        val client = createClient {
+            install(SSE)
+        }
+
         externalServices {
             hosts(OPEN_AI_HOST) {
                 openAiSseModule(simulateEventStreamError = true)
@@ -98,8 +118,11 @@ class StreamingApiCallerImplTest {
         streamingApiCaller.getReply(listOf(ChatMessageDto("test"))).test {
             val result = awaitItem()
 
-            assertTrue(result.isFailure)
-            assertEquals(result, Outcome.Failure(OpenAiError.NotAnEventStreamError))
+            assertThat(result.isFailure).isTrue()
+            assertThat(result.errorOrThrow()).isInstanceOf(KtorError::class.java)
+            assertThat((result.errorOrThrow() as KtorError).error).isInstanceOf(SSEClientException::class.java)
+            assertThat(result.errorOrThrow().message)
+                .isEqualTo("Expected Content-Type text/event-stream but was application/octet-stream")
 
             awaitComplete()
         }
@@ -107,6 +130,10 @@ class StreamingApiCallerImplTest {
 
     @Test
     fun `testOpenApiResponse, http error`() = testApplication {
+        val client = createClient {
+            install(SSE)
+        }
+
         externalServices {
             hosts(OPEN_AI_HOST) {
                 openAiSseModule(simulateHttpError = true)
@@ -122,18 +149,43 @@ class StreamingApiCallerImplTest {
         streamingApiCaller.getReply(listOf(ChatMessageDto("test"))).test {
             val result = awaitItem()
 
-            assertTrue(result.isFailure)
-            assertEquals(result, Outcome.Failure(OpenAiError.HttpError(code = 403, body = "Test message.")))
+            assertThat(result.isFailure).isTrue()
+            assertThat(result.errorOrThrow()).isInstanceOf(KtorError::class.java)
+            assertThat((result.errorOrThrow() as KtorError).error).isInstanceOf(SSEClientException::class.java)
+            assertThat(result.errorOrThrow().message).isEqualTo("Expected status code 200 but was 403")
 
             awaitComplete()
         }
     }
 
-    private fun Application.module() {
-        routing {
-            get("/") {
-                call.respondText("Hello, world!")
+    // TODO: when MockEngine supports SSE, use this solution instead and remove server test dependency
+    @Suppress("unused")
+    private fun getOpenAiSseFakeClient(): HttpClient {
+        val engine = MockEngine { request ->
+            assertEquals(HttpMethod.Post, request.method)
+            assertEquals(OPEN_AI_URL, request.url.toString())
+            assertTrue(request.headers.contains(HttpHeaders.Authorization))
+            assertTrue(request.headers[HttpHeaders.Authorization]!!.length > 7)
+            assertTrue(request.headers.contains(HttpHeaders.ContentType))
+            assertEquals("application/json", request.headers[HttpHeaders.ContentType])
+
+            val channel = ByteChannel(autoFlush = true)
+
+            runBlocking {
+                expectedOpenAiResponse.forEach {
+                    val payload = if (it.isEmpty()) "\n" else "data: $it\n"
+
+                    channel.writeStringUtf8(payload)
+                }
+
+                channel.close()
             }
+
+            respond(channel)
+        }
+
+        return HttpClient(engine) {
+            install(SSE)
         }
     }
 

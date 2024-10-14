@@ -61,7 +61,7 @@ class StreamingApiCallerImpl(
                     }
                 }
             } catch (e: Exception) {
-                emit(Outcome.Failure(KtorError(e.message.orEmpty())))
+                emit(Outcome.Failure(KtorError(e)))
             }
         }
     }
