@@ -1,4 +1,3 @@
-
 package new_structure.domain.util.model
 
 import kotlin.test.Test

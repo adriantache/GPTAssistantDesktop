@@ -7,10 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ ubuntu-latest, android ]
+    runs-on: ubuntu-latest
     permissions: write-all
 
     steps:
