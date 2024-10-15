@@ -15,19 +15,22 @@ In order to make a build of this project, simply open it in IntelliJ IDEA, doubl
 Windows or macOS, respectively. The resulting output will be in `\composeApp\build\compose\binaries\main\`. 
 
 Pending work:
-
 - [ ] Migrate all existing functionality to AACA implementation (to be expanded)
+  - [ ] Conversation history
+- [ ] Implement DI (kotlin-inject?)
 - [ ] Review all project TODOs
 - [ ] Add test coverage for all layers (to be expanded)
 - [ ] Align with newest OpenAi changes to text and image generation (to be expanded)
+  - [ ] See how we can send images
+  - [ ] Try to send persona instructions as system messages rather than user messages
 - [ ] Analytics and observability (to be expanded)
 - [ ] Ensure persona storage works as intended
 - [ ] Migrations (to be expanded)
 - [ ] Rewrite this readme!
 - [ ] Better image generation functionality (to be expanded)
+- [ ] Sort out platform layer implementation for things like navigation (to be expanded)
 
 Nice to have:
-
 - separate UI for wide desktop windows
 - voice input and TTS output
 - file input, if API allows it
