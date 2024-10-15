@@ -1,8 +1,8 @@
 package new_structure.settings
 
-import api.model.Persona
 import kotlinx.coroutines.flow.MutableStateFlow
-import settings.AppSettings
+import old_code.api.model.Persona
+import old_code.settings.AppSettings
 
 class AppSettingsFake : AppSettings {
     override var selectedPersona: Persona? = null

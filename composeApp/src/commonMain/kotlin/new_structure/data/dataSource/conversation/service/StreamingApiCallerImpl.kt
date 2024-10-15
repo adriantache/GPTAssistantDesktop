@@ -1,6 +1,5 @@
 package new_structure.data.dataSource.conversation.service
 
-import dataStore.decodeJson
 import io.ktor.client.*
 import io.ktor.client.plugins.sse.*
 import io.ktor.client.request.*
@@ -16,8 +15,9 @@ import new_structure.data.dataSource.conversation.model.OpenAiError.KtorError
 import new_structure.data.dataSource.conversation.model.OpenAiRequestDto
 import new_structure.data.dataSource.conversation.model.OpenAiStreamingResponseDto
 import new_structure.domain.util.model.Outcome
-import settings.AppSettings
-import settings.AppSettingsImpl
+import old_code.dataStore.decodeJson
+import old_code.settings.AppSettings
+import old_code.settings.AppSettingsImpl
 
 private const val OPEN_AI_URL = "https://api.openai.com/v1/chat/completions"
 

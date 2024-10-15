@@ -5,8 +5,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import migration.MigrationProcessor
 import new_structure.presentation.navigation.Navigation
+import old_code.migration.MigrationProcessor
 import theme.AppColor
 
 // TODO: migrate all data

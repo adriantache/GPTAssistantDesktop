@@ -14,8 +14,8 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import new_structure.data.dataSource.imageGeneration.model.OpenAiImageRequest
 import new_structure.data.dataSource.imageGeneration.model.OpenAiImageResponse
-import settings.AppSettings
-import settings.AppSettingsImpl
+import old_code.settings.AppSettings
+import old_code.settings.AppSettingsImpl
 
 private const val OPEN_AI_URL = "https://api.openai.com/v1/images/generations"
 

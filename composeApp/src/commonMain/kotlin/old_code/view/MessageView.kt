@@ -1,4 +1,4 @@
-package new_structure.presentation.newConversation.view
+package old_code.view
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,9 +20,8 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import gptassistant.composeapp.generated.resources.Res
 import gptassistant.composeapp.generated.resources.copy
-import new_structure.presentation.newConversation.LoadingTimer
-import new_structure.presentation.newConversation.model.MessageItem
-import new_structure.presentation.newConversation.model.RoleItem
+import old_code.api.model.ChatMessage
+import old_code.api.model.ChatRole
 import old_code.processAnnotations
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
@@ -32,11 +31,10 @@ import theme.AppColor
 @Composable
 fun MessageView(
     modifier: Modifier = Modifier,
-    message: MessageItem,
-    isLoading: Boolean = false,
-    clipboard: ClipboardManager = LocalClipboardManager.current, //todo move to usecase method
+    message: ChatMessage,
+    clipboard: ClipboardManager = LocalClipboardManager.current,
 ) {
-    val isUserMessage = message.role == RoleItem.USER
+    val isUserMessage = message.role == ChatRole.user
 
     val bgColor = if (isUserMessage) AppColor.userMessage() else AppColor.card()
     val textColor = if (isUserMessage) AppColor.onUserMessage() else AppColor.onCard()
@@ -49,21 +47,14 @@ fun MessageView(
         Column(modifier = modifier.fillMaxWidth(0.95f).background(bgColor, RoundedCornerShape(8.dp))) {
             SelectionContainer {
                 val text by remember(message) {
-                    derivedStateOf { message.message.processAnnotations() }
+                    derivedStateOf { message.content.processAnnotations() }
                 }
 
-                if (isLoading) {
-                    LoadingTimer(
-                        modifier = Modifier.fillMaxWidth().padding(16.dp),
-                        textColor = textColor,
-                    )
-                } else {
-                    Text(
-                        modifier = Modifier.fillMaxWidth().padding(16.dp),
-                        text = text,
-                        color = textColor,
-                    )
-                }
+                Text(
+                    modifier = Modifier.fillMaxWidth().padding(16.dp),
+                    text = text,
+                    color = textColor,
+                )
             }
 
             if (!isUserMessage) {
@@ -71,7 +62,7 @@ fun MessageView(
 
                 Row(
                     modifier = Modifier
-                        .clickable { clipboard.setText(AnnotatedString(message.message)) }
+                        .clickable { clipboard.setText(AnnotatedString(message.content)) }
                         .background(
                             AppColor.dark(),
                             RoundedCornerShape(bottomStart = 8.dp, topEnd = 8.dp)
