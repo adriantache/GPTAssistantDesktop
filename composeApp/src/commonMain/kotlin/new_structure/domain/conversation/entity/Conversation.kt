@@ -1,5 +1,6 @@
 package new_structure.domain.conversation.entity
 
+import new_structure.domain.conversation.entity.Role.SYSTEM
 import new_structure.domain.conversation.entity.Role.USER
 import java.util.*
 
@@ -19,7 +20,7 @@ data class Conversation(
     fun onSubmit(persona: Persona?): Conversation {
         if (!canSubmit) return this
 
-        val personaMessage = persona?.let { Message(content = it.instructions, role = USER) }
+        val personaMessage = persona?.let { Message(content = it.instructions, role = SYSTEM) }
 
         val message = Message(content = currentInput, role = USER)
         val newMessages = messages.toMutableMap().apply {

@@ -3,6 +3,7 @@ package new_structure.presentation.newConversation.presenter
 import new_structure.domain.conversation.event.ConversationEvent
 import new_structure.domain.conversation.state.ConversationState
 import new_structure.domain.conversation.ui.model.PersonaUi
+import new_structure.domain.conversation.ui.model.RoleUi
 import new_structure.domain.conversation.ui.model.RoleUi.ASSISTANT
 import new_structure.domain.conversation.ui.model.RoleUi.USER
 import new_structure.presentation.newConversation.model.MessageItem
@@ -21,6 +22,7 @@ class NewConversationPresenter {
                     role = when (it.role) {
                         USER -> RoleItem.USER
                         ASSISTANT -> RoleItem.ASSISTANT
+                        RoleUi.SYSTEM -> RoleItem.SYSTEM
                     }
                 )
             },

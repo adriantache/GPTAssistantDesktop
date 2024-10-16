@@ -45,9 +45,13 @@ of branches and PRs. All code gets merged to `master` and gets checked by the CI
 - [ ] Add test coverage for all layers (to be expanded)
 - [ ] Align with newest OpenAi changes to text and image generation (to be expanded)
   - [ ] See how we can send images
-  - [ ] Try to send persona instructions as system messages rather than user messages
+  - [x] Try to send persona instructions as system messages rather than user messages
+    - [ ] Add UI for persona instruction display and improve persona UI
 - [ ] Analytics and observability (to be expanded)
-- [ ] Ensure persona storage works as intended
+- [ ] Fix persona storage
+  - [ ] Prevent storing duplicate personas
+  - [ ] Update personas list when adding/editing one
+  - [ ] Fix persona editing
 - [ ] Migrations (to be expanded)
 - [ ] Rewrite this readme!
 - [ ] Better image generation functionality (to be expanded)
