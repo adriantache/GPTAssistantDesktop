@@ -5,7 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import new_structure.data.ConversationRepositoryImpl
+import new_structure.data.conversation.ConversationRepositoryImpl
 import new_structure.domain.addPersona.model.NewPersona
 import new_structure.domain.addPersona.state.AddPersonaState
 import new_structure.domain.conversation.data.ConversationRepository

@@ -5,7 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import new_structure.data.dataSource.imageGeneration.ImageGenerationDataSource
+import new_structure.data.conversation.dataSource.imageGeneration.ImageGenerationDataSource
 import new_structure.domain.imageGeneration.data.ImageGenerationRepository
 import new_structure.domain.imageGeneration.entity.ImagePrompt
 import new_structure.domain.imageGeneration.entity.ImageResult

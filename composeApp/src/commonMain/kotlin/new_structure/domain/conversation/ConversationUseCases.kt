@@ -5,7 +5,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import new_structure.data.ConversationRepositoryImpl
+import new_structure.data.conversation.ConversationRepositoryImpl
+import new_structure.data.conversation_history.ConversationHistoryRepositoryImpl
 import new_structure.domain.conversation.data.ConversationRepository
 import new_structure.domain.conversation.data.mapper.toData
 import new_structure.domain.conversation.data.mapper.toEntity
@@ -19,11 +20,13 @@ import new_structure.domain.conversation.state.ConversationState
 import new_structure.domain.conversation.state.ConversationState.Init
 import new_structure.domain.conversation.state.ConversationState.OpenConversation
 import new_structure.domain.conversation.ui.mapper.toUi
+import new_structure.domain.conversation_history.data.ConversationHistoryRepository
 import new_structure.domain.util.model.Event
 
 object ConversationUseCases {
     // TODO: replace with DI
     private val repository: ConversationRepository = ConversationRepositoryImpl()
+    private val historyRepository: ConversationHistoryRepository = ConversationHistoryRepositoryImpl()
     private val scope: CoroutineScope = CoroutineScope(Dispatchers.Default)
 
     private var conversation = Conversation()
@@ -36,13 +39,18 @@ object ConversationUseCases {
     private val _event: MutableStateFlow<Event<ConversationEvent>?> = MutableStateFlow(null)
     val event: StateFlow<Event<ConversationEvent>?> = _event
 
-    private fun onInit() {
-        setupConversation()
+    private fun onInit(conversationId: String?) {
+        setupConversation(conversationId)
     }
 
-    private fun setupConversation() {
+    private fun setupConversation(conversationId: String?) {
         scope.launch {
             personas = repository.getPersonas().map { it.toEntity() }
+
+            if (conversationId != null) {
+                val conversationData = historyRepository.getConversation(conversationId)
+                TODO("Populate conversation after fixing saving.")
+            }
 
             updateConversation()
         }
@@ -72,6 +80,9 @@ object ConversationUseCases {
                         updateConversation()
                     }
             }
+
+            // TODO: populate conversation title before saving
+            historyRepository.saveConversation(conversation.toData())
         }
     }
 

@@ -32,9 +32,9 @@ class HomeUseCases(
 
     private fun onChooseDestination(destination: HomeDestinationUi) {
         when (destination.toEntity()) {
-            NEW_CONVERSATION -> navigator.navigateTo(Destination.NewConversation)
-            CONVERSATION_HISTORY -> navigator.navigateTo(Destination.ConversationHistory)
-            NEW_IMAGE_GENERATION -> navigator.navigateTo(Destination.NewImageGeneration)
+            NEW_CONVERSATION -> navigator.navigateTo(Destination.ConversationDestination())
+            CONVERSATION_HISTORY -> navigator.navigateTo(Destination.ConversationHistoryDestination)
+            NEW_IMAGE_GENERATION -> navigator.navigateTo(Destination.NewImageGenerationDestination)
         }
     }
 }

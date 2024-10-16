@@ -2,7 +2,8 @@ package new_structure.data.dataSource.conversation.service
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import new_structure.data.dataSource.conversation.model.ChatMessageDto
+import new_structure.data.conversation.dataSource.conversation.model.ChatMessageDto
+import new_structure.data.conversation.dataSource.conversation.service.StreamingApiCaller
 import new_structure.domain.util.model.Outcome
 import new_structure.domain.util.model.TestError
 

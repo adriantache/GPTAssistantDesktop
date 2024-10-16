@@ -7,7 +7,7 @@ import io.ktor.http.*
 import io.ktor.utils.io.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import new_structure.data.dataSource.conversation.model.OpenAiError
+import new_structure.data.conversation.dataSource.conversation.model.OpenAiError
 import new_structure.domain.util.model.Outcome
 
 fun HttpClient.readSse(

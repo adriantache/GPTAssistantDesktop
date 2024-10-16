@@ -16,9 +16,9 @@ import androidx.compose.ui.unit.dp
 import new_structure.domain.navigation.Navigator
 import new_structure.domain.navigation.NavigatorImpl
 import new_structure.domain.navigation.model.Destination.*
+import new_structure.presentation.conversation.stateMachine.ConversationStateMachine
 import new_structure.presentation.home.stateMachine.HomeStateMachine
 import new_structure.presentation.imageGeneration.stateMachine.ImageGenerationStateMachine
-import new_structure.presentation.newConversation.stateMachine.NewConversationStateMachine
 import platformSpecific.BackHandlerHelper
 
 @Composable
@@ -33,21 +33,22 @@ fun Navigation(
 
     Column(Modifier.fillMaxSize()) {
         Text(
-            modifier = Modifier.fillMaxWidth().clickable {
-                navigator.navigateBack()
-            }.padding(8.dp).padding(end = 16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { navigator.navigateBack() }
+                .padding(8.dp)
+                .padding(end = 16.dp),
             text = "X",
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.End,
         )
 
-
-        when (currentDestination) {
-            Home -> HomeStateMachine()
-            NewConversation -> NewConversationStateMachine()
-            NewImageGeneration -> ImageGenerationStateMachine()
-            ConversationHistory -> TODO()
-            Settings -> TODO()
+        when (val destination = currentDestination) {
+            HomeDestination -> HomeStateMachine()
+            is ConversationDestination -> ConversationStateMachine(destination.conversationId)
+            NewImageGenerationDestination -> ImageGenerationStateMachine()
+            ConversationHistoryDestination -> TODO()
+            SettingsDestination -> TODO()
         }
     }
 }

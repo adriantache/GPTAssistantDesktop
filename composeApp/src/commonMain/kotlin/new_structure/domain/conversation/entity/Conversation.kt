@@ -1,5 +1,6 @@
 package new_structure.domain.conversation.entity
 
+import androidx.annotation.CheckResult
 import new_structure.domain.conversation.entity.Role.SYSTEM
 import new_structure.domain.conversation.entity.Role.USER
 import java.util.*
@@ -8,15 +9,18 @@ data class Conversation(
     val id: String = UUID.randomUUID().toString(),
     val currentInput: String = "",
     val messages: Map<String, Message> = emptyMap(), // Ok to use, as long as messages are added in the correct order.
+    // TODO: check this variable is used or useful
     val persona: Persona? = null,
 ) {
     val canResetConversation = messages.isNotEmpty()
     val canSubmit = currentInput.isNotBlank()
 
+    @CheckResult
     fun onMessageInput(input: String): Conversation {
         return this.copy(currentInput = input)
     }
 
+    @CheckResult
     fun onSubmit(persona: Persona?): Conversation {
         if (!canSubmit) return this
 
@@ -34,6 +38,7 @@ data class Conversation(
         )
     }
 
+    @CheckResult
     fun onUpdateMessage(newMessage: Message): Conversation {
         val newMessages = messages.toMutableMap().apply {
             this[newMessage.id] = newMessage

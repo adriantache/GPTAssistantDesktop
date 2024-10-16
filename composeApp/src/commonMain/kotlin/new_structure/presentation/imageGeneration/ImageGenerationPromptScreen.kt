@@ -6,8 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import new_structure.presentation.conversation.view.PromptInput
 import new_structure.presentation.imageGeneration.model.ImageGenerationPromptItem
-import new_structure.presentation.newConversation.view.PromptInput
 import new_structure.util.Strings.IMAGE_INPUT_TUTORIAL
 
 @Composable

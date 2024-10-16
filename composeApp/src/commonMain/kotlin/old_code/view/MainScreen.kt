@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import new_structure.presentation.newConversation.view.PromptInput
+import new_structure.presentation.conversation.view.PromptInput
 import old_code.api.OpenAiStreamingApiCaller
 import old_code.api.model.Conversation
 import old_code.storage.Storage

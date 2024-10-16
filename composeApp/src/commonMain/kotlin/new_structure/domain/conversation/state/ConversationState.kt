@@ -4,7 +4,7 @@ import new_structure.domain.conversation.ui.model.ConversationUi
 import new_structure.domain.conversation.ui.model.PersonaUi
 
 sealed interface ConversationState {
-    data class Init(val onInit: () -> Unit) : ConversationState
+    data class Init(val onInit: (conversationId: String?) -> Unit) : ConversationState
 
     data class OpenConversation(
         val conversation: ConversationUi,
@@ -17,7 +17,7 @@ sealed interface ConversationState {
         val onCopyMessage: (id: String) -> Unit,
 
         /**
-         * Consider other interactions
+         * TODO Consider other interactions
          * - edit previous message
          * - search Google
          * - split conversation?

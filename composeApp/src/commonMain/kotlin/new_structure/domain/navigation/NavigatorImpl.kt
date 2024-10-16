@@ -3,11 +3,11 @@ package new_structure.domain.navigation
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import new_structure.domain.navigation.model.Destination
-import new_structure.domain.navigation.model.Destination.Home
+import new_structure.domain.navigation.model.Destination.HomeDestination
 import java.util.*
 
 object NavigatorImpl : Navigator {
-    private val destinations: LinkedList<Destination> = LinkedList<Destination>().apply { add(Home) }
+    private val destinations: LinkedList<Destination> = LinkedList<Destination>().apply { add(HomeDestination) }
 
     private val _currentDestination: MutableStateFlow<Destination> = MutableStateFlow(destinations.last())
     override val currentDestination: StateFlow<Destination> = _currentDestination
