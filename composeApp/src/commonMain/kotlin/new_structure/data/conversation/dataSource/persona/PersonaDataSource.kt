@@ -6,9 +6,9 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import new_structure.data.dataStore.DataStoreHelper
+import new_structure.data.util.decodeJson
 import new_structure.domain.conversation.data.model.PersonaData
-import old_code.dataStore.DataStoreHelper
-import old_code.dataStore.decodeJson
 
 // TODO: migrate data
 private val personasKey = stringPreferencesKey("NEW_PERSONAS_KEY")

@@ -7,10 +7,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import new_structure.data.util.decodeJson
 import new_structure.domain.util.model.Outcome
 import old_code.api.model.*
 import old_code.api.sse.readSse
-import old_code.dataStore.decodeJson
 import old_code.settings.AppSettings
 import old_code.settings.AppSettingsImpl
 

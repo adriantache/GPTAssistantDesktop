@@ -11,6 +11,6 @@ class ConversationDataSource(
     private val apiConfig: StreamingApiCaller = StreamingApiCallerImpl(),
 ) {
     fun getReplyStream(conversation: ConversationData): Flow<Outcome<String>> {
-        return apiConfig.getReply(conversation.messages.map { it.toDto() })
+        return apiConfig.getReply(conversation.messages.values.map { it.toDto() })
     }
 }

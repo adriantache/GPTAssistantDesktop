@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import new_structure.data.conversation.ConversationRepositoryImpl
-import new_structure.data.conversation_history.ConversationHistoryRepositoryImpl
+import new_structure.data.conversationHistory.ConversationHistoryRepositoryImpl
 import new_structure.domain.conversation.data.ConversationRepository
 import new_structure.domain.conversation.data.mapper.toData
 import new_structure.domain.conversation.data.mapper.toEntity
@@ -20,7 +20,7 @@ import new_structure.domain.conversation.state.ConversationState
 import new_structure.domain.conversation.state.ConversationState.Init
 import new_structure.domain.conversation.state.ConversationState.OpenConversation
 import new_structure.domain.conversation.ui.mapper.toUi
-import new_structure.domain.conversation_history.data.ConversationHistoryRepository
+import new_structure.domain.conversationHistory.data.ConversationHistoryRepository
 import new_structure.domain.util.model.Event
 
 object ConversationUseCases {
@@ -49,7 +49,8 @@ object ConversationUseCases {
 
             if (conversationId != null) {
                 val conversationData = historyRepository.getConversation(conversationId)
-                TODO("Populate conversation after fixing saving.")
+                conversation = conversationData.toEntity()
+                selectedPersona = null // TODO: check how to implement this
             }
 
             updateConversation()

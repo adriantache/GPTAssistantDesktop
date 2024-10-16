@@ -10,12 +10,12 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import new_structure.data.conversation.dataSource.conversation.model.ChatMessageDto
-import new_structure.data.conversation.dataSource.conversation.model.OpenAiError.ApiKeyError
-import new_structure.data.conversation.dataSource.conversation.model.OpenAiError.KtorError
 import new_structure.data.conversation.dataSource.conversation.model.OpenAiRequestDto
 import new_structure.data.conversation.dataSource.conversation.model.OpenAiStreamingResponseDto
+import new_structure.data.error.OpenAiError.ApiKeyError
+import new_structure.data.error.OpenAiError.KtorError
+import new_structure.data.util.decodeJson
 import new_structure.domain.util.model.Outcome
-import old_code.dataStore.decodeJson
 import old_code.settings.AppSettings
 import old_code.settings.AppSettingsImpl
 

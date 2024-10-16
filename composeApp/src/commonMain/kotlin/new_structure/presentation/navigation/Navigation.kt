@@ -17,6 +17,7 @@ import new_structure.domain.navigation.Navigator
 import new_structure.domain.navigation.NavigatorImpl
 import new_structure.domain.navigation.model.Destination.*
 import new_structure.presentation.conversation.stateMachine.ConversationStateMachine
+import new_structure.presentation.conversationHistory.ConversationHistoryStateMachine
 import new_structure.presentation.home.stateMachine.HomeStateMachine
 import new_structure.presentation.imageGeneration.stateMachine.ImageGenerationStateMachine
 import platformSpecific.BackHandlerHelper
@@ -47,7 +48,7 @@ fun Navigation(
             HomeDestination -> HomeStateMachine()
             is ConversationDestination -> ConversationStateMachine(destination.conversationId)
             NewImageGenerationDestination -> ImageGenerationStateMachine()
-            ConversationHistoryDestination -> TODO()
+            ConversationHistoryDestination -> ConversationHistoryStateMachine()
             SettingsDestination -> TODO()
         }
     }

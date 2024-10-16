@@ -9,7 +9,7 @@ data class Conversation(
     val id: String = UUID.randomUUID().toString(),
     val currentInput: String = "",
     val messages: Map<String, Message> = emptyMap(), // Ok to use, as long as messages are added in the correct order.
-    // TODO: check this variable is used or useful
+    // TODO: check this variable is used or useful and if we want to store it with the rest of the conversation.
     val persona: Persona? = null,
 ) {
     val canResetConversation = messages.isNotEmpty()

@@ -13,6 +13,7 @@ import androidx.compose.ui.window.Dialog
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import theme.AppColor
 
+// TODO: let this component manage its own visibility.
 @Composable
 fun ErrorEventDialog(
     errorMessage: String,

@@ -9,3 +9,9 @@ fun Role.toData() = when (this) {
     ASSISTANT -> RoleData.ASSISTANT
     SYSTEM -> RoleData.SYSTEM
 }
+
+fun RoleData.toEntity() = when (this) {
+    RoleData.USER -> USER
+    RoleData.ASSISTANT -> ASSISTANT
+    RoleData.SYSTEM -> SYSTEM
+}

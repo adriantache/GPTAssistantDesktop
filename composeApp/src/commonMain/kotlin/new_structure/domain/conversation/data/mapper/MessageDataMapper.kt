@@ -8,3 +8,9 @@ fun Message.toData() = MessageData(
     content = content,
     role = role.toData(),
 )
+
+fun MessageData.toEntity() = Message(
+    id = id,
+    content = content,
+    role = role.toEntity()
+)

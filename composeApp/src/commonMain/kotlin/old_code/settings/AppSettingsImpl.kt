@@ -11,9 +11,9 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import new_structure.data.dataStore.DataStoreHelper
+import new_structure.data.util.decodeJson
 import old_code.api.model.Persona
-import old_code.dataStore.DataStoreHelper
-import old_code.dataStore.decodeJson
 
 private val API_KEY_KEY = stringPreferencesKey("API_KEY_KEY")
 private val FORCE_DARK_MODE_KEY = booleanPreferencesKey("FORCE_DARK_MODE_KEY")

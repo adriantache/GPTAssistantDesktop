@@ -7,18 +7,29 @@ import new_structure.domain.conversation.entity.Role
 
 fun Conversation.toData(): ConversationData {
     val messages = if (persona == null) {
-        messages.values
+        messages
     } else {
         val personaMessage = Message(
             content = persona.instructions,
             role = Role.USER,
         )
 
-        listOf(personaMessage) + messages.values
+        mapOf(personaMessage.id to personaMessage).toMutableMap().apply {
+            this.putAll(messages)
+        }
     }
 
     return ConversationData(
         id = id,
-        messages = messages.map { it.toData() },
+        messages = messages.mapValues { it.value.toData() },
+    )
+}
+
+fun ConversationData.toEntity(): Conversation {
+    return Conversation(
+        id = id,
+        currentInput = "",
+        messages = messages.mapValues { it.value.toEntity() },
+        persona = null, // TODO: fix the persona retrieving, if desired
     )
 }

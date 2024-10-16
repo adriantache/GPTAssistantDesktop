@@ -7,7 +7,8 @@ import io.ktor.http.*
 import io.ktor.utils.io.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import new_structure.data.conversation.dataSource.conversation.model.OpenAiError
+import new_structure.data.error.OpenAiError.HttpError
+import new_structure.data.error.OpenAiError.NotAnEventStreamError
 import new_structure.domain.util.model.Outcome
 
 fun HttpClient.readSse(
@@ -24,7 +25,7 @@ fun HttpClient.readSse(
 
         request.execute { response ->
             if (!response.status.isSuccess()) {
-                emit(Outcome.Failure(OpenAiError.HttpError(code = response.status.value, body = response.bodyAsText())))
+                emit(Outcome.Failure(HttpError(code = response.status.value, body = response.bodyAsText())))
                 return@execute
             }
 
@@ -32,7 +33,7 @@ fun HttpClient.readSse(
                 it.contentType == "text" && it.contentSubtype == "event-stream"
             }
             if (isEventStream != true) {
-                emit(Outcome.Failure(OpenAiError.NotAnEventStreamError))
+                emit(Outcome.Failure(NotAnEventStreamError))
                 return@execute
             }
 

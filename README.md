@@ -40,6 +40,8 @@ of branches and PRs. All code gets merged to `master` and gets checked by the CI
 
 - [ ] Migrate all existing functionality to [AACA](https://adriantache.com/architecture) implementation (to be expanded)
   - [ ] Conversation history
+  - [x] Saving conversation
+  - [ ] Getting conversation title from ChatGPT
 - [ ] Implement DI (kotlin-inject?)
 - [ ] Review all project TODOs
 - [ ] Add test coverage for all layers (to be expanded)
