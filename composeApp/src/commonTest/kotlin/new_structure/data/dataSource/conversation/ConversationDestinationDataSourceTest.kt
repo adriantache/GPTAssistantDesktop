@@ -30,8 +30,8 @@ class ConversationDestinationDataSourceTest {
         val result = conversationDataSource.getReplyStream(
             ConversationData(
                 id = "random",
-                messages = listOf(
-                    MessageData(
+                messages = mapOf(
+                    "random" to MessageData(
                         id = "random",
                         content = "testResult",
                         role = RoleData.USER,
@@ -55,8 +55,8 @@ class ConversationDestinationDataSourceTest {
         val result = conversationDataSource.getReplyStream(
             ConversationData(
                 id = "random",
-                messages = listOf(
-                    MessageData(
+                messages = mapOf(
+                    "random" to MessageData(
                         id = "random",
                         content = "testResult",
                         role = RoleData.USER,
