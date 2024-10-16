@@ -12,9 +12,32 @@ queries taking on a certain persona, and following certain instructions, leading
 
 In order to make a build of this project, simply open it in IntelliJ IDEA, double press the CTRL key and type:
 `gradle packageDistributionForCurrentOS`. This will generate either an MSI or DMG file, depending on whether you are on
-Windows or macOS, respectively. The resulting output will be in `\composeApp\build\compose\binaries\main\`. 
+Windows or macOS, respectively. The resulting output will be in `\composeApp\build\compose\binaries\main\`.
 
-Pending work:
+## Features
+
+### Personas
+
+This app allows you to add and use Personas when making prompts. Personas are instructions for an LLM which give it a
+role to play, greatly improving its output. You can add any instructions into a persona, and I encourage you to
+experiment with various instructions and tone.
+[Some more information](https://ediscoverytoday.com/2024/02/13/the-persona-pattern-in-ai-interactions-artificial-intelligence-best-practices/)
+about this pattern.
+
+### Conversation History
+
+All conversations are automatically saved locally for easy reference. On Android 10 or newer, this means that they are
+also automatically encrypted.
+
+## FAQ
+
+#### Why don't you use branches?
+
+Since I'm the only person contributing to this project, there's no reason to bother with the (*granted, minor*) overhead
+of branches and PRs. All code gets merged to `master` and gets checked by the CI when making a release.
+
+## Pending work
+
 - [ ] Migrate all existing functionality to AACA implementation (to be expanded)
   - [ ] Conversation history
 - [ ] Implement DI (kotlin-inject?)
@@ -30,9 +53,12 @@ Pending work:
 - [ ] Better image generation functionality (to be expanded)
 - [ ] Sort out platform layer implementation for things like navigation (to be expanded)
 
-Nice to have:
+### Nice to have
+
+- cloud backup of conversations
 - separate UI for wide desktop windows
 - voice input and TTS output
 - file input, if API allows it
 - better handling of markdown text
 - selector for AI/image generation provider (maybe integrate something that provides flux.pro)
+- automatic/manual conversation tagging/folders
