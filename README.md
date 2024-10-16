@@ -38,7 +38,7 @@ of branches and PRs. All code gets merged to `master` and gets checked by the CI
 
 ## Pending work
 
-- [ ] Migrate all existing functionality to AACA implementation (to be expanded)
+- [ ] Migrate all existing functionality to [AACA](https://adriantache.com/architecture) implementation (to be expanded)
   - [ ] Conversation history
 - [ ] Implement DI (kotlin-inject?)
 - [ ] Review all project TODOs
