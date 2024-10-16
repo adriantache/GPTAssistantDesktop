@@ -6,11 +6,13 @@ import androidx.compose.ui.text.AnnotatedString
 import new_structure.domain.conversation.ConversationUseCases
 import new_structure.domain.conversation.event.ConversationEvent.*
 import new_structure.domain.conversation.state.ConversationState
+import new_structure.domain.conversation.ui.model.PersonaUi
 import new_structure.presentation.conversation.NewConversationScreen
 import new_structure.presentation.conversation.presenter.ConversationPresenter
-import new_structure.presentation.conversation.view.AddPersonaDialog
 import new_structure.presentation.conversation.view.ErrorEventDialog
-import new_structure.presentation.conversation.view.PersonaSelectorDialog
+import new_structure.presentation.persona.view.AddPersonaDialog
+import new_structure.presentation.persona.view.EditPersonaDialog
+import new_structure.presentation.persona.view.PersonaSelectorDialog
 
 @Composable
 fun ConversationStateMachine(
@@ -23,6 +25,7 @@ fun ConversationStateMachine(
 
     var showPersonasEvent: PersonaSelector? by remember { mutableStateOf(null) }
     var showAddPersonaEvent by remember { mutableStateOf(false) }
+    var showEditPersonaEvent: PersonaUi? by remember { mutableStateOf(null) }
     var showErrorEvent: String? by remember { mutableStateOf(null) }
     val clipboardManager = LocalClipboardManager.current
 
@@ -44,6 +47,7 @@ fun ConversationStateMachine(
             is PersonaSelector -> showPersonasEvent = it
             AddPersona -> showAddPersonaEvent = true
             is ErrorEvent -> showErrorEvent = it.errorMessage
+            is EditPersona -> showEditPersonaEvent = it.persona
         }
     }
 
@@ -52,12 +56,18 @@ fun ConversationStateMachine(
             personas = localEvent.personas.map { presenter.getPersonaItem(it, localEvent) },
             onAddPersona = localEvent.onAddPersona,
             onClearPersona = localEvent.onClearPersona,
+            onEditPersona = localEvent.onEditPersona,
+            onDeletePersona = localEvent.onDeletePersona,
             onDismiss = { showPersonasEvent = null },
         )
     }
 
     if (showAddPersonaEvent) {
         AddPersonaDialog { showAddPersonaEvent = false }
+    }
+
+    showEditPersonaEvent?.let {
+        EditPersonaDialog(it) { showEditPersonaEvent = null }
     }
 
     showErrorEvent?.let {

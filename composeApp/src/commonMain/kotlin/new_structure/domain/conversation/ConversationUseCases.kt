@@ -30,7 +30,11 @@ object ConversationUseCases {
     private val scope: CoroutineScope = CoroutineScope(Dispatchers.Default)
 
     private var conversation = Conversation()
+
+    // TODO: move to persona use case
     private var personas = emptyList<Persona>()
+
+    // TODO: remove and use the one inside the conversation instead
     private var selectedPersona: Persona? = null
 
     private val _state: MutableStateFlow<ConversationState> = MutableStateFlow(Init(::onInit))
@@ -45,7 +49,7 @@ object ConversationUseCases {
 
     private fun setupConversation(conversationId: String?) {
         scope.launch {
-            personas = repository.getPersonas().map { it.toEntity() }
+            updatePersonas()
 
             if (conversationId != null) {
                 val conversationData = historyRepository.getConversation(conversationId)
@@ -106,26 +110,45 @@ object ConversationUseCases {
                 onClearPersona = ::onClearPersona,
                 onSelectPersona = ::onChoosePersona,
                 onDeletePersona = ::onDeletePersona,
+                onEditPersona = ::onEditPersona,
             )
         )
     }
 
+    // TODO: move to persona use case
     private fun onDeletePersona(id: String) {
         scope.launch {
             repository.deletePersona(id)
-            personas = repository.getPersonas().map { it.toEntity() }
+            updatePersonas()
 
             updateConversation()
         }
     }
 
+    // TODO: move to persona use case
+    private fun onEditPersona(id: String) {
+        // TODO: implement some safety here, in case there is a legitimate reason why the persona cannot be found
+        val persona = personas.find { it.id == id }!!
+
+        _event.value = Event(ConversationEvent.EditPersona(persona.toUi()))
+        updatePersonas()
+    }
+
+    private fun updatePersonas() {
+        scope.launch {
+            personas = repository.getPersonas().map { it.toEntity() }
+        }
+    }
+
     private fun onChoosePersona(id: String) {
-        selectedPersona = personas.first { it.id == id }
+        selectedPersona = personas.find { it.id == id }
         updateConversation()
     }
 
+    // TODO: move to persona use case
     private fun onAddPersona() {
         _event.value = Event(ConversationEvent.AddPersona)
+        updatePersonas()
     }
 
     private fun onClearPersona() {

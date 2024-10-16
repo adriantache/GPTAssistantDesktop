@@ -1,4 +1,4 @@
-package new_structure.domain.addPersona.model
+package new_structure.domain.persona.model
 
 import new_structure.domain.conversation.entity.Persona
 

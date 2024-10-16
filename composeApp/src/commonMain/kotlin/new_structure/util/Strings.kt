@@ -9,7 +9,8 @@ object Strings {
     const val PERSONA_SELECTOR_TITLE = "Select persona:"
     const val PERSONA_SELECTOR_NO_PERSONA = "None"
     const val PERSONA_SELECTOR_NO_PERSONA_SELECTED = "No persona"
-    const val PERSONA_SELECTOR_EDIT_PERSONA = "Edit persona"
+    const val PERSONA_SELECTOR_EDIT_PERSONA = "Edit"
+    const val PERSONA_SELECTOR_DELETE_PERSONA = "Delete"
     const val PERSONA_SELECTOR_ADD_PERSONA = "Add persona"
 
     const val ADD_PERSONA_TITLE = "Add persona"

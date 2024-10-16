@@ -42,6 +42,10 @@ of branches and PRs. All code gets merged to `master` and gets checked by the CI
   - [ ] Conversation history
   - [x] Saving conversation
   - [ ] Getting conversation title from ChatGPT
+  - [ ] Settings
+    - [ ] Clearing the API key
+    - [ ] Disable saving of conversations
+    - [ ] Force dark mode?
 - [ ] Implement DI (kotlin-inject?)
 - [ ] Review all project TODOs
 - [ ] Add test coverage for all layers (to be expanded)
@@ -52,18 +56,19 @@ of branches and PRs. All code gets merged to `master` and gets checked by the CI
 - [ ] Analytics and observability (to be expanded)
 - [ ] Fix persona storage
   - [ ] Prevent storing duplicate personas
-  - [ ] Update personas list when adding/editing one
+  - [x] Update personas list when adding/editing/deleting one
   - [ ] Fix persona editing
 - [ ] Migrations (to be expanded)
 - [ ] Rewrite this readme!
 - [ ] Better image generation functionality (to be expanded)
 - [ ] Sort out platform layer implementation for things like navigation (to be expanded)
+- [ ] Error reporting! (and some tests on desktop)
 
 ### Nice to have
 
 - cloud backup of conversations
 - separate UI for wide desktop windows
-- voice input and TTS output
+- voice input and TTS output + nice UI
 - file input, if API allows it
 - better handling of markdown text
 - selector for AI/image generation provider (maybe integrate something that provides flux.pro)

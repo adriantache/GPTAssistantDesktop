@@ -38,6 +38,9 @@ object AppColor {
     fun onCard(): Color = onBackground()
 
     @Composable
+    fun error(): Color = if (isDarkTheme()) Color(0xffe57373) else Color(0xffc62828)
+
+    @Composable
     fun dark(): Color = if (isDarkTheme()) Color.White else Color.Black
 
     @Composable
@@ -47,6 +50,12 @@ object AppColor {
     fun buttonColors() = ButtonDefaults.buttonColors(
         backgroundColor = userMessage(),
         contentColor = onUserMessage(),
+    )
+
+    @Composable
+    fun errorButtonColors() = ButtonDefaults.buttonColors(
+        backgroundColor = error(),
+        contentColor = Color.White,
     )
 
     @Composable

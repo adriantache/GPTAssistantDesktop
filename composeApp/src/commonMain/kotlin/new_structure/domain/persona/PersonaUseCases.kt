@@ -1,4 +1,4 @@
-package new_structure.domain.addPersona
+package new_structure.domain.persona
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -6,12 +6,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import new_structure.data.conversation.ConversationRepositoryImpl
-import new_structure.domain.addPersona.model.NewPersona
-import new_structure.domain.addPersona.state.AddPersonaState
 import new_structure.domain.conversation.data.ConversationRepository
 import new_structure.domain.conversation.data.mapper.toData
+import new_structure.domain.persona.model.NewPersona
+import new_structure.domain.persona.state.AddPersonaState
 
-object AddPersonaUseCase {
+object PersonaUseCases {
     private val repository: ConversationRepository = ConversationRepositoryImpl()
     private val scope: CoroutineScope = CoroutineScope(Dispatchers.Default)
 

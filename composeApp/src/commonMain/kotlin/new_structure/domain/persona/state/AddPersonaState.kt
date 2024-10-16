@@ -1,4 +1,4 @@
-package new_structure.domain.addPersona.state
+package new_structure.domain.persona.state
 
 sealed interface AddPersonaState {
     data class Init(val onInit: () -> Unit) : AddPersonaState

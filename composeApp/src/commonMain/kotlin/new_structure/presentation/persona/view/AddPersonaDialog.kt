@@ -1,4 +1,4 @@
-package new_structure.presentation.conversation.view
+package new_structure.presentation.persona.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -15,8 +15,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import new_structure.domain.addPersona.AddPersonaUseCase
-import new_structure.domain.addPersona.state.AddPersonaState
+import new_structure.domain.persona.PersonaUseCases
+import new_structure.domain.persona.state.AddPersonaState
 import new_structure.util.Strings.ADD_PERSONA_DESCRIPTION_LABEL
 import new_structure.util.Strings.ADD_PERSONA_NAME_LABEL
 import new_structure.util.Strings.ADD_PERSONA_SAVE
@@ -25,10 +25,10 @@ import theme.AppColor
 
 @Composable
 fun AddPersonaDialog(
-    addPersonaUseCase: AddPersonaUseCase = AddPersonaUseCase,
+    personaUseCase: PersonaUseCases = PersonaUseCases,
     onDismiss: () -> Unit,
 ) {
-    val state by addPersonaUseCase.state.collectAsState()
+    val state by personaUseCase.state.collectAsState()
 
     LaunchedEffect(state) {
         (state as? AddPersonaState.Init)?.onInit?.invoke()

@@ -1,4 +1,4 @@
-package new_structure.domain.addPersona.ui
+package new_structure.domain.persona.ui
 
 data class NewPersonaUi(
     val name: String,
