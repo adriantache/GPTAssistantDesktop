@@ -16,6 +16,7 @@ import new_structure.domain.conversation.entity.Persona
 import new_structure.domain.conversation.entity.Role
 import new_structure.domain.conversation.event.ConversationEvent
 import new_structure.domain.conversation.event.ConversationEvent.CopyToClipboard
+import new_structure.domain.conversation.event.ConversationEvent.ShowPersonaSelector
 import new_structure.domain.conversation.state.ConversationState
 import new_structure.domain.conversation.state.ConversationState.Init
 import new_structure.domain.conversation.state.ConversationState.OpenConversation
@@ -31,12 +32,6 @@ object ConversationUseCases {
 
     private var conversation = Conversation()
 
-    // TODO: move to persona use case
-    private var personas = emptyList<Persona>()
-
-    // TODO: remove and use the one inside the conversation instead
-    private var selectedPersona: Persona? = null
-
     private val _state: MutableStateFlow<ConversationState> = MutableStateFlow(Init(::onInit))
     val state: StateFlow<ConversationState> = _state
 
@@ -49,12 +44,9 @@ object ConversationUseCases {
 
     private fun setupConversation(conversationId: String?) {
         scope.launch {
-            updatePersonas()
-
             if (conversationId != null) {
                 val conversationData = historyRepository.getConversation(conversationId)
                 conversation = conversationData.toEntity()
-                selectedPersona = null // TODO: check how to implement this
             }
 
             updateConversation()
@@ -67,7 +59,7 @@ object ConversationUseCases {
     }
 
     private fun onSubmitMessage() {
-        conversation = conversation.onSubmit(selectedPersona)
+        conversation = conversation.onSubmit()
 
         scope.launch {
             var replyMessage = Message(content = "", role = Role.ASSISTANT)
@@ -103,56 +95,11 @@ object ConversationUseCases {
     }
 
     private fun onSelectPersona() {
-        _event.value = Event(
-            ConversationEvent.PersonaSelector(
-                personas = personas.map { it.toUi() },
-                onAddPersona = ::onAddPersona,
-                onClearPersona = ::onClearPersona,
-                onSelectPersona = ::onChoosePersona,
-                onDeletePersona = ::onDeletePersona,
-                onEditPersona = ::onEditPersona,
-            )
-        )
+        _event.value = Event(ShowPersonaSelector)
     }
 
-    // TODO: move to persona use case
-    private fun onDeletePersona(id: String) {
-        scope.launch {
-            repository.deletePersona(id)
-            updatePersonas()
-
-            updateConversation()
-        }
-    }
-
-    // TODO: move to persona use case
-    private fun onEditPersona(id: String) {
-        // TODO: implement some safety here, in case there is a legitimate reason why the persona cannot be found
-        val persona = personas.find { it.id == id }!!
-
-        _event.value = Event(ConversationEvent.EditPersona(persona.toUi()))
-        updatePersonas()
-    }
-
-    private fun updatePersonas() {
-        scope.launch {
-            personas = repository.getPersonas().map { it.toEntity() }
-        }
-    }
-
-    private fun onChoosePersona(id: String) {
-        selectedPersona = personas.find { it.id == id }
-        updateConversation()
-    }
-
-    // TODO: move to persona use case
-    private fun onAddPersona() {
-        _event.value = Event(ConversationEvent.AddPersona)
-        updatePersonas()
-    }
-
-    private fun onClearPersona() {
-        selectedPersona = null
+    internal fun onSetPersona(persona: Persona?) {
+        conversation = conversation.onSetPersona(persona)
         updateConversation()
     }
 
@@ -165,7 +112,6 @@ object ConversationUseCases {
                 onSubmitMessage = ::onSubmitMessage,
                 onResetConversation = ::onResetConversation,
                 onCopyMessage = ::onCopyMessage,
-                selectedPersona = selectedPersona?.toUi(),
                 onSelectPersona = ::onSelectPersona,
             )
         )

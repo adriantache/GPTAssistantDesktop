@@ -14,6 +14,7 @@ object Strings {
     const val PERSONA_SELECTOR_ADD_PERSONA = "Add persona"
 
     const val ADD_PERSONA_TITLE = "Add persona"
+    const val EDIT_PERSONA_TITLE = "Edit persona"
     const val ADD_PERSONA_NAME_LABEL = "Persona name"
     const val ADD_PERSONA_DESCRIPTION_LABEL = "Persona instructions"
     const val ADD_PERSONA_SAVE = "Save"

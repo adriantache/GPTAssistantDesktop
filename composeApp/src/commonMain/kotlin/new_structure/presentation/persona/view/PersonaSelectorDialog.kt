@@ -13,10 +13,13 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import new_structure.presentation.conversation.model.PersonaItem
+import new_structure.presentation.persona.model.PersonaItem
+import new_structure.presentation.shared.CloseRow
 import new_structure.util.Strings.PERSONA_SELECTOR_ADD_PERSONA
 import new_structure.util.Strings.PERSONA_SELECTOR_DELETE_PERSONA
 import new_structure.util.Strings.PERSONA_SELECTOR_EDIT_PERSONA
@@ -26,11 +29,12 @@ import theme.AppColor
 
 @Composable
 fun PersonaSelectorDialog(
-    personas: List<PersonaItem>,
+    personas: List<PersonaItem>?,
     onAddPersona: () -> Unit,
     onClearPersona: () -> Unit,
     onEditPersona: (id: String) -> Unit,
     onDeletePersona: (id: String) -> Unit,
+    onSelectPersona: (id: String) -> Unit,
     onDismiss: () -> Unit,
 ) {
     Dialog(onDismissRequest = onDismiss) {
@@ -42,6 +46,10 @@ fun PersonaSelectorDialog(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             item {
+                CloseRow(onDismiss)
+            }
+
+            item {
                 Text(
                     text = PERSONA_SELECTOR_TITLE,
                     style = MaterialTheme.typography.subtitle1,
@@ -49,61 +57,28 @@ fun PersonaSelectorDialog(
                 )
             }
 
-            item {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            onClearPersona()
-                            onDismiss()
-                        }
-                        .background(AppColor.background(), RoundedCornerShape(16.dp)).padding(16.dp),
-                ) {
-                    Text(
-                        style = MaterialTheme.typography.body1.copy(fontStyle = FontStyle.Italic),
-                        text = PERSONA_SELECTOR_NO_PERSONA,
-                        color = AppColor.onCard(),
-                    )
+            if (personas == null) {
+                item {
+                    PersonaNoItems()
                 }
-            }
-
-            items(items = personas, key = { it.id }) { persona ->
-                Row(
-                    modifier = Modifier.background(AppColor.background(), RoundedCornerShape(16.dp)).padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Box(modifier = Modifier
-                        .clickable {
-                            persona.onSelect()
-                            onDismiss()
-                        }
-                        .weight(1f)
-                        .padding(16.dp)
+            } else {
+                item {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { onClearPersona() }
+                            .background(AppColor.background(), RoundedCornerShape(16.dp)).padding(16.dp),
                     ) {
                         Text(
-                            text = persona.name,
-                            style = MaterialTheme.typography.body1,
+                            style = MaterialTheme.typography.body1.copy(fontStyle = FontStyle.Italic),
+                            text = PERSONA_SELECTOR_NO_PERSONA,
                             color = AppColor.onCard(),
                         )
                     }
+                }
 
-                    Spacer(Modifier.width(8.dp))
-
-                    Button(
-                        onClick = { onEditPersona(persona.id) },
-                        colors = AppColor.buttonColors(),
-                    ) {
-                        Text(PERSONA_SELECTOR_EDIT_PERSONA)
-                    }
-
-                    Spacer(Modifier.width(8.dp))
-
-                    Button(
-                        onClick = { onDeletePersona(persona.id) },
-                        colors = AppColor.errorButtonColors(),
-                    ) {
-                        Text(PERSONA_SELECTOR_DELETE_PERSONA)
-                    }
+                items(items = personas, key = { it.id }) { persona ->
+                    PersonaListItem(persona, onSelectPersona, onEditPersona, onDeletePersona)
                 }
             }
 
@@ -111,7 +86,6 @@ fun PersonaSelectorDialog(
                 Button(
                     onClick = {
                         onAddPersona()
-                        onDismiss()
                     },
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = AppColor.userMessage(),
@@ -121,6 +95,69 @@ fun PersonaSelectorDialog(
                     Text(text = PERSONA_SELECTOR_ADD_PERSONA)
                 }
             }
+        }
+    }
+}
+
+// TODO: make this prettier and add some instructions.
+@Composable
+private fun PersonaNoItems() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(AppColor.background(), RoundedCornerShape(16.dp)).padding(16.dp),
+    ) {
+        Text(
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center,
+            text = "You have no personas, why not add one!",
+        )
+    }
+}
+
+@Composable
+private fun PersonaListItem(
+    persona: PersonaItem,
+    onSelectPersona: (String) -> Unit,
+    onEditPersona: (id: String) -> Unit,
+    onDeletePersona: (id: String) -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .background(AppColor.background(), RoundedCornerShape(16.dp))
+            .clickable { onSelectPersona(persona.id) }
+            .clip(RoundedCornerShape(16.dp))
+            .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .padding(16.dp)
+        ) {
+            Text(
+                text = persona.name,
+                style = MaterialTheme.typography.body1,
+                color = AppColor.onCard(),
+            )
+        }
+
+        Spacer(Modifier.width(8.dp))
+
+        Button(
+            onClick = { onEditPersona(persona.id) },
+            colors = AppColor.buttonColors(),
+        ) {
+            Text(PERSONA_SELECTOR_EDIT_PERSONA)
+        }
+
+        Spacer(Modifier.width(8.dp))
+
+        Button(
+            onClick = { onDeletePersona(persona.id) },
+            colors = AppColor.errorButtonColors(),
+        ) {
+            Text(PERSONA_SELECTOR_DELETE_PERSONA)
         }
     }
 }

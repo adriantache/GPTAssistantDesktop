@@ -9,7 +9,6 @@ data class Conversation(
     val id: String = UUID.randomUUID().toString(),
     val currentInput: String = "",
     val messages: Map<String, Message> = emptyMap(), // Ok to use, as long as messages are added in the correct order.
-    // TODO: check this variable is used or useful and if we want to store it with the rest of the conversation.
     val persona: Persona? = null,
 ) {
     val canResetConversation = messages.isNotEmpty()
@@ -21,7 +20,7 @@ data class Conversation(
     }
 
     @CheckResult
-    fun onSubmit(persona: Persona?): Conversation {
+    fun onSubmit(): Conversation {
         if (!canSubmit) return this
 
         val personaMessage = persona?.let { Message(content = it.instructions, role = SYSTEM) }
@@ -45,5 +44,10 @@ data class Conversation(
         }
 
         return this.copy(messages = newMessages)
+    }
+
+    @CheckResult
+    fun onSetPersona(persona: Persona?): Conversation {
+        return this.copy(persona = persona)
     }
 }

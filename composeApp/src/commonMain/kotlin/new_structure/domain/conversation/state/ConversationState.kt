@@ -1,7 +1,6 @@
 package new_structure.domain.conversation.state
 
 import new_structure.domain.conversation.ui.model.ConversationUi
-import new_structure.domain.conversation.ui.model.PersonaUi
 
 sealed interface ConversationState {
     data class Init(val onInit: (conversationId: String?) -> Unit) : ConversationState
@@ -12,9 +11,8 @@ sealed interface ConversationState {
         val onMessageInput: (String) -> Unit,
         val onSubmitMessage: () -> Unit,
         val onResetConversation: () -> Unit,
-        val selectedPersona: PersonaUi?,
-        val onSelectPersona: () -> Unit,
         val onCopyMessage: (id: String) -> Unit,
+        val onSelectPersona: () -> Unit,
 
         /**
          * TODO Consider other interactions

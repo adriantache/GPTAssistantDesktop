@@ -39,8 +39,10 @@ of branches and PRs. All code gets merged to `master` and gets checked by the CI
 ## Pending work
 
 - [ ] Migrate all existing functionality to [AACA](https://adriantache.com/architecture) implementation (to be expanded)
-  - [ ] Conversation history
+  - [x] Conversation history
   - [x] Saving conversation
+  - [x] Persona selection
+  - [ ] Storing persona as part of conversation
   - [ ] Getting conversation title from ChatGPT
   - [ ] Settings
     - [ ] Clearing the API key
@@ -57,7 +59,7 @@ of branches and PRs. All code gets merged to `master` and gets checked by the CI
 - [ ] Fix persona storage
   - [ ] Prevent storing duplicate personas
   - [x] Update personas list when adding/editing/deleting one
-  - [ ] Fix persona editing
+  - [x] Fix persona editing
 - [ ] Migrations (to be expanded)
 - [ ] Rewrite this readme!
 - [ ] Better image generation functionality (to be expanded)
@@ -67,6 +69,7 @@ of branches and PRs. All code gets merged to `master` and gets checked by the CI
 ### Nice to have
 
 - cloud backup of conversations
+- better UI/UX, animations, etc.
 - separate UI for wide desktop windows
 - voice input and TTS output + nice UI
 - file input, if API allows it

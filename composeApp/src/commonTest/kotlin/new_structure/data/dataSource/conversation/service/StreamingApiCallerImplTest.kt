@@ -14,8 +14,8 @@ import io.ktor.server.testing.*
 import io.ktor.utils.io.*
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
-import new_structure.data.conversation.dataSource.conversation.model.ChatMessageDto
-import new_structure.data.conversation.dataSource.conversation.service.StreamingApiCallerImpl
+import new_structure.data.conversation.dataSource.model.ChatMessageDto
+import new_structure.data.conversation.dataSource.service.StreamingApiCallerImpl
 import new_structure.data.error.OpenAiError.ApiKeyError
 import new_structure.data.error.OpenAiError.KtorError
 import new_structure.settings.AppSettingsFake

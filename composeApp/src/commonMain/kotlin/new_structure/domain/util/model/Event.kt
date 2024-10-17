@@ -1,6 +1,6 @@
 package new_structure.domain.util.model
 
-class Event<T>(initialValue: T) {
+class Event<T>(private val initialValue: T) {
     private var isConsumed = false
 
     val value: T? = initialValue
@@ -12,4 +12,8 @@ class Event<T>(initialValue: T) {
                 field
             }
         }
+
+    override fun toString(): String {
+        return "Event: $initialValue (consumed = $isConsumed)"
+    }
 }

@@ -1,7 +1,7 @@
 package new_structure.domain.conversation.data.mapper
 
-import new_structure.domain.conversation.data.model.PersonaData
 import new_structure.domain.conversation.entity.Persona
+import new_structure.domain.persona.data.model.PersonaData
 
 fun Persona.toData() = PersonaData(
     id = id,

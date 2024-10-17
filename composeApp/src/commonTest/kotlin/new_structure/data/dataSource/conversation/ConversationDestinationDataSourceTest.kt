@@ -2,7 +2,7 @@ package new_structure.data.dataSource.conversation
 
 import app.cash.turbine.test
 import kotlinx.coroutines.test.runTest
-import new_structure.data.conversation.dataSource.conversation.ConversationDataSource
+import new_structure.data.conversation.dataSource.ConversationDataSource
 import new_structure.data.dataSource.conversation.service.StreamingApiCallerFake
 import new_structure.domain.conversation.data.model.ConversationData
 import new_structure.domain.conversation.data.model.MessageData
