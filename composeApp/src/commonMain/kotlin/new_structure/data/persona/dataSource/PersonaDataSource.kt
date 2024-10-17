@@ -17,7 +17,7 @@ import new_structure.domain.persona.data.model.PersonaData
 private val personasKey = stringPreferencesKey("NEW_PERSONAS_KEY")
 
 class PersonaDataSource(
-    private val store: DataStore<Preferences> = DataStoreHelper.getInstance(),
+    private val store: DataStore<Preferences> = DataStoreHelper.instance,
     private val json: Json = Json { encodeDefaults = true },
 ) {
     private suspend fun getPersonaItems(): Map<String, PersonaDataItem> {

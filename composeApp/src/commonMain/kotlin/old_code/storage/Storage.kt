@@ -17,7 +17,7 @@ import kotlin.collections.set
 private val conversationsKey = stringPreferencesKey("CONVERSATIONS_KEY")
 
 class Storage private constructor(
-    private val store: DataStore<Preferences> = DataStoreHelper.getInstance(),
+    private val store: DataStore<Preferences> = DataStoreHelper.instance,
     private val json: Json = Json { encodeDefaults = true },
     private val scope: CoroutineScope = CoroutineScope(Dispatchers.IO), // No need to link this to UI lifecycle.
 ) {

@@ -21,7 +21,7 @@ private val PERSONAS_KEY = stringPreferencesKey("PERSONAS_KEY")
 
 // TODO: move to DI and revert constructor
 object AppSettingsImpl : AppSettings {
-    private val store: DataStore<Preferences> = DataStoreHelper.getInstance()
+    private val store: DataStore<Preferences> = DataStoreHelper.instance
     private val json: Json = Json { encodeDefaults = true }
     private val scope: CoroutineScope = CoroutineScope(Dispatchers.IO) // No need to link this to UI lifecycle.
 

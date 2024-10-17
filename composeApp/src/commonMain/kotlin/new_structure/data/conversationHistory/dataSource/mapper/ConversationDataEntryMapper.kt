@@ -2,12 +2,14 @@ package new_structure.data.conversationHistory.dataSource.mapper
 
 import new_structure.data.conversationHistory.dataSource.model.ConversationDataEntry
 import new_structure.data.conversationHistory.dataSource.model.MessageDataEntry
+import new_structure.data.conversationHistory.dataSource.model.PersonaDataEntry
 import new_structure.data.conversationHistory.dataSource.model.RoleDataEntry
 import new_structure.domain.conversation.data.model.ConversationData
 import new_structure.domain.conversation.data.model.MessageData
 import new_structure.domain.conversation.data.model.RoleData
 import new_structure.domain.conversation.data.model.RoleData.*
 import new_structure.domain.conversationHistory.data.model.ConversationHistoryData
+import new_structure.domain.persona.data.model.PersonaData
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -16,12 +18,19 @@ fun ConversationData.toDataEntry() = ConversationDataEntry(
     id = id,
     createdAt = Instant.now().toEpochMilli(), // Always update timestamp when saving it.
     messages = messages.mapValues { it.value.toDataEntry() },
+    persona = persona?.toDataEntry(),
 )
 
 fun MessageData.toDataEntry() = MessageDataEntry(
     id = id,
     content = content,
     role = role.toDataEntry(),
+)
+
+fun PersonaData.toDataEntry() = PersonaDataEntry(
+    id = id,
+    name = name,
+    instructions = instructions
 )
 
 fun RoleData.toDataEntry() = when (this) {
@@ -33,12 +42,19 @@ fun RoleData.toDataEntry() = when (this) {
 fun ConversationDataEntry.toData() = ConversationData(
     id = id,
     messages = messages.mapValues { it.value.toData() },
+    persona = persona?.toData(),
 )
 
 fun MessageDataEntry.toData() = MessageData(
     id = id,
     content = content,
     role = role.toData(),
+)
+
+fun PersonaDataEntry.toData() = PersonaData(
+    id = id,
+    name = name,
+    instructions = instructions
 )
 
 fun RoleDataEntry.toData() = when (this) {

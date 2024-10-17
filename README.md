@@ -39,10 +39,10 @@ of branches and PRs. All code gets merged to `master` and gets checked by the CI
 ## Pending work
 
 - [ ] Migrate all existing functionality to [AACA](https://adriantache.com/architecture) implementation (to be expanded)
-  - [x] Conversation history
+  - [ ] Conversation history
   - [x] Saving conversation
   - [x] Persona selection
-  - [ ] Storing persona as part of conversation
+  - [x] Storing persona as part of conversation
   - [ ] Getting conversation title from ChatGPT
   - [ ] Settings
     - [ ] Clearing the API key

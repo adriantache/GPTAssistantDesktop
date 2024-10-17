@@ -23,7 +23,7 @@ import java.time.LocalDateTime
 private val conversationsKey = stringPreferencesKey("CONVERSATIONS_KEY_NEW")
 
 class ConversationHistoryDataSourceImpl private constructor(
-    private val store: DataStore<Preferences> = DataStoreHelper.getInstance(),
+    private val store: DataStore<Preferences> = DataStoreHelper.instance,
     private val json: Json = Json { encodeDefaults = true },
 ) : ConversationHistoryDataSource {
     private val cacheFlow = store.data.map { preferences ->
@@ -52,7 +52,7 @@ class ConversationHistoryDataSourceImpl private constructor(
     ): Outcome.Success<List<ConversationHistoryData>?> {
         val conversations = cacheFlow.first()
 
-        return Outcome.Success(conversations?.values?.map { it.toHistoryData() })
+        return Outcome.Success(conversations?.values?.map { it.toHistoryData() }?.reversed())
     }
 
     override suspend fun deleteConversation(id: String) {
