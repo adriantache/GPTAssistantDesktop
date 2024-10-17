@@ -39,27 +39,27 @@ of branches and PRs. All code gets merged to `master` and gets checked by the CI
 ## Pending work
 
 - [ ] Migrate all existing functionality to [AACA](https://adriantache.com/architecture) implementation (to be expanded)
-  - [ ] Conversation history
-  - [x] Saving conversation
-  - [x] Persona selection
-  - [x] Storing persona as part of conversation
-  - [ ] Getting conversation title from ChatGPT
-  - [ ] Settings
-    - [ ] Clearing the API key
-    - [ ] Disable saving of conversations
-    - [ ] Force dark mode?
+    - [ ] Conversation history
+    - [x] Saving conversation
+    - [x] Persona selection
+    - [x] Storing persona as part of conversation
+    - [ ] Getting conversation title from ChatGPT
+    - [ ] Settings
+        - [ ] Clearing the API key
+        - [ ] Disable saving of conversations
+        - [ ] Force dark mode?
 - [ ] Implement DI (kotlin-inject?)
 - [ ] Review all project TODOs
 - [ ] Add test coverage for all layers (to be expanded)
 - [ ] Align with newest OpenAi changes to text and image generation (to be expanded)
-  - [ ] See how we can send images
-  - [x] Try to send persona instructions as system messages rather than user messages
-    - [ ] Add UI for persona instruction display and improve persona UI
+    - [ ] See how we can send images
+    - [x] Try to send persona instructions as system messages rather than user messages
+        - [ ] Add UI for persona instruction display and improve persona UI
 - [ ] Analytics and observability (to be expanded)
 - [ ] Fix persona storage
-  - [ ] Prevent storing duplicate personas
-  - [x] Update personas list when adding/editing/deleting one
-  - [x] Fix persona editing
+    - [ ] Prevent storing duplicate personas
+    - [x] Update personas list when adding/editing/deleting one
+    - [x] Fix persona editing
 - [ ] Migrations (to be expanded)
 - [ ] Rewrite this readme!
 - [ ] Better image generation functionality (to be expanded)
@@ -76,3 +76,4 @@ of branches and PRs. All code gets merged to `master` and gets checked by the CI
 - better handling of markdown text
 - selector for AI/image generation provider (maybe integrate something that provides flux.pro)
 - automatic/manual conversation tagging/folders
+- let chatgpt suggest/improve the prompt for a persona
