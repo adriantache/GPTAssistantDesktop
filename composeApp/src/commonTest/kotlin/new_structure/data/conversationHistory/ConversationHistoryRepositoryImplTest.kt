@@ -1,0 +1,3 @@
+package new_structure.data.conversationHistory
+
+class ConversationHistoryRepositoryImplTest

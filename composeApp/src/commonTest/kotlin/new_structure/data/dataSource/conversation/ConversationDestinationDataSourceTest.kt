@@ -3,6 +3,7 @@ package new_structure.data.dataSource.conversation
 import app.cash.turbine.test
 import kotlinx.coroutines.test.runTest
 import new_structure.data.conversation.dataSource.ConversationDataSource
+import new_structure.data.conversation.dataSource.ConversationDataSourceImpl
 import new_structure.data.dataSource.conversation.service.StreamingApiCallerFake
 import new_structure.domain.conversation.data.model.ConversationData
 import new_structure.domain.conversation.data.model.MessageData
@@ -20,7 +21,7 @@ class ConversationDestinationDataSourceTest {
     @BeforeTest
     fun setUp() {
         streamingApiCallerFake = StreamingApiCallerFake()
-        conversationDataSource = ConversationDataSource(streamingApiCallerFake)
+        conversationDataSource = ConversationDataSourceImpl(streamingApiCallerFake)
     }
 
     @Test
@@ -37,6 +38,7 @@ class ConversationDestinationDataSourceTest {
                         role = RoleData.USER,
                     )
                 ),
+                persona = null,
             )
         )
 
@@ -62,6 +64,7 @@ class ConversationDestinationDataSourceTest {
                         role = RoleData.USER,
                     )
                 ),
+                persona = null,
             )
         )
 
