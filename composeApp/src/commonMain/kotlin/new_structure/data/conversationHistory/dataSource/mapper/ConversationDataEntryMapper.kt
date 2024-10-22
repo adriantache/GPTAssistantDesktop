@@ -1,5 +1,6 @@
 package new_structure.data.conversationHistory.dataSource.mapper
 
+import androidx.annotation.VisibleForTesting
 import new_structure.data.conversationHistory.dataSource.model.ConversationDataEntry
 import new_structure.data.conversationHistory.dataSource.model.MessageDataEntry
 import new_structure.data.conversationHistory.dataSource.model.PersonaDataEntry
@@ -14,9 +15,12 @@ import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 
-fun ConversationData.toDataEntry() = ConversationDataEntry(
+fun ConversationData.toDataEntry(
+    @VisibleForTesting
+    createdAt: Long = Instant.now().toEpochMilli(), // Always update timestamp when saving it.
+) = ConversationDataEntry(
     id = id,
-    createdAt = Instant.now().toEpochMilli(), // Always update timestamp when saving it.
+    createdAt = createdAt,
     messages = messages.mapValues { it.value.toDataEntry() },
     persona = persona?.toDataEntry(),
 )

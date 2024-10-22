@@ -9,7 +9,7 @@ import new_structure.domain.util.model.Outcome
 import java.time.LocalDateTime
 
 class ConversationHistoryRepositoryImpl(
-    private val conversationHistoryDataSource: ConversationHistoryDataSource = ConversationHistoryDataSourceImpl.INSTANCE,
+    private val conversationHistoryDataSource: ConversationHistoryDataSource = ConversationHistoryDataSourceImpl(),
 ) : ConversationHistoryRepository {
     override suspend fun getConversations(
         searchText: String?,

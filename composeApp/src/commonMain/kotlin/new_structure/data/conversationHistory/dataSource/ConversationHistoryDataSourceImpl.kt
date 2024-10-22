@@ -22,7 +22,7 @@ import java.time.LocalDateTime
 // TODO: Migrate data
 private val conversationsKey = stringPreferencesKey("CONVERSATIONS_KEY_NEW")
 
-class ConversationHistoryDataSourceImpl private constructor(
+class ConversationHistoryDataSourceImpl(
     private val store: DataStore<Preferences> = DataStoreHelper.instance,
     private val json: Json = Json { encodeDefaults = true },
 ) : ConversationHistoryDataSource {
@@ -82,9 +82,5 @@ class ConversationHistoryDataSourceImpl private constructor(
             key = conversationsKey,
             json = json,
         )
-    }
-
-    companion object {
-        val INSTANCE = ConversationHistoryDataSourceImpl()
     }
 }
