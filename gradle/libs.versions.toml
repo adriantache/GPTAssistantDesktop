@@ -1,7 +1,8 @@
 [versions]
+accompanistPermissions = "0.36.0"
 agp = "8.5.0" # https://kotlinlang.org/docs/multiplatform-compatibility-guide.html
 android-compileSdk = "34"
-android-minSdk = "24"
+android-minSdk = "26"
 android-targetSdk = "34"
 androidx-activityCompose = "1.9.3"
 appdirs = "1.2.2"
@@ -19,6 +20,7 @@ multiplatformSettings = "1.1.1"
 turbine = "1.2.0"
 
 [libraries]
+accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
 androidx-datastore-preferences-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastorePreferencesCore" }
 appdirs = { module = "net.harawata:appdirs", version.ref = "appdirs" }
 assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertjCore" }

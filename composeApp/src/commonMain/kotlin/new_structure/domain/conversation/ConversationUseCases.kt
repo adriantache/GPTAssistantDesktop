@@ -53,12 +53,17 @@ object ConversationUseCases {
         }
     }
 
-    private fun onMessageInput(input: String) {
+    private fun onMessageInput(
+        input: String,
+        isVoiceInput: Boolean
+    ) {
         conversation = conversation.onMessageInput(input)
         updateConversation()
+
+        if (isVoiceInput) onSubmitMessage(isVoiceInput = true)
     }
 
-    private fun onSubmitMessage() {
+    private fun onSubmitMessage(isVoiceInput: Boolean = false) {
         conversation = conversation.onSubmit()
 
         scope.launch {
@@ -77,6 +82,12 @@ object ConversationUseCases {
                         updateConversation()
                     }
             }
+
+            // TODO: improve behaviour so TTS can start as soon as we have a full sentence. This probably requires
+            //  two separate behaviours, one for text which outputs the stream as we receive it, and one for TTS which
+            //  waits until we have a full sentence or line. Ideally we would wait for one extra line to see if we get
+            //  a period in it, otherwise we send it.
+            updateConversation(isVoiceInput = isVoiceInput)
 
             // TODO: populate conversation title before saving
             historyRepository.saveConversation(conversation.toData())
@@ -103,11 +114,15 @@ object ConversationUseCases {
         updateConversation()
     }
 
-    private fun updateConversation(isLoading: Boolean = false) {
+    private fun updateConversation(
+        isLoading: Boolean = false,
+        isVoiceInput: Boolean = false
+    ) {
         updateState(
             OpenConversation(
                 conversation = conversation.toUi(),
                 isLoading = isLoading,
+                isVoiceInput = isVoiceInput,
                 onMessageInput = ::onMessageInput,
                 onSubmitMessage = ::onSubmitMessage,
                 onResetConversation = ::onResetConversation,

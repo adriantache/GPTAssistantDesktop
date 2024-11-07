@@ -17,7 +17,7 @@ import theme.AppColor
 @Composable
 fun PromptInput(
     prompt: String,
-    onPromptChanged: (String) -> Unit,
+    onPromptChanged: (input: String, isVoiceInput: Boolean) -> Unit,
     isLoading: Boolean,
     onSubmit: () -> Unit,
 ) {
@@ -29,13 +29,16 @@ fun PromptInput(
         TextField(
             modifier = Modifier.fillMaxWidth(),
             value = prompt,
-            onValueChange = onPromptChanged,
+            onValueChange = { onPromptChanged(it, false) },
             enabled = !isLoading,
             label = {
                 Text(
                     text = "Ask ChatGPT",
                     color = AppColor.onCard(),
                 )
+            },
+            leadingIcon = {
+                VoiceInput(onPromptChanged)
             },
             trailingIcon = {
                 TextButton(

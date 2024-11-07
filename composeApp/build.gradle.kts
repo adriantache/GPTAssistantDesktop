@@ -33,6 +33,7 @@ kotlin {
             implementation(libs.kotlinx.coroutines.android)
             implementation(libs.kotlin.test.junit)
             implementation(libs.coil.network.okhttp)
+            implementation(libs.accompanist.permissions)
         }
 
         commonMain.dependencies {

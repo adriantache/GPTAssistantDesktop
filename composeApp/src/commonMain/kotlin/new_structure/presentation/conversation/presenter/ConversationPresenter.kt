@@ -26,6 +26,7 @@ class ConversationPresenter {
             input = state.conversation.input,
             onInput = state.onMessageInput,
             isLoading = state.isLoading,
+            isVoiceInput = state.isVoiceInput,
             onSubmit = state.onSubmitMessage,
             canSubmit = state.conversation.canSubmit,
             selectedPersona = state.conversation.persona?.name ?: PERSONA_SELECTOR_NO_PERSONA_SELECTED,

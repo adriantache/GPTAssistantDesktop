@@ -8,7 +8,9 @@ sealed interface ConversationState {
     data class OpenConversation(
         val conversation: ConversationUi,
         val isLoading: Boolean,
-        val onMessageInput: (String) -> Unit,
+        val isVoiceInput: Boolean,
+        // TODO: move isVoiceInput to onSubmit instead
+        val onMessageInput: (input: String, isVoiceInput: Boolean) -> Unit,
         val onSubmitMessage: () -> Unit,
         val onResetConversation: () -> Unit,
         val onCopyMessage: (id: String) -> Unit,

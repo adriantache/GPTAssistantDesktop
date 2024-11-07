@@ -26,7 +26,8 @@ fun ImageGenerationPromptScreen(
 
         PromptInput(
             prompt = imageGenerationItem.input,
-            onPromptChanged = imageGenerationItem.onInput,
+            // We don't care if image prompt comes from voice input since we won't read the result back.
+            onPromptChanged = { input, _ -> imageGenerationItem.onInput(input) },
             isLoading = imageGenerationItem.isLoading,
             onSubmit = imageGenerationItem.onSubmit,
         )

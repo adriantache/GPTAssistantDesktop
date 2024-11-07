@@ -107,7 +107,7 @@ fun MainScreen() {
         CardColumn {
             PromptInput(
                 prompt = prompt,
-                onPromptChanged = { prompt = it },
+                onPromptChanged = { input, _ -> prompt = input },
                 isLoading = isLoading,
                 onSubmit = ::onSubmit,
             )
