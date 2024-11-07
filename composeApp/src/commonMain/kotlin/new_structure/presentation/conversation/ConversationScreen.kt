@@ -7,6 +7,8 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -14,13 +16,28 @@ import androidx.compose.ui.unit.dp
 import gptassistant.composeapp.generated.resources.Res
 import gptassistant.composeapp.generated.resources.persona
 import new_structure.presentation.conversation.model.ConversationItem
+import new_structure.presentation.conversation.model.RoleItem
 import new_structure.presentation.conversation.view.MessageView
 import new_structure.presentation.conversation.view.PromptInput
 import org.jetbrains.compose.resources.painterResource
+import platformSpecific.tts.getTtsHelper
 import theme.AppColor
 
 @Composable
 fun NewConversationScreen(conversationItem: ConversationItem) {
+    // TODO: add UI and functionality to stop TTS output
+    val ttsHelper = remember { getTtsHelper() }
+
+    LaunchedEffect(conversationItem) {
+        if (ttsHelper == null || !conversationItem.isVoiceInput) return@LaunchedEffect
+
+        val lastMessage = conversationItem.messages.lastOrNull()
+
+        if (lastMessage == null || lastMessage.role != RoleItem.ASSISTANT) return@LaunchedEffect
+
+        ttsHelper.speak(lastMessage.message)
+    }
+
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         Button(
             modifier = Modifier.requiredHeight(36.dp),
