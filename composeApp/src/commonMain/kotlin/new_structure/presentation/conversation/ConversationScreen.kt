@@ -27,7 +27,7 @@ import theme.AppColor
 @Composable
 fun NewConversationScreen(conversationItem: ConversationItem) {
     // TODO: add UI and functionality to stop TTS output
-    val ttsHelper = remember { getTtsHelper() }
+    val ttsHelper by remember { lazy { getTtsHelper() } }
 
     LaunchedEffect(conversationItem) {
         if (ttsHelper == null || !conversationItem.isVoiceInput) return@LaunchedEffect
@@ -36,7 +36,7 @@ fun NewConversationScreen(conversationItem: ConversationItem) {
 
         if (lastMessage == null || lastMessage.role != RoleItem.ASSISTANT) return@LaunchedEffect
 
-        ttsHelper.speak(lastMessage.message)
+        ttsHelper?.speak(lastMessage.message)
     }
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
