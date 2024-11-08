@@ -23,7 +23,13 @@ data class Conversation(
     fun onSubmit(): Conversation {
         if (!canSubmit) return this
 
-        val personaMessage = persona?.let { Message(content = it.instructions, role = SYSTEM) }
+        val personaMessage = persona?.let {
+            Message(
+                id = it.id,
+                content = it.instructions,
+                role = SYSTEM,
+            )
+        }
 
         val message = Message(content = currentInput, role = USER)
         val newMessages = messages.toMutableMap().apply {
