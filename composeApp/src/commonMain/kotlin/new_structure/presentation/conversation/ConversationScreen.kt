@@ -29,6 +29,12 @@ fun NewConversationScreen(conversationItem: ConversationItem) {
     // TODO: add UI and functionality to stop TTS output
     val ttsHelper by remember { lazy { getTtsHelper() } }
 
+    fun onWarmUpTts() {
+        // TTS takes a bit of time to get ready for operation, so we need to instantiate it before actually using it.
+        @Suppress("UNUSED_EXPRESSION")
+        ttsHelper
+    }
+
     LaunchedEffect(conversationItem) {
         if (!conversationItem.isVoiceInput || ttsHelper == null) return@LaunchedEffect
 
@@ -97,6 +103,7 @@ fun NewConversationScreen(conversationItem: ConversationItem) {
                     onPromptChanged = conversationItem.onInput,
                     isLoading = conversationItem.isLoading,
                     onSubmit = conversationItem.onSubmit,
+                    onWarmUpTts = ::onWarmUpTts,
                 )
             }
         }

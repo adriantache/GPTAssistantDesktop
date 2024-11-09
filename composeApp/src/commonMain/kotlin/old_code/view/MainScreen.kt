@@ -110,6 +110,8 @@ fun MainScreen() {
                 onPromptChanged = { prompt = it },
                 isLoading = isLoading,
                 onSubmit = { onSubmit() },
+                // We don't use TTS here.
+                onWarmUpTts = {},
             )
         }
     }

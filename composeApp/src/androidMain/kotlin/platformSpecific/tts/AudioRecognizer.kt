@@ -94,7 +94,7 @@ actual fun AudioRecognizer(
                 microphonePermission.launchPermissionRequest()
             }
 
-            shouldRecognize && state == Ready -> {
+            shouldRecognize && state !is Recognizing -> {
                 updateState(Ready)
                 recognizer.startListening(recognizerIntent)
             }

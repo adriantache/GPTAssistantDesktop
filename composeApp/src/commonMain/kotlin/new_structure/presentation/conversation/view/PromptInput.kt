@@ -20,6 +20,7 @@ fun PromptInput(
     onPromptChanged: (input: String) -> Unit,
     isLoading: Boolean,
     onSubmit: (isVoiceInput: Boolean) -> Unit,
+    onWarmUpTts: () -> Unit,
 ) {
     val keyboard = LocalSoftwareKeyboardController.current
 
@@ -40,7 +41,10 @@ fun PromptInput(
             leadingIcon = {
                 VoiceInput(
                     onPromptChanged = onPromptChanged,
-                    onSubmit = { onSubmit(true) }
+                    onSubmit = {
+                        onWarmUpTts()
+                        onSubmit(true)
+                    }
                 )
             },
             trailingIcon = {

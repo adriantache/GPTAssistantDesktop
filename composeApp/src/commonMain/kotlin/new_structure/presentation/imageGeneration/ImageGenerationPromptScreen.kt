@@ -30,6 +30,8 @@ fun ImageGenerationPromptScreen(
             isLoading = imageGenerationItem.isLoading,
             // We don't care if image prompt comes from voice input since we won't read the result back.
             onSubmit = { _ -> imageGenerationItem.onSubmit() },
+            // We don't use TTS here.
+            onWarmUpTts = {},
         )
     }
 }
