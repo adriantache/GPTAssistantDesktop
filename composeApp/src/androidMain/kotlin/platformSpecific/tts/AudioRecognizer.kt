@@ -18,7 +18,7 @@ import platformSpecific.tts.model.RecognizerState.*
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 actual fun AudioRecognizer(
-    shouldRecognize: Boolean,
+    shouldRecognize: Event<Boolean>,
     onStateChange: (RecognizerState) -> Unit,
     content: @Composable () -> Unit,
 ) {
@@ -88,6 +88,9 @@ actual fun AudioRecognizer(
     }
 
     LaunchedEffect(shouldRecognize, state, microphonePermission) {
+        @Suppress("NAME_SHADOWING")
+        val shouldRecognize = shouldRecognize.value ?: return@LaunchedEffect
+
         when {
             shouldRecognize && !microphonePermission.status.isGranted -> {
                 updateState(RequestingPermission)
