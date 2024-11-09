@@ -33,13 +33,14 @@ fun VoiceInput(
 
     AudioRecognizer(
         shouldRecognize = startRecognizing,
-        onStateChange = {
-            recognizerState = it
-        },
+        onStateChange = { recognizerState = it },
     ) {
         TextButton(
             modifier = Modifier.padding(start = 8.dp),
-            onClick = { startRecognizing = !startRecognizing },
+            onClick = {
+                // Start recognizing if in any state other than Recognizing, otherwise stop it.
+                startRecognizing = recognizerState !is RecognizerState.Recognizing
+            },
         ) {
             Text(
                 text = "Voice",
