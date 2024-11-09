@@ -53,14 +53,9 @@ object ConversationUseCases {
         }
     }
 
-    private fun onMessageInput(
-        input: String,
-        isVoiceInput: Boolean
-    ) {
+    private fun onMessageInput(input: String) {
         conversation = conversation.onMessageInput(input)
         updateConversation()
-
-        if (isVoiceInput) onSubmitMessage(isVoiceInput = true)
     }
 
     private fun onSubmitMessage(isVoiceInput: Boolean = false) {

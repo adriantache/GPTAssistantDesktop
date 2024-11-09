@@ -12,13 +12,17 @@ import platformSpecific.tts.model.RecognizerState
 import theme.AppColor
 
 @Composable
-fun VoiceInput(onPromptChanged: (input: String, isVoiceInput: Boolean) -> Unit) {
+fun VoiceInput(
+    onPromptChanged: (input: String) -> Unit,
+    onSubmit: () -> Unit
+) {
     var recognizerState: RecognizerState? by remember { mutableStateOf(null) }
     var startRecognizing by remember { mutableStateOf(false) }
 
     LaunchedEffect(recognizerState) {
         (recognizerState as? RecognizerState.Success)?.result?.value?.let {
-            onPromptChanged(it, true)
+            onPromptChanged(it)
+            onSubmit()
             startRecognizing = false
         }
 

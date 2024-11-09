@@ -17,9 +17,9 @@ import theme.AppColor
 @Composable
 fun PromptInput(
     prompt: String,
-    onPromptChanged: (input: String, isVoiceInput: Boolean) -> Unit,
+    onPromptChanged: (input: String) -> Unit,
     isLoading: Boolean,
-    onSubmit: () -> Unit,
+    onSubmit: (isVoiceInput: Boolean) -> Unit,
 ) {
     val keyboard = LocalSoftwareKeyboardController.current
 
@@ -29,7 +29,7 @@ fun PromptInput(
         TextField(
             modifier = Modifier.fillMaxWidth(),
             value = prompt,
-            onValueChange = { onPromptChanged(it, false) },
+            onValueChange = { onPromptChanged(it) },
             enabled = !isLoading,
             label = {
                 Text(
@@ -38,14 +38,17 @@ fun PromptInput(
                 )
             },
             leadingIcon = {
-                VoiceInput(onPromptChanged)
+                VoiceInput(
+                    onPromptChanged = onPromptChanged,
+                    onSubmit = { onSubmit(true) }
+                )
             },
             trailingIcon = {
                 TextButton(
                     modifier = Modifier.padding(end = 8.dp),
                     onClick = {
                         keyboard?.hide()
-                        onSubmit()
+                        onSubmit(false)
                     },
                     enabled = !isLoading && prompt.isNotBlank(),
                 ) {
@@ -59,7 +62,7 @@ fun PromptInput(
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = {
                 keyboard?.hide()
-                onSubmit()
+                onSubmit(false)
             }),
             singleLine = singleLine,
             colors = TextFieldDefaults.textFieldColors(
