@@ -30,7 +30,7 @@ fun NewConversationScreen(conversationItem: ConversationItem) {
     val ttsHelper by remember { lazy { getTtsHelper() } }
 
     LaunchedEffect(conversationItem) {
-        if (ttsHelper == null || !conversationItem.isVoiceInput) return@LaunchedEffect
+        if (!conversationItem.isVoiceInput || ttsHelper == null) return@LaunchedEffect
 
         val lastMessage = conversationItem.messages.lastOrNull()
 
