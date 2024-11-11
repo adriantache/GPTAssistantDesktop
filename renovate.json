@@ -8,5 +8,6 @@
     "com.android.library",
     "com.russhwolf:multiplatform-settings-no-arg"
   ],
-  "versioning": "semver"
+  "versioning": "semver",
+  "minimumReleaseAge": "7 days"
 }
