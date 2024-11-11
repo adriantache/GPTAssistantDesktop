@@ -2,7 +2,8 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended",
-    ":disableHost(experimental)"
+    ":disableHost(experimental)",
+    ":rebaseStalePrs"
   ],
   "ignoreDeps": [
     "com.android.application",
@@ -10,5 +11,6 @@
     "com.russhwolf:multiplatform-settings-no-arg"
   ],
   "versioning": "semver",
-  "minimumReleaseAge": "7 days"
+  "minimumReleaseAge": "7 days",
+  "rollbackPrs": true
 }
