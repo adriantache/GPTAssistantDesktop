@@ -20,8 +20,8 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import gptassistant.composeapp.generated.resources.Res
 import gptassistant.composeapp.generated.resources.copy
-import old_code.api.model.ChatMessage
-import old_code.api.model.ChatRole
+import new_structure.data.migration.legacy.ChatMessage
+import new_structure.data.migration.legacy.ChatRole
 import old_code.processAnnotations
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource

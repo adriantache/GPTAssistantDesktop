@@ -8,18 +8,12 @@ import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import old_code.settings.AppSettings
-import old_code.settings.AppSettingsImpl
 import theme.AppColor
-
-// Used because flow collecting requires a non-normal initial value and we can't use null here.
-private const val DUMMY_VALUE = "DUMMY_VALUE"
 
 @Composable
 fun ApiKeyCheck(
-    settings: AppSettings = AppSettingsImpl,
 ) {
-    val apiKey by settings.apiKeyFlow.collectAsState(DUMMY_VALUE)
+    val apiKey = ""
 
     if (apiKey.isNullOrBlank()) {
         Surface(
@@ -49,7 +43,6 @@ fun ApiKeyCheck(
                             onClick = {
                                 if (apiKeyInput.isBlank()) return@TextButton
 
-                                settings.setApiKey(apiKeyInput)
                             },
                         ) {
                             Text(

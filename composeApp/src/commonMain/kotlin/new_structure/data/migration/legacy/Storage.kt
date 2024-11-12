@@ -1,4 +1,4 @@
-package old_code.storage
+package new_structure.data.migration.legacy
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -11,8 +11,6 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import new_structure.data.dataStore.DataStoreHelper
 import new_structure.data.util.decodeJson
-import old_code.api.model.Conversation
-import kotlin.collections.set
 
 private val conversationsKey = stringPreferencesKey("CONVERSATIONS_KEY")
 
@@ -23,21 +21,6 @@ class Storage private constructor(
 ) {
     val cacheFlow = store.data.map { preferences ->
         preferences.getConversationCache() ?: emptyMap()
-    }
-
-    fun updateConversation(conversation: Conversation) = scope.launch {
-        store.updateData { preferences: Preferences ->
-            val map = preferences.getConversationCache()
-            val newMap = map?.toMutableMap() ?: mutableMapOf()
-
-            newMap[conversation.id] = conversation
-
-            val json = json.encodeToString(newMap)
-
-            preferences.toMutablePreferences().apply {
-                this[conversationsKey] = json
-            }
-        }
     }
 
     fun deleteConversation(id: String) = scope.launch {

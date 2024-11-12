@@ -5,9 +5,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import new_structure.data.migration.MigrationProcessor
 import new_structure.presentation.NewApp
-import old_code.migration.MigrationProcessor
-import old_code.view.MainScreen
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import theme.AppColor
 
@@ -20,11 +19,7 @@ fun App() {
                 modifier = Modifier.fillMaxSize(),
                 color = AppColor.background(),
             ) {
-                if (false) {
-                    MainScreen()
-                } else {
-                    NewApp()
-                }
+                NewApp()
             }
         }
     }

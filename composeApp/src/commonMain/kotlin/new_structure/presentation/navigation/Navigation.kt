@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import new_structure.domain.navigation.Navigator
 import new_structure.domain.navigation.NavigatorImpl
 import new_structure.domain.navigation.model.Destination.*
+import new_structure.domain.settings.SettingsUseCases
 import new_structure.presentation.conversation.stateMachine.ConversationStateMachine
 import new_structure.presentation.conversationHistory.ConversationHistoryStateMachine
 import new_structure.presentation.home.stateMachine.HomeStateMachine
@@ -19,12 +20,16 @@ import platformSpecific.BackHandlerHelper
 @Composable
 fun Navigation(
     navigator: Navigator = NavigatorImpl,
+    settingsUseCases: SettingsUseCases = SettingsUseCases,
 ) {
     val currentDestination by navigator.currentDestination.collectAsState()
 
     BackHandlerHelper(isActive = navigator.canNavigateBack) {
         navigator.navigateBack()
     }
+
+    // TODO: implement settings wrapper for API key input
+    val settingsState by settingsUseCases.state.collectAsState()
 
     Column(Modifier.fillMaxSize()) {
         CloseRow { navigator.navigateBack() }

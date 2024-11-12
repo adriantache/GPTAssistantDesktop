@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import old_code.api.model.Conversation
+import new_structure.data.migration.legacy.Conversation
 import platformSpecific.ScrollbarImpl
 import theme.AppColor
 

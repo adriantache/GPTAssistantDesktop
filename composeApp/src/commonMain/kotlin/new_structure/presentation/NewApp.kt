@@ -6,7 +6,6 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import new_structure.presentation.navigation.Navigation
-import old_code.migration.MigrationProcessor
 import theme.AppColor
 
 // TODO: migrate all data
@@ -14,13 +13,11 @@ import theme.AppColor
 @Composable
 fun NewApp() {
     MaterialTheme {
-        MigrationProcessor {
-            Surface(
-                modifier = Modifier.fillMaxSize(),
-                color = AppColor.background(),
-            ) {
-                Navigation()
-            }
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = AppColor.background(),
+        ) {
+            Navigation()
         }
     }
 }

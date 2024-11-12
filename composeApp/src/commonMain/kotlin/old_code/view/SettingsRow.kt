@@ -17,21 +17,16 @@ import androidx.compose.ui.unit.dp
 import gptassistant.composeapp.generated.resources.Res
 import gptassistant.composeapp.generated.resources.persona
 import gptassistant.composeapp.generated.resources.settings
-import old_code.api.OpenAiStreamingApiCaller
-import old_code.settings.AppSettings
-import old_code.settings.AppSettingsImpl
 import org.jetbrains.compose.resources.painterResource
 import theme.AppColor
 
 @Composable
 fun SettingsRow(
-    apiCaller: OpenAiStreamingApiCaller,
-    settings: AppSettings = AppSettingsImpl,
+
 ) {
     var areSettingsOpen by remember { mutableStateOf(false) }
     var showPersonasDialog by remember { mutableStateOf(false) }
 
-    val forceDarkMode by settings.forceDarkModeFlow.collectAsState(false)
 
     Row(
         modifier = Modifier.fillMaxWidth()
@@ -58,7 +53,7 @@ fun SettingsRow(
 
                 Spacer(Modifier.width(8.dp))
 
-                Text(settings.selectedPersona?.name ?: "No persona")
+                Text("settings.selectedPersona?.name" ?: "No persona")
             }
         }
 
@@ -70,7 +65,7 @@ fun SettingsRow(
 
                 Button(
                     onClick = {
-                        settings.setForceDarkMode(!forceDarkMode)
+
                         areSettingsOpen = false
                     },
                     colors = ButtonDefaults.buttonColors(
@@ -78,7 +73,7 @@ fun SettingsRow(
                         contentColor = AppColor.onUserMessage(),
                     )
                 ) {
-                    val label = if (forceDarkMode) "Clear Dark Mode" else "Force Dark Mode"
+                    val label = "Force Dark Mode"
 
                     Text(label)
                 }
@@ -88,7 +83,7 @@ fun SettingsRow(
                 // TODO: extract this component or its colours and reuse it
                 Button(
                     onClick = {
-                        settings.clearApiKey()
+
                         areSettingsOpen = false
                     },
                     colors = ButtonDefaults.buttonColors(
@@ -116,7 +111,6 @@ fun SettingsRow(
     if (showPersonasDialog) {
         PersonaSelectorDialog(
             onDismiss = { showPersonasDialog = false },
-            apiCaller = apiCaller,
         )
     }
 }

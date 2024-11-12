@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -16,21 +15,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import old_code.api.OpenAiStreamingApiCaller
-import old_code.api.model.Persona
-import old_code.settings.AppSettings
-import old_code.settings.AppSettingsImpl
+import new_structure.data.migration.legacy.Persona
 import theme.AppColor
 
 @Composable
 fun PersonaSelectorDialog(
     onDismiss: () -> Unit,
-    apiCaller: OpenAiStreamingApiCaller,
-    appSettings: AppSettings = AppSettingsImpl,
 ) {
     var showAddPersonaDialog: Persona? by remember { mutableStateOf(null) }
-
-    val personas by appSettings.personasFlow.collectAsState(emptyMap())
 
     Dialog(onDismissRequest = onDismiss) {
         LazyColumn(
@@ -51,8 +43,6 @@ fun PersonaSelectorDialog(
                 Box(modifier = Modifier
                     .fillMaxWidth()
                     .clickable {
-                        appSettings.selectedPersona = null
-                        apiCaller.reset()
                         onDismiss()
                     }
                     .padding(16.dp)
@@ -65,21 +55,20 @@ fun PersonaSelectorDialog(
                 }
             }
 
-            items(personas.values.toList()) { persona ->
+            item {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Box(modifier = Modifier
                         .clickable {
-                            appSettings.selectedPersona = persona
-                            apiCaller.reset()
+
                             onDismiss()
                         }
                         .weight(1f)
                         .padding(16.dp)
                     ) {
                         Text(
-                            text = persona.name,
+                            text = "persona.name",
                             style = MaterialTheme.typography.body1,
                             color = AppColor.onCard(),
                         )
@@ -88,7 +77,7 @@ fun PersonaSelectorDialog(
                     Spacer(Modifier.width(8.dp))
 
                     Button(
-                        onClick = { showAddPersonaDialog = persona },
+                        onClick = { },
                         colors = AppColor.buttonColors(),
                     ) {
                         Text("Edit persona")
@@ -112,7 +101,6 @@ fun PersonaSelectorDialog(
         showAddPersonaDialog?.let {
             AddPersonaDialog(
                 persona = it,
-                appSettings = appSettings,
             ) { showAddPersonaDialog = null }
         }
     }

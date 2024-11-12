@@ -12,18 +12,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import old_code.api.model.Persona
-import old_code.settings.AppSettings
+import new_structure.data.migration.legacy.Persona
 import theme.AppColor
 
 @Composable
 fun AddPersonaDialog(
     persona: Persona,
-    appSettings: AppSettings,
     onDismiss: () -> Unit,
 ) {
-    val personasFlow by appSettings.personasFlow.collectAsState(emptyMap())
-
     Dialog(onDismissRequest = onDismiss) {
         var personaName by remember { mutableStateOf(persona.name) }
         var personaInstructions by remember { mutableStateOf(persona.instructions) }
@@ -61,14 +57,6 @@ fun AddPersonaDialog(
 
             Button(
                 onClick = {
-                    val personas = personasFlow.toMutableMap()
-
-                    personas[personaName] = Persona(
-                        name = personaName,
-                        instructions = personaInstructions,
-                    )
-
-                    appSettings.setPersonas(personas)
                     onDismiss()
                 },
                 colors = ButtonDefaults.buttonColors(

@@ -5,7 +5,6 @@ import io.ktor.client.plugins.sse.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -15,15 +14,15 @@ import new_structure.data.conversation.dataSource.model.OpenAiStreamingResponseD
 import new_structure.data.error.OpenAiError.ApiKeyError
 import new_structure.data.error.OpenAiError.KtorError
 import new_structure.data.httpClient.realHttpClient
+import new_structure.data.settings.dataSource.SettingsDataSource
+import new_structure.data.settings.dataSource.SettingsDataSourceImpl
 import new_structure.data.util.decodeJson
 import new_structure.domain.util.model.Outcome
-import old_code.settings.AppSettings
-import old_code.settings.AppSettingsImpl
 
 private const val OPEN_AI_URL = "https://api.openai.com/v1/chat/completions"
 
 class StreamingApiCallerImpl(
-    private val settings: AppSettings = AppSettingsImpl,
+    private val settingsDataSource: SettingsDataSource = SettingsDataSourceImpl(),
     private val client: HttpClient = realHttpClient,
 ) : StreamingApiCaller {
     private val json = Json {
@@ -34,7 +33,7 @@ class StreamingApiCallerImpl(
 
     override fun getReply(conversation: List<ChatMessageDto>): Flow<Outcome<String>> {
         return flow {
-            val apiKey = settings.apiKeyFlow.firstOrNull()
+            val apiKey = settingsDataSource.getSettings()?.apiKey
 
             if (apiKey == null) {
                 emit(Outcome.Failure(ApiKeyError))

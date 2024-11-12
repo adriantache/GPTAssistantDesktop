@@ -18,7 +18,8 @@ import new_structure.data.conversation.dataSource.model.ChatMessageDto
 import new_structure.data.conversation.dataSource.service.StreamingApiCallerImpl
 import new_structure.data.error.OpenAiError.ApiKeyError
 import new_structure.data.error.OpenAiError.KtorError
-import new_structure.settings.AppSettingsFake
+import new_structure.data.settings.dataSource.SettingsDataSourceFake
+import new_structure.domain.settings.data.model.SettingsData
 import org.assertj.core.api.Assertions.assertThat
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -52,9 +53,9 @@ class StreamingApiCallerImplTest {
             install(SSE)
         }
 
-        val settings = AppSettingsFake().apply { setApiKey("testKey") }
+        val settings = SettingsDataSourceFake(settings = SettingsData(apiKey = "testKey"))
         val streamingApiCaller = StreamingApiCallerImpl(
-            settings = settings,
+            settingsDataSource = settings,
             client = client,
         )
 
@@ -82,9 +83,9 @@ class StreamingApiCallerImplTest {
             install(SSE)
         }
 
-        val settings = AppSettingsFake()
+        val settings = SettingsDataSourceFake()
         val streamingApiCaller = StreamingApiCallerImpl(
-            settings = settings,
+            settingsDataSource = settings,
             client = client,
         )
 
@@ -110,9 +111,9 @@ class StreamingApiCallerImplTest {
             }
         }
 
-        val settings = AppSettingsFake().apply { setApiKey("testKey") }
+        val settings = SettingsDataSourceFake(settings = SettingsData(apiKey = "testKey"))
         val streamingApiCaller = StreamingApiCallerImpl(
-            settings = settings,
+            settingsDataSource = settings,
             client = client,
         )
 
@@ -141,9 +142,9 @@ class StreamingApiCallerImplTest {
             }
         }
 
-        val settings = AppSettingsFake().apply { setApiKey("testKey") }
+        val settings = SettingsDataSourceFake(settings = SettingsData(apiKey = "testKey"))
         val streamingApiCaller = StreamingApiCallerImpl(
-            settings = settings,
+            settingsDataSource = settings,
             client = client,
         )
 

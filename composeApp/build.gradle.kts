@@ -50,7 +50,6 @@ kotlin {
             implementation(libs.kotlinx.io.core)
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlin.serialization)
-            implementation(libs.multiplatform.settings)
             implementation(libs.androidx.datastore.preferences.core)
             implementation(libs.coil.mp)
             implementation(libs.coil.compose)

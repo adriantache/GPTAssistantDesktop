@@ -19,7 +19,6 @@ import new_structure.domain.conversationHistory.data.model.ConversationHistoryDa
 import new_structure.domain.util.model.Outcome
 import java.time.LocalDateTime
 
-// TODO: Migrate data
 private val conversationsKey = stringPreferencesKey("CONVERSATIONS_KEY_NEW")
 
 class ConversationHistoryDataSourceImpl(

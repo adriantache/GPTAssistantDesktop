@@ -1,4 +1,4 @@
-package old_code.api.model
+package new_structure.data.migration.legacy
 
 import kotlinx.serialization.Serializable
 

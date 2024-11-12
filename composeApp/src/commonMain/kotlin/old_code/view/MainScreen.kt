@@ -1,7 +1,6 @@
 package old_code.view
 
 import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -13,10 +12,9 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import new_structure.data.migration.legacy.Conversation
+import new_structure.data.migration.legacy.Storage
 import new_structure.presentation.conversation.view.PromptInput
-import old_code.api.OpenAiStreamingApiCaller
-import old_code.api.model.Conversation
-import old_code.storage.Storage
 import platformSpecific.BackHandlerHelper
 
 @Composable
@@ -24,7 +22,6 @@ fun MainScreen() {
     val scope = rememberCoroutineScope()
     val listState = rememberLazyListState()
 
-    val apiCaller = remember { OpenAiStreamingApiCaller() }
     val storage = remember { Storage.getInstance() }
 
     var prompt by remember { mutableStateOf("") }
@@ -36,7 +33,6 @@ fun MainScreen() {
             // Exiting the conversation too quickly results in the coroutine being canceled,
             // so the conversation isn't saved properly.
             CoroutineScope(Dispatchers.Default).launch {
-                storage.updateConversation(it)
             }
         }
     }
@@ -44,7 +40,6 @@ fun MainScreen() {
     fun onResetConversation() {
         saveConversation()
 
-        conversation = apiCaller.reset()
     }
 
     BackHandlerHelper {
@@ -61,14 +56,6 @@ fun MainScreen() {
             val localPrompt = prompt
             prompt = ""
 
-            apiCaller.getReply(localPrompt).collect {
-                conversation = it
-
-                scope.launch {
-                    listState.scrollBy(999f) // Scroll to the end of the list to match the streaming.
-                }
-            }
-
             saveConversation()
         }
     }
@@ -79,7 +66,6 @@ fun MainScreen() {
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        SettingsRow(apiCaller)
 
         Column(
             modifier = Modifier
@@ -90,7 +76,6 @@ fun MainScreen() {
             if (conversation == null || conversation?.isEmpty == true) {
                 ConversationHistory(
                     storage = storage,
-                    apiCaller = apiCaller,
                     onSetConversation = { conversation = it },
                 )
             } else {
