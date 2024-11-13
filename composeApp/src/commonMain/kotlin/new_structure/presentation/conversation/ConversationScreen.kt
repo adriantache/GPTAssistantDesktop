@@ -7,9 +7,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -70,11 +68,18 @@ fun NewConversationScreen(conversationItem: ConversationItem) {
         Spacer(Modifier.weight(1f))
 
         val listState = rememberLazyListState()
+        var lastMessageRole: RoleItem? by remember { mutableStateOf(null) }
 
         LaunchedEffect(conversationItem) {
-            val scrollDestination = if (conversationItem.messages.isEmpty()) {
+            val lastMessage = conversationItem.messages.lastOrNull() ?: return@LaunchedEffect
+
+            if (lastMessage.role == lastMessageRole) {
                 return@LaunchedEffect
-            } else if (conversationItem.messages.lastOrNull()?.role == RoleItem.ASSISTANT) {
+            } else {
+                lastMessageRole = lastMessage.role
+            }
+
+            val scrollDestination = if (lastMessage.role == RoleItem.ASSISTANT) {
                 conversationItem.messages.size - 2
             } else {
                 conversationItem.messages.size - 1
