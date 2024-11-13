@@ -109,6 +109,12 @@ actual fun AudioRecognizer(
         }
     }
 
+    DisposableEffect(Unit) {
+        onDispose {
+            recognizer.destroy()
+        }
+    }
+
     content()
 }
 
