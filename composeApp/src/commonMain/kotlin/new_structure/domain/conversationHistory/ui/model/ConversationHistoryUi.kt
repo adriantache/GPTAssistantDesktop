@@ -4,6 +4,6 @@ import java.time.LocalDateTime
 
 data class ConversationHistoryUi(
     val id: String,
-    val title: String,
+    val title: String?,
     val date: LocalDateTime,
 )

@@ -20,6 +20,7 @@ fun ConversationData.toDataEntry(
     createdAt: Long = Instant.now().toEpochMilli(), // Always update timestamp when saving it.
 ) = ConversationDataEntry(
     id = id,
+    title = title,
     createdAt = createdAt,
     messages = messages.mapValues { it.value.toDataEntry() },
     persona = persona?.toDataEntry(),
@@ -45,6 +46,7 @@ fun RoleData.toDataEntry() = when (this) {
 
 fun ConversationDataEntry.toData() = ConversationData(
     id = id,
+    title = title,
     messages = messages.mapValues { it.value.toData() },
     persona = persona?.toData(),
 )
@@ -69,6 +71,6 @@ fun RoleDataEntry.toData() = when (this) {
 
 fun ConversationDataEntry.toHistoryData() = ConversationHistoryData(
     id = id,
-    title = "", // TODO: get title in UseCase and set/retrieve it here
+    title = title,
     date = LocalDateTime.ofInstant(Instant.ofEpochMilli(createdAt), ZoneId.systemDefault()),
 )

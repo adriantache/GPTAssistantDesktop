@@ -84,7 +84,11 @@ object ConversationUseCases {
             //  a period in it, otherwise we send it.
             updateConversation(isVoiceInput = isVoiceInput)
 
-            // TODO: populate conversation title before saving
+            if (conversation.shouldGenerateTitle) {
+                val title = repository.getTitle(conversation.toData())
+                conversation = conversation.onSetTitle(title)
+            }
+
             historyRepository.saveConversation(conversation.toData())
         }
     }

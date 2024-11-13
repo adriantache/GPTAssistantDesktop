@@ -6,6 +6,7 @@ import new_structure.domain.conversation.entity.Conversation
 fun Conversation.toData(): ConversationData {
     return ConversationData(
         id = id,
+        title = title,
         messages = messages.mapValues { it.value.toData() },
         persona = persona?.toData(),
     )

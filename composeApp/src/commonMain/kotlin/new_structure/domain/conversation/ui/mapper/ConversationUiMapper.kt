@@ -5,6 +5,7 @@ import new_structure.domain.conversation.ui.model.ConversationUi
 
 fun Conversation.toUi() = ConversationUi(
     id = id,
+    title = title,
     messages = messages.values.map { it.toUi() },
     persona = persona?.toUi(),
     canResetConversation = canResetConversation,

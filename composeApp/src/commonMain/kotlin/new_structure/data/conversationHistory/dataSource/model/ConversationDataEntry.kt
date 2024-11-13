@@ -5,6 +5,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ConversationDataEntry(
     val id: String,
+    val title: String? = null,
     val messages: Map<String, MessageDataEntry>,
     val createdAt: Long,
     val persona: PersonaDataEntry?,

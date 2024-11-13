@@ -7,12 +7,17 @@ import java.util.*
 
 data class Conversation(
     val id: String = UUID.randomUUID().toString(),
+    val title: String? = null,
     val currentInput: String = "",
     val messages: Map<String, Message> = emptyMap(), // Ok to use, as long as messages are added in the correct order.
     val persona: Persona? = null,
 ) {
     val canResetConversation = messages.isNotEmpty()
     val canSubmit = currentInput.isNotBlank()
+
+    // Used to indicate when a title should be generated for this conversation. The first reply is usually lacking in
+    //  enough context to generate a good title, so we do it twice, if the conversation goes on long enough.
+    val shouldGenerateTitle = messages.size < 5
 
     @CheckResult
     fun onMessageInput(input: String): Conversation {
@@ -55,5 +60,10 @@ data class Conversation(
     @CheckResult
     fun onSetPersona(persona: Persona?): Conversation {
         return this.copy(persona = persona)
+    }
+
+    @CheckResult
+    fun onSetTitle(title: String): Conversation {
+        return this.copy(title = title)
     }
 }

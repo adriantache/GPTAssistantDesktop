@@ -119,6 +119,7 @@ suspend fun migrateConversations(
                 )
                 messageData.id to messageData
             },
+            title = null,
             persona = null,
         )
 

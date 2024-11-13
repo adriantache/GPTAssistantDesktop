@@ -6,4 +6,6 @@ import new_structure.domain.util.model.Outcome
 
 interface ConversationRepository {
     fun getReplyStream(conversation: ConversationData): Flow<Outcome<String>>
+
+    suspend fun getTitle(conversation: ConversationData): String
 }

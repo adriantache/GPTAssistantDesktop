@@ -44,7 +44,7 @@ fun ConversationHistoryStateMachine(
                     items(items = conversations, key = { it.id }) {
                         Text(
                             modifier = Modifier.clickable { localState.onOpenConversation(it.id) }.fillMaxWidth(),
-                            text = it.date.toString(),
+                            text = it.title ?: it.date.toString(),
                         )
                     }
                 }
