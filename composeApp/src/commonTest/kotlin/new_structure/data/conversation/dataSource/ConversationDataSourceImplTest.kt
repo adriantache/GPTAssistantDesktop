@@ -24,10 +24,11 @@ class ConversationDataSourceImplTest {
                     role = RoleData.USER
                 )
             ),
+            title = "testTitle",
             persona = PersonaData(
                 id = "test",
                 name = "testName",
-                instructions = "testInstructions"
+                instructions = "testInstructions",
             )
         )
         val dataSource = getDatasource(isApiSuccess = true)
@@ -50,6 +51,7 @@ class ConversationDataSourceImplTest {
                     role = RoleData.USER
                 )
             ),
+            title = "testTitle",
             persona = null,
         )
         val dataSource = getDatasource(isApiSuccess = true)
@@ -72,6 +74,7 @@ class ConversationDataSourceImplTest {
                     role = RoleData.USER
                 )
             ),
+            title = "testTitle",
             persona = PersonaData(
                 id = "test",
                 name = "testName",

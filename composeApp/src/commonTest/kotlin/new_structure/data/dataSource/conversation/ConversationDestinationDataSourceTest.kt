@@ -38,6 +38,7 @@ class ConversationDestinationDataSourceTest {
                         role = RoleData.USER,
                     )
                 ),
+                title = "testTitle",
                 persona = null,
             )
         )
@@ -64,6 +65,7 @@ class ConversationDestinationDataSourceTest {
                         role = RoleData.USER,
                     )
                 ),
+                title = "testTitle",
                 persona = null,
             )
         )

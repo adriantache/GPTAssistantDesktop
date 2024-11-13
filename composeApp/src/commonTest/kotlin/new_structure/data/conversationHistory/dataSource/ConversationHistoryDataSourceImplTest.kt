@@ -52,7 +52,7 @@ class ConversationHistoryDataSourceImplTest {
                     listOf(
                         ConversationHistoryData(
                             id = "test",
-                            title = "",
+                            title = "testTitle",
                             date = result.dataOrThrow()[0].date
                         )
                     )
@@ -87,6 +87,7 @@ class ConversationHistoryDataSourceImplTest {
                 role = RoleData.USER
             )
         ),
+        title = "testTitle",
         persona = PersonaData(
             id = "test",
             name = "testName",

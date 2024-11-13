@@ -51,7 +51,7 @@ class ConversationDataEntryMapperKtTest {
         val input = conversationDataEntry
         val expected = ConversationHistoryData(
             id = "test",
-            title = "",
+            title = "testTitle",
             date = LocalDateTime.ofInstant(Instant.ofEpochMilli(input.createdAt), ZoneId.systemDefault()),
         )
 
@@ -67,6 +67,7 @@ class ConversationDataEntryMapperKtTest {
                 role = RoleData.USER
             )
         ),
+        title = "testTitle",
         persona = PersonaData(
             id = "test",
             name = "testName",
@@ -76,6 +77,7 @@ class ConversationDataEntryMapperKtTest {
 
     private val conversationDataEntry = ConversationDataEntry(
         id = "test",
+        title = "testTitle",
         createdAt = Instant.now().toEpochMilli(),
         messages = mapOf(
             "test1" to MessageDataEntry(

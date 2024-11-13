@@ -50,5 +50,6 @@ class ConversationRepositoryImplTest {
         id = "test",
         messages = emptyMap(),
         persona = null,
+        title = "testTitle",
     )
 }

@@ -98,6 +98,7 @@ class ConversationHistoryRepositoryImplTest {
                 role = RoleData.USER
             )
         ),
+        title = "testTitle",
         persona = PersonaData(
             id = "test",
             name = "testName",
