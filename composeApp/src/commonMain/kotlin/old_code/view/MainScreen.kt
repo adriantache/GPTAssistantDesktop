@@ -98,6 +98,4 @@ fun MainScreen() {
             )
         }
     }
-
-    ApiKeyCheck()
 }
