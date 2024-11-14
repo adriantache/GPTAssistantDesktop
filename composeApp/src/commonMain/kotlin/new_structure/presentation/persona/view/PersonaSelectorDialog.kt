@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import new_structure.presentation.persona.model.PersonaItem
 import new_structure.presentation.shared.CloseRow
 import new_structure.util.Strings.PERSONA_SELECTOR_ADD_PERSONA
@@ -37,9 +38,13 @@ fun PersonaSelectorDialog(
     onSelectPersona: (id: String) -> Unit,
     onDismiss: () -> Unit,
 ) {
-    Dialog(onDismissRequest = onDismiss) {
+    Dialog(
+        onDismissRequest = onDismiss,
+        properties = DialogProperties(usePlatformDefaultWidth = false),
+    ) {
         LazyColumn(
             modifier = Modifier
+                .padding(16.dp)
                 .fillMaxWidth()
                 .background(AppColor.card(), RoundedCornerShape(8.dp))
                 .padding(16.dp),
@@ -130,11 +135,7 @@ private fun PersonaListItem(
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Box(
-            modifier = Modifier
-                .weight(1f)
-                .padding(16.dp)
-        ) {
+        Box(modifier = Modifier.weight(1f)) {
             Text(
                 text = persona.name,
                 style = MaterialTheme.typography.body1,
