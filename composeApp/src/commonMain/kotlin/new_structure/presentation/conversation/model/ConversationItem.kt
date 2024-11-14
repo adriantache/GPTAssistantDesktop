@@ -10,4 +10,6 @@ data class ConversationItem(
     val selectedPersona: String,
     val onSelectPersona: () -> Unit,
     val isVoiceInput: Boolean,
+    val onResetConversation: () -> Unit,
+    val hasMessages: Boolean,
 )

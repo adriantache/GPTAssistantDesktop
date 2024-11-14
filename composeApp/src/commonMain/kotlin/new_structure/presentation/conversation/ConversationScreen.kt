@@ -1,11 +1,13 @@
 package new_structure.presentation.conversation
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -100,6 +102,22 @@ fun NewConversationScreen(conversationItem: ConversationItem) {
                     message = message,
                     isLoading = conversationItem.isLoading && index == conversationItem.messages.size - 1,
                 )
+            }
+
+            if (conversationItem.hasMessages) {
+                item {
+                    Box(
+                        modifier = Modifier
+                            .clickable { conversationItem.onResetConversation() }
+                            .padding(16.dp),
+                    ) {
+                        Text(
+                            text = "Reset conversation",
+                            style = MaterialTheme.typography.button,
+                            color = AppColor.onBackground(),
+                        )
+                    }
+                }
             }
 
             item {

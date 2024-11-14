@@ -93,7 +93,6 @@ object ConversationUseCases {
         }
     }
 
-    // TODO: navigate away instead?
     private fun onResetConversation() {
         conversation = Conversation()
         updateConversation()

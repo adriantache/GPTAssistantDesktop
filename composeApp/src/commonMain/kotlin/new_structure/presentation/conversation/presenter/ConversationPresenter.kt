@@ -31,6 +31,8 @@ class ConversationPresenter {
             canSubmit = state.conversation.canSubmit,
             selectedPersona = state.conversation.persona?.name ?: PERSONA_SELECTOR_NO_PERSONA_SELECTED,
             onSelectPersona = state.onSelectPersona,
+            onResetConversation = state.onResetConversation,
+            hasMessages = state.conversation.messages.isNotEmpty(),
         )
     }
 }
