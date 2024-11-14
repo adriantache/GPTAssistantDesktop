@@ -8,6 +8,8 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
@@ -15,20 +17,25 @@ import androidx.compose.ui.unit.dp
 import theme.AppColor
 
 @Composable
-fun PromptInput(
+fun KeyboardInput(
     prompt: String,
     onPromptChanged: (input: String) -> Unit,
     isLoading: Boolean,
     onSubmit: (isVoiceInput: Boolean) -> Unit,
-    onWarmUpTts: () -> Unit,
 ) {
     val keyboard = LocalSoftwareKeyboardController.current
 
     Column(modifier = Modifier.fillMaxWidth()) {
         var singleLine by remember { mutableStateOf(true) }
+        val focusRequester = remember { FocusRequester() }
+
+        LaunchedEffect(Unit) {
+            focusRequester.requestFocus()
+        }
 
         TextField(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
+                .focusRequester(focusRequester),
             value = prompt,
             onValueChange = { onPromptChanged(it) },
             enabled = !isLoading,
@@ -36,15 +43,6 @@ fun PromptInput(
                 Text(
                     text = "Ask ChatGPT",
                     color = AppColor.onCard(),
-                )
-            },
-            leadingIcon = {
-                VoiceInput(
-                    onPromptChanged = onPromptChanged,
-                    onSubmit = {
-                        onWarmUpTts()
-                        onSubmit(true)
-                    }
                 )
             },
             trailingIcon = {

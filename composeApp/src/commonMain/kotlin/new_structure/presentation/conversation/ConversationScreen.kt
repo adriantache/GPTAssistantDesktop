@@ -18,8 +18,10 @@ import gptassistant.composeapp.generated.resources.Res
 import gptassistant.composeapp.generated.resources.persona
 import new_structure.presentation.conversation.model.ConversationItem
 import new_structure.presentation.conversation.model.RoleItem
+import new_structure.presentation.conversation.view.KeyboardInput
 import new_structure.presentation.conversation.view.MessageView
-import new_structure.presentation.conversation.view.PromptInput
+import new_structure.presentation.conversation.view.PromptInputSelector
+import new_structure.presentation.conversation.view.VoiceInput
 import org.jetbrains.compose.resources.painterResource
 import platformSpecific.tts.getTtsHelper
 import theme.AppColor
@@ -121,12 +123,24 @@ fun NewConversationScreen(conversationItem: ConversationItem) {
             }
 
             item {
-                PromptInput(
-                    prompt = conversationItem.input,
-                    onPromptChanged = conversationItem.onInput,
-                    isLoading = conversationItem.isLoading,
-                    onSubmit = conversationItem.onSubmit,
-                    onWarmUpTts = ::onWarmUpTts,
+                PromptInputSelector(
+                    keyboardInputContent = {
+                        KeyboardInput(
+                            prompt = conversationItem.input,
+                            onPromptChanged = conversationItem.onInput,
+                            isLoading = conversationItem.isLoading,
+                            onSubmit = conversationItem.onSubmit,
+                        )
+                    },
+                    voiceInputContent = {
+                        VoiceInput(
+                            onPromptChanged = conversationItem.onInput,
+                            onSubmit = {
+                                onWarmUpTts()
+                                conversationItem.onSubmit(true)
+                            }
+                        )
+                    },
                 )
             }
         }

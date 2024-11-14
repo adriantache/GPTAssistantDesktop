@@ -37,6 +37,9 @@ object AppColor {
     fun light(): Color = if (isSystemInDarkTheme()) Color.Black else Color.White
 
     @Composable
+    fun accent(): Color = if (isSystemInDarkTheme()) Color(0xffFF9F1C) else Color(0xffFFBF69)
+
+    @Composable
     fun buttonColors() = ButtonDefaults.buttonColors(
         backgroundColor = userMessage(),
         contentColor = onUserMessage(),

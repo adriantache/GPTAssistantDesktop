@@ -14,7 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import new_structure.data.migration.legacy.Conversation
 import new_structure.data.migration.legacy.Storage
-import new_structure.presentation.conversation.view.PromptInput
+import new_structure.presentation.conversation.view.KeyboardInput
 import platformSpecific.BackHandlerHelper
 
 @Composable
@@ -90,13 +90,11 @@ fun MainScreen() {
         Spacer(Modifier.height(8.dp))
 
         CardColumn {
-            PromptInput(
+            KeyboardInput(
                 prompt = prompt,
                 onPromptChanged = { prompt = it },
                 isLoading = isLoading,
                 onSubmit = { onSubmit() },
-                // We don't use TTS here.
-                onWarmUpTts = {},
             )
         }
     }

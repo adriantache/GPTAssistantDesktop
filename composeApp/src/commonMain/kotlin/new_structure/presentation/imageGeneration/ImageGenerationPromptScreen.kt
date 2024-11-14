@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import new_structure.presentation.conversation.view.PromptInput
+import new_structure.presentation.conversation.view.KeyboardInput
 import new_structure.presentation.imageGeneration.model.ImageGenerationPromptItem
 import new_structure.util.Strings.IMAGE_INPUT_TUTORIAL
 
@@ -24,14 +24,12 @@ fun ImageGenerationPromptScreen(
 
         Spacer(Modifier.weight(1f))
 
-        PromptInput(
+        KeyboardInput(
             prompt = imageGenerationItem.input,
             onPromptChanged = { imageGenerationItem.onInput(it) },
             isLoading = imageGenerationItem.isLoading,
             // We don't care if image prompt comes from voice input since we won't read the result back.
             onSubmit = { _ -> imageGenerationItem.onSubmit() },
-            // We don't use TTS here.
-            onWarmUpTts = {},
         )
     }
 }
