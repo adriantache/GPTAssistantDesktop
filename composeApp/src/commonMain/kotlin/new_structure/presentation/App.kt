@@ -11,7 +11,7 @@ import theme.AppColor
 // TODO: migrate all data
 
 @Composable
-fun NewApp() {
+fun App() {
     MaterialTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
