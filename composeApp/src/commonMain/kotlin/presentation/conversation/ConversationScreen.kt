@@ -1,5 +1,7 @@
 package presentation.conversation
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -23,10 +25,12 @@ import presentation.conversation.model.RoleItem
 import presentation.conversation.view.*
 import theme.AppColor
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NewConversationScreen(conversationItem: ConversationItem) {
     // TODO: add UI and functionality to stop TTS output
     val ttsHelper by remember { lazy { getTtsHelper() } }
+    var isTtsSpeaking by remember { mutableStateOf(false) }
 
     fun onWarmUpTts() {
         // TTS takes a bit of time to get ready for operation, so we need to instantiate it before actually using it.
@@ -42,6 +46,7 @@ fun NewConversationScreen(conversationItem: ConversationItem) {
         if (lastMessage == null || lastMessage.role != RoleItem.ASSISTANT) return@LaunchedEffect
 
         ttsHelper?.speak(lastMessage.message)
+            ?.collect { isTtsSpeaking = it }
     }
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
@@ -94,6 +99,15 @@ fun NewConversationScreen(conversationItem: ConversationItem) {
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Bottom),
             ) {
+                stickyHeader {
+                    AnimatedVisibility(isTtsSpeaking) {
+                        StopTtsView {
+                            ttsHelper?.stop()
+                            isTtsSpeaking = false
+                        }
+                    }
+                }
+
                 itemsIndexed(
                     items = conversationItem.messages,
                     key = { _, message -> message.id }
