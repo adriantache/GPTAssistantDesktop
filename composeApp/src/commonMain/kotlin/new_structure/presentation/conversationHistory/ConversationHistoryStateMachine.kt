@@ -1,13 +1,11 @@
 package new_structure.presentation.conversationHistory
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Text
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -15,6 +13,8 @@ import new_structure.domain.conversationHistory.ConversationHistoryUseCases
 import new_structure.domain.conversationHistory.event.ConversationHistoryEvent.ErrorEvent
 import new_structure.domain.conversationHistory.state.ConversationHistoryState
 import new_structure.presentation.conversation.view.ErrorEventDialog
+import new_structure.presentation.conversation.view.ScrollbarContainer
+import new_structure.presentation.conversationHistory.view.ConversationHistory
 
 @Composable
 fun ConversationHistoryStateMachine(
@@ -34,21 +34,27 @@ fun ConversationHistoryStateMachine(
 
     when (val localState = state) {
         is ConversationHistoryState.Init -> Unit
-        is ConversationHistoryState.OpenConversationHistory ->
-            // TODO: replace this test code with an actual implementation
-            LazyColumn(
-                modifier = Modifier.fillMaxSize().padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                localState.conversations?.let { conversations ->
-                    items(items = conversations, key = { it.id }) {
-                        Text(
-                            modifier = Modifier.clickable { localState.onOpenConversation(it.id) }.fillMaxWidth(),
-                            text = it.title ?: it.date.toString(),
-                        )
+        is ConversationHistoryState.OpenConversationHistory -> {
+            val listState = rememberLazyListState()
+
+            ScrollbarContainer(listState) {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize().padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    state = listState,
+                ) {
+                    localState.conversations?.let { conversations ->
+                        items(items = conversations, key = { it.id }) {
+                            ConversationHistory(
+                                conversation = it,
+                                onSelect = { localState.onOpenConversation(it.id) },
+                                onDelete = { localState.onDeleteConversation(it.id) },
+                            )
+                        }
                     }
                 }
             }
+        }
     }
 
     event?.value?.let {

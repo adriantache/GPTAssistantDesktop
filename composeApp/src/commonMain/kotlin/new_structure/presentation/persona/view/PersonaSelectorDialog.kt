@@ -51,7 +51,7 @@ fun PersonaSelectorDialog(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             item {
-                CloseRow(onDismiss)
+                CloseRow { onDismiss() }
             }
 
             item {

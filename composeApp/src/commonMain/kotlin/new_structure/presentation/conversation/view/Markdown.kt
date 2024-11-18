@@ -1,4 +1,4 @@
-package old_code
+package new_structure.presentation.conversation.view
 
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -6,7 +6,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import old_code.MarkupElement.*
+import new_structure.presentation.conversation.view.MarkupElement.*
 
 private val markupCharacters = listOf('*', '_', '`')
 

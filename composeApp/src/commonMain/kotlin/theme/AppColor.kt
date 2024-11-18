@@ -40,6 +40,9 @@ object AppColor {
     fun accent(): Color = if (isSystemInDarkTheme()) Color(0xffFF9F1C) else Color(0xffFFBF69)
 
     @Composable
+    fun onAccent(): Color = Color.White
+
+    @Composable
     fun buttonColors() = ButtonDefaults.buttonColors(
         backgroundColor = userMessage(),
         contentColor = onUserMessage(),

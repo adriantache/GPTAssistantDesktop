@@ -2,6 +2,7 @@ package new_structure.presentation.home
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -19,7 +20,10 @@ fun HomeScreen(items: List<HomeItem>) {
                 modifier = Modifier.clickable { it.onClick() }
                     .padding(16.dp),
             ) {
-                Text(it.name)
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = it.name,
+                )
             }
         }
     }

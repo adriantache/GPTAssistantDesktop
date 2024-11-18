@@ -23,7 +23,6 @@ import gptassistant.composeapp.generated.resources.copy
 import new_structure.presentation.conversation.LoadingTimer
 import new_structure.presentation.conversation.model.MessageItem
 import new_structure.presentation.conversation.model.RoleItem
-import old_code.processAnnotations
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import theme.AppColor

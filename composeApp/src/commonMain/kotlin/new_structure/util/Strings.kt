@@ -21,4 +21,20 @@ object Strings {
 
     const val IMAGE_INPUT_TUTORIAL = "Enter your prompt to generate an image"
     const val IMAGE_RESET = "Generate a new image"
+
+    const val CONFIRM_BUTTON = "Confirm"
+    const val CANCEL_BUTTON = "Cancel"
+    const val SAVE_BUTTON = "Save"
+
+    const val CONVERSATION_HISTORY_DELETE_TITLE = "Delete conversation"
+    const val CONVERSATION_HISTORY_DELETE_TEXT = "Are you sure you want to delete this conversation?"
+
+    const val SETTINGS_DELETE_API_KEY = "Delete your OpenAI API key"
+    const val SETTINGS_DELETE_API_KEY_TITLE = "Delete API key"
+    const val SETTINGS_DELETE_API_KEY_TEXT = "Are you sure you want to delete your API key?"
+
+    const val API_KEY_MISSING_TITLE = "Please enter your OpenAI API key to connect to ChatGPT"
+    const val API_KEY_MISSING_SUBTITLE =
+        "Please note that you will need to set up billing in your OpenAI account to access the ChatGPT API."
+    const val API_KEY_MISSING_WEBSITE = "Click here to open the OpenAI website to get a key."
 }

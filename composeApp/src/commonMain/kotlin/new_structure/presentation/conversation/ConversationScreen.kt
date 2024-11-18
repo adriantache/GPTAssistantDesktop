@@ -18,10 +18,7 @@ import gptassistant.composeapp.generated.resources.Res
 import gptassistant.composeapp.generated.resources.persona
 import new_structure.presentation.conversation.model.ConversationItem
 import new_structure.presentation.conversation.model.RoleItem
-import new_structure.presentation.conversation.view.KeyboardInput
-import new_structure.presentation.conversation.view.MessageView
-import new_structure.presentation.conversation.view.PromptInputSelector
-import new_structure.presentation.conversation.view.VoiceInput
+import new_structure.presentation.conversation.view.*
 import org.jetbrains.compose.resources.painterResource
 import platformSpecific.tts.getTtsHelper
 import theme.AppColor
@@ -91,57 +88,59 @@ fun NewConversationScreen(conversationItem: ConversationItem) {
             listState.requestScrollToItem(scrollDestination)
         }
 
-        LazyColumn(
-            state = listState,
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Bottom),
-        ) {
-            itemsIndexed(
-                items = conversationItem.messages,
-                key = { _, message -> message.id }
-            ) { index, message ->
-                MessageView(
-                    message = message,
-                    isLoading = conversationItem.isLoading && index == conversationItem.messages.size - 1,
-                )
-            }
+        ScrollbarContainer(listState) {
+            LazyColumn(
+                state = listState,
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Bottom),
+            ) {
+                itemsIndexed(
+                    items = conversationItem.messages,
+                    key = { _, message -> message.id }
+                ) { index, message ->
+                    MessageView(
+                        message = message,
+                        isLoading = conversationItem.isLoading && index == conversationItem.messages.size - 1,
+                    )
+                }
 
-            if (conversationItem.hasMessages) {
-                item {
-                    Box(
-                        modifier = Modifier
-                            .clickable { conversationItem.onResetConversation() }
-                            .padding(16.dp),
-                    ) {
-                        Text(
-                            text = "Reset conversation",
-                            style = MaterialTheme.typography.button,
-                            color = AppColor.onBackground(),
-                        )
+                if (conversationItem.hasMessages) {
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .clickable { conversationItem.onResetConversation() }
+                                .padding(16.dp),
+                        ) {
+                            Text(
+                                text = "Reset conversation",
+                                style = MaterialTheme.typography.button,
+                                color = AppColor.onBackground(),
+                            )
+                        }
                     }
                 }
-            }
 
-            item {
-                PromptInputSelector(
-                    keyboardInputContent = {
-                        KeyboardInput(
-                            prompt = conversationItem.input,
-                            onPromptChanged = conversationItem.onInput,
-                            isLoading = conversationItem.isLoading,
-                            onSubmit = conversationItem.onSubmit,
-                        )
-                    },
-                    voiceInputContent = {
-                        VoiceInput(
-                            onPromptChanged = conversationItem.onInput,
-                            onSubmit = {
-                                onWarmUpTts()
-                                conversationItem.onSubmit(true)
-                            }
-                        )
-                    },
-                )
+                item {
+                    PromptInputSelector(
+                        keyboardInputContent = {
+                            KeyboardInput(
+                                prompt = conversationItem.input,
+                                onPromptChanged = conversationItem.onInput,
+                                isLoading = conversationItem.isLoading,
+                                onSubmit = conversationItem.onSubmit,
+                            )
+                        },
+                        voiceInputContent = {
+                            VoiceInput(
+                                onPromptChanged = conversationItem.onInput,
+                                onSubmit = {
+                                    onWarmUpTts()
+                                    conversationItem.onSubmit(true)
+                                }
+                            )
+                        },
+                    )
+                }
             }
         }
     }

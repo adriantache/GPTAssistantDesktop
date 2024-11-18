@@ -36,7 +36,7 @@ fun AddPersonaDialog(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.background(AppColor.card(), RoundedCornerShape(8.dp)).padding(16.dp),
         ) {
-            CloseRow(onDismiss)
+            CloseRow { onDismiss() }
 
             val title = if (isEdit) EDIT_PERSONA_TITLE else ADD_PERSONA_TITLE
             Text(

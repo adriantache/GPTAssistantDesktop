@@ -48,6 +48,7 @@ object SettingsUseCases {
             onSubmit = {
                 scope.launch {
                     repository.setApiKey(apiKeyInput.input)
+                    apiKeyInput = ApiKeyInput() // Clear this input so we don't leak the API key.
 
                     checkApiKey()
                 }
@@ -71,6 +72,8 @@ object SettingsUseCases {
     private fun clearApiKey() {
         scope.launch {
             repository.setApiKey(null)
+
+            checkApiKey()
         }
     }
 }
