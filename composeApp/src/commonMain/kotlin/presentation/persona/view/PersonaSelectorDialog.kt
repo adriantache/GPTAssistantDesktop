@@ -26,6 +26,7 @@ import util.Strings.PERSONA_SELECTOR_ADD_PERSONA
 import util.Strings.PERSONA_SELECTOR_DELETE_PERSONA
 import util.Strings.PERSONA_SELECTOR_EDIT_PERSONA
 import util.Strings.PERSONA_SELECTOR_NO_PERSONA
+import util.Strings.PERSONA_SELECTOR_NO_PERSONAS_CTA
 import util.Strings.PERSONA_SELECTOR_TITLE
 
 @Composable
@@ -115,7 +116,7 @@ private fun PersonaNoItems() {
         Text(
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center,
-            text = "You have no personas, why not add one!",
+            text = PERSONA_SELECTOR_NO_PERSONAS_CTA,
         )
     }
 }

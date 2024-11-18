@@ -12,6 +12,7 @@ object Strings {
     const val PERSONA_SELECTOR_EDIT_PERSONA = "Edit"
     const val PERSONA_SELECTOR_DELETE_PERSONA = "Delete"
     const val PERSONA_SELECTOR_ADD_PERSONA = "Add persona"
+    const val PERSONA_SELECTOR_NO_PERSONAS_CTA = "You have no personas, why not add one!"
 
     const val ADD_PERSONA_TITLE = "Add persona"
     const val EDIT_PERSONA_TITLE = "Edit persona"
@@ -25,6 +26,9 @@ object Strings {
     const val CONFIRM_BUTTON = "Confirm"
     const val CANCEL_BUTTON = "Cancel"
     const val SAVE_BUTTON = "Save"
+    const val DISMISS_BUTTON = "Dismiss"
+    const val SEND_BUTTON = "Send"
+    const val DELETE_BUTTON = "Delete"
 
     const val CONVERSATION_HISTORY_DELETE_TITLE = "Delete conversation"
     const val CONVERSATION_HISTORY_DELETE_TEXT = "Are you sure you want to delete this conversation?"
@@ -39,4 +43,8 @@ object Strings {
     const val API_KEY_MISSING_WEBSITE = "Click here to open the OpenAI website to get a key."
 
     const val CONVERSATION_STOP_TTS = "Stop TTS output"
+    const val CONVERSATION_RESET = "Reset conversation"
+
+    const val INPUT_HINT = "Ask ChatGPT"
+    const val INPUT_ENTER_TO_SEND = "Press enter to send"
 }

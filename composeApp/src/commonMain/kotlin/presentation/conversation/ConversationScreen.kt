@@ -24,6 +24,7 @@ import presentation.conversation.model.ConversationItem
 import presentation.conversation.model.RoleItem
 import presentation.conversation.view.*
 import theme.AppColor
+import util.Strings.CONVERSATION_RESET
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -126,7 +127,7 @@ fun NewConversationScreen(conversationItem: ConversationItem) {
                                 .padding(16.dp),
                         ) {
                             Text(
-                                text = "Reset conversation",
+                                text = CONVERSATION_RESET,
                                 style = MaterialTheme.typography.button,
                                 color = AppColor.onBackground(),
                             )

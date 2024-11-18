@@ -17,6 +17,7 @@ import presentation.shared.ConfirmationDialog
 import theme.AppColor
 import util.Strings.CONVERSATION_HISTORY_DELETE_TEXT
 import util.Strings.CONVERSATION_HISTORY_DELETE_TITLE
+import util.Strings.DELETE_BUTTON
 
 @Composable
 fun ConversationHistory(
@@ -44,7 +45,7 @@ fun ConversationHistory(
             modifier = Modifier
                 .clickable { showConfirmationDialog = true }
                 .padding(16.dp),
-            text = "Delete",
+            text = DELETE_BUTTON,
             color = MaterialTheme.colors.error,
         )
     }

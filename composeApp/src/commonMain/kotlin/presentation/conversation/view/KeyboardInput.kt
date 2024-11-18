@@ -15,6 +15,9 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import theme.AppColor
+import util.Strings.INPUT_ENTER_TO_SEND
+import util.Strings.INPUT_HINT
+import util.Strings.SEND_BUTTON
 
 @Composable
 fun KeyboardInput(
@@ -41,7 +44,7 @@ fun KeyboardInput(
             enabled = !isLoading,
             label = {
                 Text(
-                    text = "Ask ChatGPT",
+                    text = INPUT_HINT,
                     color = AppColor.onCard(),
                 )
             },
@@ -55,7 +58,7 @@ fun KeyboardInput(
                     enabled = !isLoading && prompt.isNotBlank(),
                 ) {
                     Text(
-                        text = "Send",
+                        text = SEND_BUTTON,
                         style = MaterialTheme.typography.subtitle1,
                         color = AppColor.userMessage(),
                     )
@@ -96,7 +99,7 @@ fun KeyboardInput(
 
             Text(
                 modifier = Modifier.clickable { singleLine = !singleLine },
-                text = "Press enter to send",
+                text = INPUT_ENTER_TO_SEND,
                 color = AppColor.onCard()
             )
         }
