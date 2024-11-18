@@ -3,7 +3,7 @@ Linux) targets using Kotlin Multiplatform with ComposeUi (with Ktor for network 
 manipulation and interop with Ktor, DataStore for storing the API key, settings and local message cache).
 
 This is an app that enables interaction with the latest OpenAI ChatGPT, without requiring a monthly subscription. It
-requires an API key, which you can obtain ontheir website at https://platform.openai.com/api-keys, after which you must
+requires an API key, which you can obtain on their website at https://platform.openai.com/api-keys, after which you must
 purchase API credits at https://platform.openai.com/settings/organization/billing/overview (10$ should last you a long
 time if you're not using image generation).
 

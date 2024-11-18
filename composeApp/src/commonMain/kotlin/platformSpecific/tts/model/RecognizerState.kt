@@ -1,6 +1,6 @@
 package platformSpecific.tts.model
 
-import new_structure.domain.util.model.Event
+import domain.util.model.Event
 
 sealed interface RecognizerState {
     data object RequestingPermission : RecognizerState

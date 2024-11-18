@@ -5,7 +5,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import new_structure.presentation.App
+import presentation.App
 
 fun main() = application {
     val windowSize = java.awt.Toolkit.getDefaultToolkit().screenSize

@@ -11,7 +11,7 @@ import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
-import new_structure.domain.util.model.Event
+import domain.util.model.Event
 import platformSpecific.tts.model.RecognizerState
 import platformSpecific.tts.model.RecognizerState.*
 

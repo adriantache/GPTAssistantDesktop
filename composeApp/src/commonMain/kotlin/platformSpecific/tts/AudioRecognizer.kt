@@ -1,7 +1,7 @@
 package platformSpecific.tts
 
 import androidx.compose.runtime.Composable
-import new_structure.domain.util.model.Event
+import domain.util.model.Event
 import platformSpecific.tts.model.RecognizerState
 
 @Composable
