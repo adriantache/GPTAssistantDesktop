@@ -29,17 +29,30 @@ object SettingsUseCases {
             val settings = repository.getSettings()
 
             if (settings.apiKey == null) {
-                _state.value = MissingApiKey(
-                    apiKey = apiKeyInput.input,
-                    onInput = apiKeyInput::onInput,
-                    canSubmit = apiKeyInput.isValid,
-                    onSubmit = ::checkApiKey,
-                )
+                showMissingApiKey()
                 return@launch
             }
 
             setIdle()
         }
+    }
+
+    private fun showMissingApiKey() {
+        _state.value = MissingApiKey(
+            apiKey = apiKeyInput.input,
+            onInput = {
+                apiKeyInput = apiKeyInput.onInput(it)
+                showMissingApiKey()
+            },
+            canSubmit = apiKeyInput.isValid,
+            onSubmit = {
+                scope.launch {
+                    repository.setApiKey(apiKeyInput.input)
+
+                    checkApiKey()
+                }
+            },
+        )
     }
 
     private fun onDisplaySettings() {
