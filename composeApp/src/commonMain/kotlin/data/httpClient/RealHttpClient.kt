@@ -1,5 +1,6 @@
 package data.httpClient
 
+import getPlatform
 import io.ktor.client.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.logging.*
@@ -14,7 +15,13 @@ val realHttpClient = HttpClient {
 
     if (ENABLE_LOGGING) {
         install(Logging) {
-            logger = Logger.ANDROID
+            logger = if (getPlatform().name.contains("Android")) {
+                Logger.ANDROID
+            } else {
+                // This doesn't seem to work on desktop...
+                Logger.DEFAULT
+            }
+
             level = LogLevel.ALL
         }
     }

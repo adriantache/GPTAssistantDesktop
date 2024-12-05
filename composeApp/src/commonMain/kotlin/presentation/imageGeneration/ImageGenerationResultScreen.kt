@@ -42,13 +42,27 @@ fun ImageGenerationResultScreen(
 
         Spacer(Modifier.height(16.dp))
 
-        AsyncImage(
-            modifier = Modifier.fillMaxWidth()
-                .weight(1f)
-                .clickable { clipboard.setText(AnnotatedString(imageGenerationItem.image)) },
-            contentDescription = imageGenerationItem.imageInput,
-            model = imageGenerationItem.image,
-        )
+        imageGenerationItem.image?.let {
+            AsyncImage(
+                modifier = Modifier.fillMaxWidth()
+                    .weight(1f)
+                    .clickable { clipboard.setText(AnnotatedString(imageGenerationItem.image)) },
+                contentDescription = imageGenerationItem.imageInput,
+                model = imageGenerationItem.image,
+            )
+        }
+
+        imageGenerationItem.errorMessage?.let {
+            Text(
+                modifier = Modifier.fillMaxWidth()
+                    .weight(1f)
+                    .padding(16.dp)
+                    .clickable { imageGenerationItem.onReset() },
+                text = "Error: $it",
+                color = AppColor.error(),
+                textAlign = TextAlign.Center,
+            )
+        }
 
         Spacer(Modifier.height(16.dp))
 

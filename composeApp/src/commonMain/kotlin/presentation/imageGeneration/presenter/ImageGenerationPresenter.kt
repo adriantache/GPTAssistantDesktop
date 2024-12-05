@@ -17,9 +17,10 @@ class ImageGenerationPresenter {
 
     fun getResultItem(localState: ImageGenerationState.Result): ImageGenerationResultItem {
         return ImageGenerationResultItem(
-            image = localState.result.image,
+            image = localState.result.imageUrl,
             imageInput = localState.result.imagePrompt,
             onReset = localState.onReset,
+            errorMessage = localState.result.errorMessage,
         )
     }
 }

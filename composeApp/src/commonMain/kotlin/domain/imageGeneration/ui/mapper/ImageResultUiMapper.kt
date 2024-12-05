@@ -4,6 +4,7 @@ import domain.imageGeneration.entity.ImageResult
 import domain.imageGeneration.ui.model.ImageResultUi
 
 fun ImageResult.toUi() = ImageResultUi(
-    image = image,
-    imagePrompt = imagePrompt
+    imageUrl = imageUrl,
+    imagePrompt = imagePrompt,
+    errorMessage = errorMessage,
 )

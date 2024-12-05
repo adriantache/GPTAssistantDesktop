@@ -2,6 +2,8 @@ package domain.imageGeneration
 
 import data.imageGeneration.ImageGenerationDataSource
 import domain.imageGeneration.data.ImageGenerationRepository
+import domain.imageGeneration.data.model.ImageResultData.ImageResultError
+import domain.imageGeneration.data.model.ImageResultData.ImageResultSuccess
 import domain.imageGeneration.entity.ImagePrompt
 import domain.imageGeneration.entity.ImageResult
 import domain.imageGeneration.state.ImageGenerationState
@@ -40,9 +42,12 @@ object ImageGenerationUseCases {
         _state.value = ImageGenerationState.Loading
 
         scope.launch {
+            val imageResultData = repository.generateImage(prompt)
+
             val imageResult = ImageResult(
-                image = repository.generateImage(prompt),
+                imageUrl = (imageResultData as? ImageResultSuccess)?.imageUrl,
                 imagePrompt = prompt,
+                errorMessage = (imageResultData as? ImageResultError)?.errorMessage,
             )
             _state.value = ImageGenerationState.Result(
                 result = imageResult.toUi(),

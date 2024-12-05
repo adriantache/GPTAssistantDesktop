@@ -1,6 +1,7 @@
 package domain.imageGeneration.ui.model
 
 data class ImageResultUi(
-    val image: String,
+    val imageUrl: String?,
     val imagePrompt: String,
+    val errorMessage: String?,
 )

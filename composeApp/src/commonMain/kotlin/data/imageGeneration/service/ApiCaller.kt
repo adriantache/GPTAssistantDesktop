@@ -4,6 +4,9 @@ import data.imageGeneration.model.OpenAiImageRequest
 import data.imageGeneration.model.OpenAiImageResponse
 import data.settings.dataSource.SettingsDataSource
 import data.settings.dataSource.SettingsDataSourceImpl
+import domain.imageGeneration.data.model.ImageResultData
+import domain.imageGeneration.data.model.ImageResultData.ImageResultError
+import domain.imageGeneration.data.model.ImageResultData.ImageResultSuccess
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.plugins.*
@@ -38,7 +41,7 @@ class ApiCaller(
         }
     }
 
-    suspend fun getImage(prompt: String): String {
+    suspend fun getImage(prompt: String): ImageResultData {
         val apiKey = settingsDataSource.getSettings().apiKey
             ?: error("ERROR: Api key should be present!")
 
@@ -52,6 +55,9 @@ class ApiCaller(
             }
         }
 
-        return result.body<OpenAiImageResponse>().url
+        val resultBody = result.body<OpenAiImageResponse>()
+
+        return resultBody.url?.let { ImageResultSuccess(it) }
+            ?: ImageResultError(resultBody.error?.message.orEmpty())
     }
 }
