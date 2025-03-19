@@ -1,5 +1,5 @@
 [versions]
-accompanistPermissions = "0.37.0"
+accompanistPermissions = "0.37.2"
 agp = "8.5.0" # https://kotlinlang.org/docs/multiplatform-compatibility-guide.html
 android-compileSdk = "34"
 android-minSdk = "26"
