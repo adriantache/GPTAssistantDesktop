@@ -3,7 +3,7 @@ accompanistPermissions = "0.37.2"
 agp = "8.5.2" # https://kotlinlang.org/docs/multiplatform-compatibility-guide.html
 android-compileSdk = "35"
 android-minSdk = "26"
-android-targetSdk = "34"
+android-targetSdk = "35"
 androidx-activityCompose = "1.10.1"
 appdirs = "1.4.0"
 assertjCore = "3.27.3"
@@ -14,7 +14,7 @@ coroutines = "1.10.1"
 datastorePreferencesCore = "1.1.4"
 kotlin = "2.1.10"
 kotlinx-io-core = "0.7.0"
-ktor = "3.0.1"
+ktor = "3.0.1" # keeping this at 3.0.1 until ktor-server-test-host is not needed (we can mock SSE events)
 turbine = "1.2.0"
 
 [libraries]
