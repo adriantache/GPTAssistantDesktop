@@ -2,7 +2,7 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
-val version = "1.0.34"
+val version = "1.0.33"
 val versionNumber = getVersionInt()
 
 plugins {
@@ -102,6 +102,7 @@ android {
             excludes += "win32-x86/attach_hotspot_windows.dll"
             excludes += "/META-INF/LICENSE.md"
             excludes += "/META-INF/LICENSE-notice.md"
+            excludes += "/META-INF/versions/9/module-info.class"
         }
     }
     buildTypes {
