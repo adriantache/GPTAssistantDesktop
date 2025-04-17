@@ -103,6 +103,16 @@ android {
             excludes += "/META-INF/LICENSE.md"
             excludes += "/META-INF/LICENSE-notice.md"
             excludes += "/META-INF/versions/9/module-info.class"
+            excludes += "META-INF/versions/9/module-info.class"
+            excludes += "META-INF/DEPENDENCIES.txt"
+            excludes += "META-INF/LICENSE"
+            excludes += "META-INF/LICENSE.txt"
+            excludes += "META-INF/license.txt"
+            excludes += "META-INF/NOTICE"
+            excludes += "META-INF/NOTICE.txt"
+            excludes += "META-INF/notice.txt"
+            excludes += "META-INF/INDEX.LIST"
+            excludes += "META-INF/versions"
         }
     }
     buildTypes {
