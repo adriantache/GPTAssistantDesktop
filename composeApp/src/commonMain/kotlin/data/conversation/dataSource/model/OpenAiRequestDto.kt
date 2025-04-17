@@ -3,11 +3,11 @@ package data.conversation.dataSource.model
 import kotlinx.serialization.Serializable
 
 // Models without version always point to latest version.
-private const val MODEL_GPT4_OMNI = "04-mini"
+private const val DEFAULT_MODEL = "o4-mini"
 
 @Serializable
 data class OpenAiRequestDto(
     val messages: List<ChatMessageDto>,
-    val model: String = MODEL_GPT4_OMNI,
+    val model: String = DEFAULT_MODEL,
     val stream: Boolean? = null,
 )
