@@ -1,6 +1,7 @@
 package presentation
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
@@ -14,7 +15,7 @@ fun App() {
     MaterialTheme {
         MigrationProcessor {
             Surface(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize().systemBarsPadding(),
                 color = AppColor.background(),
             ) {
                 Navigation()

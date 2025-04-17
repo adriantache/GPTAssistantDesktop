@@ -2,7 +2,7 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
-val version = "1.0.33"
+val version = "1.0.34"
 val versionNumber = getVersionInt()
 
 plugins {
@@ -86,6 +86,7 @@ android {
         versionName = version
     }
     signingConfigs {
+        @Suppress("unused")
         val release by creating {
             storeFile = file("../keystore.jks")
             storePassword = System.getenv("RELEASE_KEYSTORE_PASSWORD")
@@ -94,6 +95,7 @@ android {
         }
     }
     packaging {
+
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
             excludes += "/META-INF/licenses/ASM"
@@ -113,6 +115,7 @@ android {
             excludes += "META-INF/notice.txt"
             excludes += "META-INF/INDEX.LIST"
             excludes += "META-INF/versions"
+            excludes += "**/module-info.class"
         }
     }
     buildTypes {
