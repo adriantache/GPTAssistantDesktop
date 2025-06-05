@@ -2,7 +2,7 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
-val version = "1.0.37"
+val version = "1.0.39"
 val versionNumber = getVersionInt()
 
 plugins {
@@ -149,6 +149,10 @@ compose.desktop {
             // Required by the file we build with DataStore, or something.
             // Full explanation here: https://stackoverflow.com/a/61758667/9038481
             modules("jdk.unsupported")
+
+            windows {
+                iconFile.set(project.file("icon.png"))
+            }
         }
     }
 }
