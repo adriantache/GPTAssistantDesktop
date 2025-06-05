@@ -12,8 +12,7 @@ object NavigatorImpl : Navigator {
     private val _currentDestination: MutableStateFlow<Destination> = MutableStateFlow(destinations.last())
     override val currentDestination: StateFlow<Destination> = _currentDestination
 
-    override val canNavigateBack: Boolean
-        get() = destinations.isNotEmpty()
+    override val canNavigateBack: MutableStateFlow<Boolean> = MutableStateFlow(destinations.isNotEmpty())
 
     override fun navigateTo(destination: Destination) {
         // Don't allow navigating multiple times to the same destination. Should probably remove entire subgraph
@@ -31,6 +30,7 @@ object NavigatorImpl : Navigator {
         if (destinations.size < 2) return
 
         destinations.removeLast()
+        canNavigateBack.value = destinations.isNotEmpty()
         updateCurrentDestination()
     }
 

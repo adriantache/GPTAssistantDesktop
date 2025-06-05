@@ -11,6 +11,7 @@ private const val ENABLE_LOGGING: Boolean = false
 val realHttpClient = HttpClient {
     install(HttpTimeout) {
         requestTimeoutMillis = 5 * 60 * 1000 // ChatGPT can be very slow to reply, even when streaming...
+        socketTimeoutMillis = 5 * 60 * 1000 // ChatGPT can be very slow to reply, even when streaming...
     }
 
     if (ENABLE_LOGGING) {

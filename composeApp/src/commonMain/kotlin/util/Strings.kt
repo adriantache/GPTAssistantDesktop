@@ -36,6 +36,8 @@ object Strings {
     const val SETTINGS_DELETE_API_KEY = "Delete your OpenAI API key"
     const val SETTINGS_DELETE_API_KEY_TITLE = "Delete API key"
     const val SETTINGS_DELETE_API_KEY_TEXT = "Are you sure you want to delete your API key?"
+    const val SETTINGS_CHANGE_TTS_VOICE_TITLE = "Change TTS voice"
+    const val SETTINGS_CHANGE_TTS_VOICE_TEXT = "Change the voice of the TTS engine"
 
     const val API_KEY_MISSING_TITLE = "Please enter your OpenAI API key to connect to ChatGPT"
     const val API_KEY_MISSING_SUBTITLE =

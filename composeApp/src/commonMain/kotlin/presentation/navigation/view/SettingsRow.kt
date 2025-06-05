@@ -2,6 +2,7 @@ package presentation.navigation.view
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -69,6 +70,34 @@ fun SettingsRow(
             onConfirm = onClick,
             title = confirmationTitle,
             text = confirmationText,
+        )
+    }
+}
+
+@Composable
+fun SettingsRow(
+    title: String,
+    text: String,
+    onClick: () -> Unit,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .clickable { onClick() },
+        verticalArrangement = Arrangement.Center,
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.subtitle1,
+            color = AppColor.onBackground(),
+        )
+
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Text(
+            text = text,
+            color = AppColor.onBackground(),
         )
     }
 }

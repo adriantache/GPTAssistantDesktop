@@ -13,6 +13,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import platformSpecific.tts.model.TtsVoice
 import java.util.*
 
 // TODO: improve the error states
@@ -31,6 +32,22 @@ class TtsHelperImpl : TtsHelper {
 
     override fun stop() {
         tts.stop()
+    }
+
+    override fun setVoice(voice: TtsVoice) {
+        val expectedVoice = tts.voices.find { it.name == voice.name }
+
+        if (expectedVoice == null) Log.e(this::class.simpleName, "Cannot find voice $voice!")
+
+        tts.voice = expectedVoice ?: tts.defaultVoice
+    }
+
+    override fun getVoice(): TtsVoice? {
+        return TtsVoice(tts.voice.name)
+    }
+
+    override fun getVoices(): List<TtsVoice> {
+        return tts.voices.map { TtsVoice(it.name) }
     }
 
     private fun getTts(context: Context): TextToSpeech {

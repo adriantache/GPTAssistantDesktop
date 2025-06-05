@@ -8,6 +8,4 @@ sealed interface Destination {
     data class ConversationDestination(val conversationId: String? = null) : Destination
 
     data object NewImageGenerationDestination : Destination
-
-    data object SettingsDestination : Destination
 }

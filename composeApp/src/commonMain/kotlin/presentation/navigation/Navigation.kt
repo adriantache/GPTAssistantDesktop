@@ -31,7 +31,7 @@ fun Navigation(
 ) {
     val currentDestination by navigator.currentDestination.collectAsState()
 
-    BackHandlerHelper(isActive = navigator.canNavigateBack) {
+    BackHandlerHelper(isActive = navigator.canNavigateBack.collectAsState().value) {
         navigator.navigateBack()
     }
 
@@ -60,7 +60,6 @@ fun Navigation(
                 is ConversationDestination -> ConversationStateMachine(destination.conversationId)
                 NewImageGenerationDestination -> ImageGenerationStateMachine()
                 ConversationHistoryDestination -> ConversationHistoryStateMachine()
-                SettingsDestination -> TODO()
             }
         }
     }

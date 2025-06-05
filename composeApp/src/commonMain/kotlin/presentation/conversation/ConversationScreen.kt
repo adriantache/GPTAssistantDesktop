@@ -97,7 +97,7 @@ fun NewConversationScreen(conversationItem: ConversationItem) {
         ScrollbarContainer(listState) {
             LazyColumn(
                 state = listState,
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize(), // TODO migrate to animateItem() when supported.
                 verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Bottom),
             ) {
                 stickyHeader {
