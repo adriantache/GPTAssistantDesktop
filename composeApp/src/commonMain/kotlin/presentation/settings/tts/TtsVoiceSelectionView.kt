@@ -87,7 +87,7 @@ fun VoiceRow(
             }
             Spacer(modifier = Modifier.width(8.dp))
             Text(
-                modifier = Modifier.width(150.dp),
+                modifier = Modifier.width(80.dp),
                 text = voice.locale?.displayName.orEmpty(),
                 style = MaterialTheme.typography.subtitle2,
                 color = AppColor.onCard()

@@ -9,6 +9,7 @@ import android.speech.tts.Voice
 import android.util.Log
 import com.adriantache.ContextProvider
 import data.settings.SettingsRepositoryImpl
+import domain.util.model.capitalizeFirst
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -118,14 +119,7 @@ object TtsHelperImpl : TtsHelper {
         )
         val description = sections.drop(2)
             .filter { it.length > 1 }
-            .mapIndexed { index, string ->
-                if (index != 0) return@mapIndexed string
-
-                string.mapIndexed { index, char ->
-                    if (index == 0) char.uppercase() else char
-                }
-            }
-            .joinToString(" ")
+            .joinToString(" ") { it.capitalizeFirst() }
         val name = "${locale.displayName} $description"
 
         return TtsVoice(
