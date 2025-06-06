@@ -33,12 +33,6 @@ fun NewConversationScreen(conversationItem: ConversationItem) {
     val ttsHelper by remember { lazy { getTtsHelper() } }
     var isTtsSpeaking by remember { mutableStateOf(false) }
 
-    fun onWarmUpTts() {
-        // TTS takes a bit of time to get ready for operation, so we need to instantiate it before actually using it.
-        @Suppress("UNUSED_EXPRESSION")
-        ttsHelper
-    }
-
     LaunchedEffect(conversationItem) {
         if (!conversationItem.isVoiceInput || ttsHelper == null) return@LaunchedEffect
 
@@ -150,10 +144,7 @@ fun NewConversationScreen(conversationItem: ConversationItem) {
                         voiceInputContent = {
                             VoiceInput(
                                 onPromptChanged = conversationItem.onInput,
-                                onSubmit = {
-                                    onWarmUpTts()
-                                    conversationItem.onSubmit(true)
-                                }
+                                onSubmit = { conversationItem.onSubmit(true) }
                             )
                         },
                     )
