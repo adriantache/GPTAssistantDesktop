@@ -37,7 +37,7 @@ fun TtsVoiceSelectionView(
         ttsHelper?.let { ttsHelper ->
             selectedTtsVoice = voice
             ttsHelper.setVoice(voice)
-            ttsHelper.speak("Hello! This is ${voice.id} speaking.")
+            ttsHelper.speak("Hello! This is ${voice.name} speaking.")
         } ?: onDismiss()
     }
 
@@ -73,7 +73,7 @@ fun VoiceRow(
                 onClick = null,
             )
             Spacer(modifier = Modifier.width(8.dp))
-            Column {
+            Column(Modifier.weight(1f)) {
                 Text(
                     text = voice.name ?: voice.id,
                     style = MaterialTheme.typography.subtitle1,
@@ -83,6 +83,7 @@ fun VoiceRow(
             }
             Spacer(modifier = Modifier.width(8.dp))
             Text(
+                modifier = Modifier.width(150.dp),
                 text = voice.locale?.displayName.orEmpty(),
                 style = MaterialTheme.typography.subtitle2,
                 color = AppColor.onCard()

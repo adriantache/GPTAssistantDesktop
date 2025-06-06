@@ -54,7 +54,7 @@ object TtsHelperImpl : TtsHelper {
 
     override fun getVoices(): List<TtsVoice> {
         return tts.voices.orEmpty()
-            .sortedBy { it.name }
+            .sortedBy { it.name.lowercase() }
             .map { getTtsVoice(it.name) }
             .filter { it.locale?.language == "en" }
     }
@@ -115,7 +115,16 @@ object TtsHelperImpl : TtsHelper {
             sections[0],
             sections[1]
         )
-        val description = sections.drop(2).filter { it.length > 1 }.joinToString(" ")
+        val description = sections.drop(2)
+            .filter { it.length > 1 }
+            .mapIndexed { index, string ->
+                if (index != 0) return@mapIndexed string
+
+                string.mapIndexed { index, char ->
+                    if (index == 0) char.uppercase() else char
+                }
+            }
+            .joinToString(" ")
         val name = "${locale.displayName} $description"
 
         return TtsVoice(
