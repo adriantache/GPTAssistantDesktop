@@ -23,12 +23,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import platformSpecific.tts.getTtsHelper
 
 object ConversationUseCases {
     // TODO: replace with DI
     private val repository: ConversationRepository = ConversationRepositoryImpl()
     private val historyRepository: ConversationHistoryRepository = ConversationHistoryRepositoryImpl()
     private val scope: CoroutineScope = CoroutineScope(Dispatchers.Default)
+
+    private val hasVoiceInput by lazy { getTtsHelper() != null }
 
     private var conversation = Conversation()
 
@@ -126,6 +129,7 @@ object ConversationUseCases {
                 onResetConversation = ::onResetConversation,
                 onCopyMessage = ::onCopyMessage,
                 onSelectPersona = ::onSelectPersona,
+                hasVoiceInput = hasVoiceInput,
             )
         )
     }

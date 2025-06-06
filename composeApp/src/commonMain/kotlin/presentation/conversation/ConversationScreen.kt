@@ -138,6 +138,7 @@ fun NewConversationScreen(conversationItem: ConversationItem) {
 
                 item {
                     PromptInputSelector(
+                        hasVoiceInput = conversationItem.hasVoiceInput,
                         keyboardInputContent = {
                             KeyboardInput(
                                 prompt = conversationItem.input,

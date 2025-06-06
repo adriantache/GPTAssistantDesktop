@@ -9,6 +9,7 @@ sealed interface ConversationState {
         val conversation: ConversationUi,
         val isLoading: Boolean,
         val isVoiceInput: Boolean,
+        val hasVoiceInput: Boolean,
         val onMessageInput: (input: String) -> Unit,
         val onSubmitMessage: (isVoiceInput: Boolean) -> Unit,
         val onResetConversation: () -> Unit,

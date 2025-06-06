@@ -6,6 +6,7 @@ data class ConversationItem(
     val onInput: (input: String) -> Unit,
     val isLoading: Boolean,
     val canSubmit: Boolean,
+    val hasVoiceInput: Boolean,
     val onSubmit: (isVoiceInput: Boolean) -> Unit,
     val selectedPersona: String,
     val onSelectPersona: () -> Unit,

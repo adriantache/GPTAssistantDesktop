@@ -19,10 +19,15 @@ import theme.AppColor
 
 @Composable
 fun PromptInputSelector(
+    hasVoiceInput: Boolean,
     keyboardInputContent: @Composable () -> Unit,
     voiceInputContent: @Composable () -> Unit,
 ) {
-    var inputSelection: PromptSelection? by remember { mutableStateOf(null) }
+    var inputSelection: PromptSelection? by remember {
+        mutableStateOf(
+            if (hasVoiceInput) null else PromptSelection.KEYBOARD
+        )
+    }
 
     AnimatedVisibility(inputSelection == null) {
         Row(

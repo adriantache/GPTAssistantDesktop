@@ -33,6 +33,7 @@ class ConversationPresenter {
             onSelectPersona = state.onSelectPersona,
             onResetConversation = state.onResetConversation,
             hasMessages = state.conversation.messages.isNotEmpty(),
+            hasVoiceInput = state.hasVoiceInput
         )
     }
 }
