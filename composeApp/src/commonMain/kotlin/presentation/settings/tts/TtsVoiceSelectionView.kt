@@ -21,16 +21,22 @@ fun TtsVoiceSelectionView(
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit,
 ) {
-    val ttsHelper = remember { getTtsHelper() }
-    var selectedTtsVoice by remember { mutableStateOf(ttsHelper?.getVoice()) }
-    val voices = remember { ttsHelper?.getVoices().orEmpty() }
+    val ttsHelper by remember { lazy { getTtsHelper() } }
+    var selectedTtsVoice: TtsVoice? by remember { mutableStateOf(null) }
+    var voices: List<TtsVoice> by remember { mutableStateOf(emptyList()) }
 
-    LaunchedEffect(selectedTtsVoice) {
+    LaunchedEffect(ttsHelper) {
         ttsHelper?.let { ttsHelper ->
-            selectedTtsVoice?.let {
-                ttsHelper.setVoice(it)
-                ttsHelper.speak("Hello! This is ${it.name} speaking.")
-            }
+            voices = ttsHelper.getVoices()
+            selectedTtsVoice = ttsHelper.getVoice()
+        }
+    }
+
+    fun speak(voice: TtsVoice) {
+        ttsHelper?.let { ttsHelper ->
+            selectedTtsVoice = voice
+            ttsHelper.setVoice(voice)
+            ttsHelper.speak("Hello! This is ${voice.name} speaking.")
         } ?: onDismiss()
     }
 
@@ -39,7 +45,7 @@ fun TtsVoiceSelectionView(
             VoiceRow(
                 voice = voice,
                 selected = voice == selectedTtsVoice,
-                onClick = { selectedTtsVoice = it },
+                onClick = { speak(it) },
             )
         }
     }

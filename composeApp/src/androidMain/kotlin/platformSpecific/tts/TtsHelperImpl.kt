@@ -47,7 +47,7 @@ class TtsHelperImpl : TtsHelper {
     }
 
     override fun getVoices(): List<TtsVoice> {
-        return tts.voices.map { TtsVoice(it.name) }
+        return tts.voices?.map { TtsVoice(it.name) }.orEmpty()
     }
 
     private fun getTts(context: Context): TextToSpeech {
