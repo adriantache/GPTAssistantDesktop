@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -18,6 +19,8 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
 import gptassistant.composeapp.generated.resources.Res
 import gptassistant.composeapp.generated.resources.persona
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import platformSpecific.tts.getTtsHelper
 import presentation.conversation.model.ConversationItem
@@ -29,6 +32,8 @@ import util.Strings.CONVERSATION_RESET
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NewConversationScreen(conversationItem: ConversationItem) {
+    val scope = rememberCoroutineScope()
+
     // TODO: add UI and functionality to stop TTS output
     val ttsHelper by remember { lazy { getTtsHelper() } }
     var isTtsSpeaking by remember { mutableStateOf(false) }
@@ -138,13 +143,25 @@ fun NewConversationScreen(conversationItem: ConversationItem) {
                                 prompt = conversationItem.input,
                                 onPromptChanged = conversationItem.onInput,
                                 isLoading = conversationItem.isLoading,
-                                onSubmit = conversationItem.onSubmit,
+                                onSubmit = {
+                                    conversationItem.onSubmit(false)
+                                    scope.launch {
+                                        delay(1000) // TODO: find a more elegant solution
+                                        listState.scrollBy(9999f)
+                                    }
+                                },
                             )
                         },
                         voiceInputContent = {
                             VoiceInput(
                                 onPromptChanged = conversationItem.onInput,
-                                onSubmit = { conversationItem.onSubmit(true) }
+                                onSubmit = {
+                                    conversationItem.onSubmit(true)
+                                    scope.launch {
+                                        delay(1000)
+                                        listState.scrollBy(9999f)
+                                    }
+                                }
                             )
                         },
                     )

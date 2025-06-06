@@ -1,4 +1,3 @@
-
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -33,6 +32,7 @@ kotlin {
             implementation(libs.kotlin.test.junit)
             implementation(libs.coil.network.okhttp)
             implementation(libs.accompanist.permissions)
+            implementation(libs.accompanist.systemuicontroller)
         }
 
         commonMain.dependencies {
