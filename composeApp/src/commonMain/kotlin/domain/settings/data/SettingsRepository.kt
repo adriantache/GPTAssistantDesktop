@@ -6,4 +6,6 @@ interface SettingsRepository {
     suspend fun getSettings(): SettingsData
 
     suspend fun setApiKey(key: String?)
+
+    suspend fun setTtsVoice(voiceId: String?)
 }

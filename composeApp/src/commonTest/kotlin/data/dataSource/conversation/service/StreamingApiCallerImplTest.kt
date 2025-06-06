@@ -53,7 +53,7 @@ class StreamingApiCallerImplTest {
             install(SSE)
         }
 
-        val settings = SettingsDataSourceFake(settings = SettingsData(apiKey = "testKey"))
+        val settings = SettingsDataSourceFake(settings = SettingsData(apiKey = "testKey", ttsVoice = null))
         val streamingApiCaller = StreamingApiCallerImpl(
             settingsDataSource = settings,
             client = client,
@@ -111,7 +111,7 @@ class StreamingApiCallerImplTest {
             }
         }
 
-        val settings = SettingsDataSourceFake(settings = SettingsData(apiKey = "testKey"))
+        val settings = SettingsDataSourceFake(settings = SettingsData(apiKey = "testKey", ttsVoice = null))
         val streamingApiCaller = StreamingApiCallerImpl(
             settingsDataSource = settings,
             client = client,
@@ -142,7 +142,7 @@ class StreamingApiCallerImplTest {
             }
         }
 
-        val settings = SettingsDataSourceFake(settings = SettingsData(apiKey = "testKey"))
+        val settings = SettingsDataSourceFake(settings = SettingsData(apiKey = "testKey", ttsVoice = null))
         val streamingApiCaller = StreamingApiCallerImpl(
             settingsDataSource = settings,
             client = client,
@@ -224,7 +224,6 @@ class StreamingApiCallerImplTest {
         }
     }
 
-    @Suppress("SpellCheckingInspection")
     private val expectedOpenAiResponse = listOf(
         "{\"id\":\"chatcmpl-AEdm9ovhO3SpdEF1oJIi9DCcUdsIz\",\"object\":\"chat.completion.chunk\",\"created\":1728052853,\"model\":\"gpt-4o-2024-08-06\",\"system_fingerprint\":\"fp_e5e4913e83\",\"choices\":[{\"index\":0,\"delta\":{\"role\":\"assistant\",\"content\":\"\",\"refusal\":\"\"},\"logprobs\":\"\",\"finish_reason\":\"\"}]}",
         "",

@@ -8,6 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import domain.settings.state.SettingsState
 import platformSpecific.tts.getTtsHelper
 import presentation.settings.tts.TtsVoiceSelectionView
@@ -44,7 +45,10 @@ fun SettingsScreen(
             )
 
             if (displayTtsSelector) {
-                Dialog(onDismissRequest = { displayTtsSelector = false }) {
+                Dialog(
+                    onDismissRequest = { displayTtsSelector = false },
+                    properties = DialogProperties(usePlatformDefaultWidth = false),
+                ) {
                     TtsVoiceSelectionView(
                         modifier = Modifier.padding(16.dp),
                         onDismiss = { displayTtsSelector = false },

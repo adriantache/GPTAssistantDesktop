@@ -16,4 +16,8 @@ class SettingsRepositoryImpl(
     override suspend fun setApiKey(key: String?) {
         settingsDataSource.setApiKey(key)
     }
+
+    override suspend fun setTtsVoice(voiceId: String?) {
+        settingsDataSource.setTtsVoice(voiceId)
+    }
 }

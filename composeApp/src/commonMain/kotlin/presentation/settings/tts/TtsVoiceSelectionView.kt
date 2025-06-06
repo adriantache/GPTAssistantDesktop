@@ -10,6 +10,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.RadioButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import platformSpecific.tts.getTtsHelper
@@ -21,7 +22,7 @@ fun TtsVoiceSelectionView(
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit,
 ) {
-    val ttsHelper by remember { lazy { getTtsHelper() } }
+    val ttsHelper by remember { lazy { getTtsHelper() } } // TODO: replace direct access with usecase
     var selectedTtsVoice: TtsVoice? by remember { mutableStateOf(null) }
     var voices: List<TtsVoice> by remember { mutableStateOf(emptyList()) }
 
@@ -36,7 +37,7 @@ fun TtsVoiceSelectionView(
         ttsHelper?.let { ttsHelper ->
             selectedTtsVoice = voice
             ttsHelper.setVoice(voice)
-            ttsHelper.speak("Hello! This is ${voice.name} speaking.")
+            ttsHelper.speak("Hello! This is ${voice.id} speaking.")
         } ?: onDismiss()
     }
 
@@ -64,16 +65,28 @@ fun VoiceRow(
             .padding(16.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Row {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
             RadioButton(
                 selected = selected,
                 onClick = null,
             )
             Spacer(modifier = Modifier.width(8.dp))
             Column {
-                Text(text = voice.name, style = MaterialTheme.typography.subtitle1, color = AppColor.onCard())
-                Text(text = voice.name, style = MaterialTheme.typography.caption, color = AppColor.onCard())
+                Text(
+                    text = voice.name ?: voice.id,
+                    style = MaterialTheme.typography.subtitle1,
+                    color = AppColor.onCard()
+                )
+                Text(text = voice.id, style = MaterialTheme.typography.caption, color = AppColor.onCard())
             }
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = voice.locale?.displayName.orEmpty(),
+                style = MaterialTheme.typography.subtitle2,
+                color = AppColor.onCard()
+            )
         }
     }
     Divider()

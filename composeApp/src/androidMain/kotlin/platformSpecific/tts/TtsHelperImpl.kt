@@ -7,12 +7,10 @@ import android.media.AudioManager
 import android.speech.tts.TextToSpeech
 import android.util.Log
 import com.adriantache.ContextProvider
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
+import data.settings.SettingsRepositoryImpl
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 import platformSpecific.tts.model.TtsVoice
 import java.util.*
 
@@ -22,6 +20,7 @@ object TtsHelperImpl : TtsHelper {
     private val audioManager: AudioManager
     private val audioFocusRequest
         get() = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT).build()
+    private val settingsRepository = SettingsRepositoryImpl() // TODO: definitely don't access this like this
 
     init {
         val context = requireNotNull(ContextProvider.context.get())
@@ -41,19 +40,23 @@ object TtsHelperImpl : TtsHelper {
     }
 
     override fun setVoice(voice: TtsVoice) {
-        val expectedVoice = tts.voices.find { it.name == voice.name }
+        val expectedVoice = tts.voices.find { it.name == voice.id }
 
         if (expectedVoice == null) Log.e(this::class.simpleName, "Cannot find voice $voice!")
+        else runBlocking { settingsRepository.setTtsVoice(voice.id) }
 
         tts.voice = expectedVoice ?: tts.defaultVoice
     }
 
     override fun getVoice(): TtsVoice? {
-        return tts.voice?.let { TtsVoice(it.name) }
+        return tts.voice?.let { getTtsVoice(it.name) }
     }
 
     override fun getVoices(): List<TtsVoice> {
-        return tts.voices?.map { TtsVoice(it.name) }.orEmpty()
+        return tts.voices.orEmpty()
+            .sortedBy { it.name }
+            .map { getTtsVoice(it.name) }
+            .filter { it.locale?.language == "en" }
     }
 
     private fun getTts(context: Context): TextToSpeech {
@@ -71,9 +74,17 @@ object TtsHelperImpl : TtsHelper {
         tts.apply {
             setPitch(1f)
             setSpeechRate(1f)
-            setLanguage(Locale.US).apply {
-                if (this in listOf(TextToSpeech.LANG_MISSING_DATA, TextToSpeech.LANG_NOT_SUPPORTED)) {
-                    Log.e("TTS", "This Language is not supported")
+
+            runBlocking {  // TODO: really improve this part...
+                val settings = settingsRepository.getSettings()
+                if (settings.ttsVoice != null) {
+                    voice = voices.find { it.name == settings.ttsVoice }
+                } else {
+                    setLanguage(Locale.US).apply {
+                        if (this in listOf(TextToSpeech.LANG_MISSING_DATA, TextToSpeech.LANG_NOT_SUPPORTED)) {
+                            Log.e("TTS", "This Language is not supported")
+                        }
+                    }
                 }
             }
         }
@@ -96,5 +107,21 @@ object TtsHelperImpl : TtsHelper {
         }
 
         return statusFlow
+    }
+
+    private fun getTtsVoice(id: String): TtsVoice {
+        val sections = id.split("-")
+        val locale = Locale(
+            sections[0],
+            sections[1]
+        )
+        val description = sections.drop(2).filter { it.length > 1 }.joinToString(" ")
+        val name = "${locale.displayName} $description"
+
+        return TtsVoice(
+            id = id,
+            name = name,
+            locale = locale,
+        )
     }
 }
