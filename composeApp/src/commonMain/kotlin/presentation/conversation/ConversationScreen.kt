@@ -100,11 +100,13 @@ fun NewConversationScreen(conversationItem: ConversationItem) {
                 modifier = Modifier.fillMaxSize(), // TODO migrate to animateItem() when supported.
                 verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Bottom),
             ) {
-                stickyHeader {
-                    AnimatedVisibility(isTtsSpeaking) {
-                        StopTtsView {
-                            ttsHelper?.stop()
-                            isTtsSpeaking = false
+                if (isTtsSpeaking) {
+                    stickyHeader {
+                        AnimatedVisibility(isTtsSpeaking) {
+                            StopTtsView {
+                                ttsHelper?.stop()
+                                isTtsSpeaking = false
+                            }
                         }
                     }
                 }

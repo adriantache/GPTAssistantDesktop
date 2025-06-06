@@ -21,7 +21,7 @@ fun TtsVoiceSelectionView(
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit,
 ) {
-    val ttsHelper by remember { lazy { getTtsHelper() } }
+    val ttsHelper = remember { getTtsHelper() }
     var selectedTtsVoice by remember { mutableStateOf(ttsHelper?.getVoice()) }
     val voices = remember { ttsHelper?.getVoices().orEmpty() }
 

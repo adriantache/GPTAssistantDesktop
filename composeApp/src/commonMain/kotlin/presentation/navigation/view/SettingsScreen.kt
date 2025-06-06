@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import domain.settings.state.SettingsState
+import platformSpecific.tts.getTtsHelper
 import presentation.settings.tts.TtsVoiceSelectionView
 import presentation.shared.CloseRow
 import util.Strings.SETTINGS_CHANGE_TTS_VOICE_TEXT
@@ -21,7 +22,6 @@ import util.Strings.SETTINGS_DELETE_API_KEY_TITLE
 fun SettingsScreen(
     settingsState: SettingsState.SettingsVisible,
 ) {
-
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -35,19 +35,21 @@ fun SettingsScreen(
             confirmationText = SETTINGS_DELETE_API_KEY_TEXT,
         )
 
-        var displayTtsSelector by remember { mutableStateOf(false) }
-        SettingsRow(
-            onClick = { displayTtsSelector = true },
-            title = SETTINGS_CHANGE_TTS_VOICE_TITLE,
-            text = SETTINGS_CHANGE_TTS_VOICE_TEXT,
-        )
+        if (getTtsHelper() != null) { // TODO: remove platform dependencies from this layer
+            var displayTtsSelector by remember { mutableStateOf(false) }
+            SettingsRow(
+                onClick = { displayTtsSelector = true },
+                title = SETTINGS_CHANGE_TTS_VOICE_TITLE,
+                text = SETTINGS_CHANGE_TTS_VOICE_TEXT,
+            )
 
-        if (displayTtsSelector) {
-            Dialog(onDismissRequest = { displayTtsSelector = false }) {
-                TtsVoiceSelectionView(
-                    modifier = Modifier.padding(16.dp),
-                    onDismiss = { displayTtsSelector = false },
-                )
+            if (displayTtsSelector) {
+                Dialog(onDismissRequest = { displayTtsSelector = false }) {
+                    TtsVoiceSelectionView(
+                        modifier = Modifier.padding(16.dp),
+                        onDismiss = { displayTtsSelector = false },
+                    )
+                }
             }
         }
     }
