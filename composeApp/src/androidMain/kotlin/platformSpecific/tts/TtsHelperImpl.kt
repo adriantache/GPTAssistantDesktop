@@ -43,7 +43,7 @@ class TtsHelperImpl : TtsHelper {
     }
 
     override fun getVoice(): TtsVoice? {
-        return TtsVoice(tts.voice.name)
+        return tts.voice?.let { TtsVoice(it.name) }
     }
 
     override fun getVoices(): List<TtsVoice> {
