@@ -79,7 +79,11 @@ fun VoiceRow(
                     style = MaterialTheme.typography.subtitle1,
                     color = AppColor.onCard()
                 )
-                Text(text = voice.id, style = MaterialTheme.typography.caption, color = AppColor.onCard())
+                Text(
+                    text = voice.id + " (${voice.quality})",
+                    style = MaterialTheme.typography.caption,
+                    color = AppColor.onCard()
+                )
             }
             Spacer(modifier = Modifier.width(8.dp))
             Text(

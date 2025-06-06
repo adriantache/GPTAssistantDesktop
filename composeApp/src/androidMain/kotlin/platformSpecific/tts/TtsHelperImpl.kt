@@ -5,6 +5,7 @@ import android.content.Context.AUDIO_SERVICE
 import android.media.AudioFocusRequest
 import android.media.AudioManager
 import android.speech.tts.TextToSpeech
+import android.speech.tts.Voice
 import android.util.Log
 import com.adriantache.ContextProvider
 import data.settings.SettingsRepositoryImpl
@@ -49,13 +50,13 @@ object TtsHelperImpl : TtsHelper {
     }
 
     override fun getVoice(): TtsVoice? {
-        return tts.voice?.let { getTtsVoice(it.name) }
+        return tts.voice?.let { getTtsVoice(it) }
     }
 
     override fun getVoices(): List<TtsVoice> {
         return tts.voices.orEmpty()
             .sortedBy { it.name.lowercase() }
-            .map { getTtsVoice(it.name) }
+            .map { getTtsVoice(it) }
             .filter { it.locale?.language == "en" }
     }
 
@@ -109,8 +110,8 @@ object TtsHelperImpl : TtsHelper {
         return statusFlow
     }
 
-    private fun getTtsVoice(id: String): TtsVoice {
-        val sections = id.split("-")
+    private fun getTtsVoice(voice: Voice): TtsVoice {
+        val sections = voice.name.split("-")
         val locale = Locale(
             sections[0],
             sections[1]
@@ -128,9 +129,10 @@ object TtsHelperImpl : TtsHelper {
         val name = "${locale.displayName} $description"
 
         return TtsVoice(
-            id = id,
+            id = voice.name,
             name = name,
             locale = locale,
+            quality = voice.quality,
         )
     }
 }
