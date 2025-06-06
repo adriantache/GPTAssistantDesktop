@@ -17,11 +17,17 @@ import platformSpecific.tts.model.TtsVoice
 import java.util.*
 
 // TODO: improve the error states
-class TtsHelperImpl : TtsHelper {
-    private val context = requireNotNull(ContextProvider.context.get())
-    private val tts = getTts(context)
-    private val audioManager = context.getSystemService(AUDIO_SERVICE) as AudioManager
-    private val audioFocusRequest = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT).build()
+object TtsHelperImpl : TtsHelper {
+    private val tts: TextToSpeech
+    private val audioManager: AudioManager
+    private val audioFocusRequest
+        get() = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT).build()
+
+    init {
+        val context = requireNotNull(ContextProvider.context.get())
+        tts = getTts(context)
+        audioManager = context.getSystemService(AUDIO_SERVICE) as AudioManager
+    }
 
     override fun speak(text: String): StateFlow<Boolean> {
         audioManager.requestAudioFocus(audioFocusRequest)
