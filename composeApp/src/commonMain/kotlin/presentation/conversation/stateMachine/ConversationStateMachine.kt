@@ -25,9 +25,14 @@ fun ConversationStateMachine(
     val clipboardManager = LocalClipboardManager.current
 
     LaunchedEffect(state) {
-        when (val localState = state) {
-            is ConversationState.Init -> localState.onInit(conversationId)
-            is ConversationState.OpenConversation -> Unit
+        // TODO: remove after investigating desktop crash
+        try {
+            when (val localState = state) {
+                is ConversationState.Init -> localState.onInit(conversationId)
+                is ConversationState.OpenConversation -> Unit
+            }
+        } catch (e: Exception) {
+            showErrorEvent = e.message + "\n" + e.stackTrace
         }
     }
 

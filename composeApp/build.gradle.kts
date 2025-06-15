@@ -1,7 +1,7 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
-val version = "1.0.46"
+val version = "1.0.47"
 val versionNumber = getVersionInt()
 
 plugins {
@@ -33,6 +33,7 @@ kotlin {
             implementation(libs.coil.network.okhttp)
             implementation(libs.accompanist.permissions)
             implementation(libs.accompanist.systemuicontroller)
+            implementation(libs.androidx.work.runtime.ktx)
         }
 
         commonMain.dependencies {
