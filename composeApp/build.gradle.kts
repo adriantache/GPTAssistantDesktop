@@ -1,7 +1,7 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
-val version = "1.0.47"
+val version = "1.0.49"
 val versionNumber = getVersionInt()
 
 plugins {
