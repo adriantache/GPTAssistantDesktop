@@ -16,7 +16,6 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 private const val OPEN_AI_URL = "https://api.openai.com/v1/chat/completions"
@@ -50,7 +49,6 @@ class StreamingApiCallerImpl(
                         )
                     }
                 ) {
-
                     incoming.collect { event ->
                         if (event.data != null && event.data != "[DONE]") {
                             val messageData = event.data.decodeJson<OpenAiStreamingResponseDto>(json)

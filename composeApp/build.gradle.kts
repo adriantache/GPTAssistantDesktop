@@ -1,7 +1,7 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
-val version = "1.0.49"
+val version = "1.0.50"
 val versionNumber = getVersionInt()
 
 plugins {
@@ -58,7 +58,6 @@ kotlin {
             // Test dependencies
             implementation(libs.kotlin.test)
             implementation(libs.kotlin.coroutines.test)
-            implementation(libs.ktor.server.test.host)
             implementation(libs.assertj.core)
             implementation(libs.ktor.client.mock)
             implementation(libs.turbine)
@@ -66,6 +65,7 @@ kotlin {
 
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
+            implementation(libs.ktor.client.cio)
             implementation(libs.appdirs)
         }
     }
