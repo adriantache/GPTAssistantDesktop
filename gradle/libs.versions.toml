@@ -17,7 +17,7 @@ kotlin = "2.1.21"
 kotlinx-io-core = "0.7.0"
 ktor = "3.2.0"
 turbine = "1.2.1"
-workRuntimeKtx = "2.10.2"
+workRuntimeKtx = "2.11.2"
 
 [libraries]
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
